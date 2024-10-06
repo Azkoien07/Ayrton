@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-color: #f4f4f4;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header a {
+    text-decoration: none;
+    color: black;
+    margin-right: 20px;
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.section-text {
+    flex: 1;
+    max-width: 50%;
+    padding-right: 20px;
+}
+
+.section-text h1 {
+    font-size: 4.5em;
+}
+
+.section-text h2 {
+    font-size: 2.5em;
+}
+
+.section-text2 {
+    font-size: 2.2em;
+    padding: 0.5em 0.5em;
+}
+
+.section-text p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.section-text button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.section-text button:hover {
+    background-color: #0056b3;
+}
+
+.section-image {
+    flex: 1;
+    max-width: 45%;
+    text-align: right;
+}
+
+.section-image img {
+    object-fit: cover;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* Icon Styles */
+.icons {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.icons img {
+    width: 50px;
+    margin: 10px;
+}
+
+footer {
+    background-color: #f4f4f4;
+    padding: 10px;
+    text-align: center;
+}

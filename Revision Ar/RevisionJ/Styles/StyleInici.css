@@ -1,0 +1,100 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 40px;
+    width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.btn-continuar {
+    width: 100%;
+    padding: 12px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-continuar:hover {
+    background-color: #333;
+}
+
+.continue-with {
+    margin: 20px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-social {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    background-color: white;
+    color: black;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-decoration:none;
+}
+
+.btn-social:hover {
+    background-color: #f0f0f0;
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.help-link, .create-account-link {
+    color: black;
+    text-decoration: none;
+}
+
+.separator {
+    color: #999;
+}
+
+.brand-footer {
+    margin-top: 30px;
+    font-weight: bold;
+    color: black;
+}
