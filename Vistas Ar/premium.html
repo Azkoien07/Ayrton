@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium</title>
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="Styles/styleP.css">
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <!-- Icon -->
+    <link rel="icon" type="image/png" href="Imagenes/pixelcut-export.ico">
+</head>
+<body>
+    <main>
+        <!-- Titulo -->
+        <div class="titulo-flex">
+            <h1>Mejora tu plan</h1>
+        </div>
+        <!-- Card Fondo -->
+        <div class="card">
+            <div class="contenido-card">
+
+                <!-- Columna Izquierda -->
+                <div class="columna-izquierda">
+                    <div class="formulario">
+                        <form action="">
+                            <!-- Primer Campo -->
+                            <div class="titulo-plan">
+                                <h2>Premium</h2>
+                            </div>
+                            <label for="Nombre">Facturado a:</label>
+                            <input type="text" id="Nombre" placeholder="Nombre" required>
+                            
+                            <!-- Segundo Campo -->
+                            <label for="Correo">Correo:</label>
+                            <input type="email" id="Correo" placeholder="Correo" required>
+
+                            
+                            <h2>Detalles del pago</h2>
+                            <div class="card-tarjeta">
+
+                                <!-- Tercer Campo -->
+                                <label for="numero_tarjeta">Número de tarjeta:</label>
+                                <input type="text" id="numero_tarjeta" placeholder="Número de tarjeta" required>
+                                <br>
+                                
+                                <!-- Cuarto Campo -->
+                                <label for="fecha_expiracion">F. Expiración:</label>
+                                <input type="month" id="fecha_expiracion" placeholder="MM/AA" required>
+                                <br>
+                                <!-- Quinto Campo -->
+                                <label for="cvv">Cod. Seguridad:</label>
+                                <input type="text" id="cvv" placeholder="CVC" required>
+                                
+                                <!-- Sexto Campo -->
+                                <label for="pais">Seleccione su País:</label>
+                                <select id="pais" required>
+                                    <option value="" disabled selected>Seleccionar País</option>
+                                    <option value="argentina">Argentina</option>
+                                    <option value="bolivia">Bolivia</option>
+                                    <option value="brasil">Brasil</option>
+                                    <option value="chile">Chile</option>
+                                    <option value="colombia">Colombia</option>
+                                    <option value="costa_rica">Costa Rica</option>
+                                    <option value="cuba">Cuba</option>
+                                    <option value="ecuador">Ecuador</option>
+                                    <option value="el_salvador">El Salvador</option>
+                                    <option value="guatemala">Guatemala</option>
+                                    <option value="honduras">Honduras</option>
+                                    <option value="mexico">México</option>
+                                    <option value="nicaragua">Nicaragua</option>
+                                    <option value="panama">Panamá</option>
+                                    <option value="paraguay">Paraguay</option>
+                                    <option value="peru">Perú</option>
+                                    <option value="republica_dominicana">República Dominicana</option>
+                                    <option value="uruguay">Uruguay</option>
+                                    <option value="venezuela">Venezuela</option>
+                                    <option value="spain">España</option>
+                                    <option value="france">Francia</option>
+                                    <option value="italy">Italia</option>
+                                    <option value="germany">Alemania</option>
+                                    <option value="united_kingdom">Reino Unido</option>
+                                    <option value="united_states">Estados Unidos</option>
+                                    <option value="canada">Canadá</option>
+                                    <option value="australia">Australia</option>
+                                    <option value="japan">Japón</option>
+                                    <option value="china">China</option>
+                                    <option value="india">India</option>
+                                    <option value="south_korea">Corea del Sur</option>
+                                    <option value="russia">Rusia</option>
+                                    <option value="south_africa">Sudáfrica</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Columna Derecha -->
+                    <div class="columna-derecha">
+                        <h2>Opciones de facturación</h2>
+                        <div class="opciones-facturacion">
+                            
+                            <label>
+                                <input type="radio" name="facturacion" value="mensual" required>
+                                Pago mensual
+                                <br>
+                                <span>Valor a pagar $34.000 al mes</span>
+                            </label>
+                            <br>
+                            
+                            <label>
+                                <input type="radio" name="facturacion" value="anual">
+                                Pago Anual<br>
+                                <span>Valor a pagar $408.000 al año</span>
+                            </label>
+                        </div>
+                        
+                        <p>_ COP$ al mes</p>
+                        <div class="boton-enviar">
+                            <input type="submit" name="mejorar_plan" id="mejorar_plan" value="Mejorar plan">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,158 @@
+/* Ajustes generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+header {
+    background-color: #2d4a53;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+
+.ajustes-contenedor {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #f7f7f7;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para las cards */
+.ajustes-seccion {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #2d4a53;
+}
+
+.ajuste-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.ajuste-item label {
+    font-size: 1em;
+    color: #333;
+    flex: 1;
+}
+
+.ajuste-item input[type="text"],
+.ajuste-item input[type="email"],
+.ajuste-item input[type="color"],
+.ajuste-item select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 2;
+    max-width: 300px;
+}
+
+.ajuste-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+}
+
+.ajuste-item input[type="text"]::placeholder {
+    color: #999;
+}
+
+/* Estilo "Guardar cambios" */
+.guardar-btn {
+    font-size: 14px;
+    color: #fff;
+    background-color: #2d4a53; 
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: solid 2px #2D4A53;
+    display: block;  
+    margin: 20px auto;    
+}
+
+.guardar-btn:hover {
+    background-color: #1f695b; 
+}
+
+/* Estilo para "Cerrar Sesión en Otros Dispositivos" */
+.guardar-btn-alerta {
+    background-color: #d9534f; 
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: solid 2px #2D4A53;
+    color: black;
+}
+
+.guardar-btn-alerta:hover {
+    background-color: #c9302c; 
+}
+
+/* Estilo para "Gestión de Datos" */
+.guardar-btn-gestion {
+    background-color: #f0ad4e; 
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: solid 2px #2D4A53;
+    color: black;
+}
+
+.guardar-btn-gestion:hover {
+    background-color: #ec971f;
+}
+
+/* Estilo para "Borrar Caché" */
+.guardar-btn-cache {
+    background-color: #5bc0de; 
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: solid 2px #2D4A53;
+    color: black;
+}
+
+.guardar-btn-cache:hover {
+    background-color: #31b0d5; 
+}
+
+/* Responsive */
+/* Media Query para (telefonos) */
+@media (max-width: 768px) {
+    .ajuste-item {
+        flex-direction: row;
+        justify-content: start;    
+    }
+
+    .ajuste-item label {
+        margin-bottom: 8px;
+    }
+
+    .guardar-btn {
+        width: 100%;
+    }
+
+}

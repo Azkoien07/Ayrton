@@ -1,0 +1,224 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-style: italic;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: linear-gradient(rgba(0, 0, 0, -0.5), rgba(0, 0, 0, 1.5)), url(../Imagenes/hombre-pYAbtWwJslg-unsplash.jpg);
+    background-size: cover;
+    background-position: center;
+}
+
+/* Titulos */
+.titulo-flex {
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+.titulo-flex h1 {
+    font-size: 47px;
+}
+
+/* Card Externo */
+.card {
+    background-color: #d5dedd;
+    width: 80%;
+    max-width: 1280px;
+    padding: 40px 30px;
+    border-radius: 8px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 4px solid #1f695b;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+/* Contenedor Principal */
+.contenido-card {
+    display: flex;
+    gap: 20px;
+}
+
+/* Columnas */
+.columna-izquierda,
+.columna-derecha {
+    flex: 1;
+}
+
+/* Formulario */
+.formulario {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.formulario input,
+.formulario select {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #A3A39B;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #fff;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.formulario input:hover,
+.formulario select:hover {
+    border-color: #1f695b;
+}
+
+.formulario input:focus,
+.formulario select:focus {
+    outline: none;
+    border-color: #1f695b;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/*Detalles del Pago */
+.card-tarjeta {
+    padding: 10px;
+    border: 2px solid #A3A39B;
+    border-radius: 5px;
+    background-color: #f4f6f9;
+    margin-top: 20px;
+}
+
+/* Opciones de facturación */
+.opciones-facturacion {
+    border: 2px solid #A3A39B;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+/* Botón de mejorar plan */
+.boton-enviar input[type="submit"] {
+    width: 100%;
+    background-color: #1f695b;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.boton-enviar input[type="submit"]:hover {
+    background-color: #164d42;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+/* Estilos del select */
+.card-tarjeta select {
+    width: 90%;
+    padding: 8px;
+    border: 2px solid #A3A39B;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+label {
+    font-weight: bold;
+    font-size: 17px;
+    color: #4d4d4d;
+}
+
+/* Subtitulo */
+.subtitulo h2 {
+    text-align: center;
+    font-size: 40px;
+}
+.titulo-plan h2{
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+    font-family: 'Merriweather', serif;
+}
+/* Responsive */
+/* Media Query (Telefonos)*/
+@media(max-width:768px){
+     /* Títulos */
+     .titulo-flex h1 {
+        font-size: 32px; 
+    }
+    /* Card Externo */
+    .card {
+        padding: 25px 15px; 
+        width: 410px;
+    }
+
+    /* Contenedor Principal */
+    .contenido-card {
+        display: flex;
+        flex-direction: column; 
+    }
+
+    /* Columnas */
+    .columna-izquierda,
+    .columna-derecha {
+        flex: none;
+        width: 90%; 
+    }
+
+    /* Formulario */
+    .formulario input,
+    .formulario select {
+        width: 85%; 
+    }
+
+    /* Detalles de Pago */
+    .card-tarjeta {
+        padding: 15px;
+    }
+
+    /* Botón de mejorar plan */
+    .boton-enviar input[type="submit"] {
+        width: 70%; 
+    }
+
+    /* Subtítulos */
+    .subtitulo h2 {
+        font-size: 30px; 
+    }
+
+    .titulo-plan h2 {
+        font-size: 28px; 
+    }
+}
+
+/* Media Query para pantallas más pequeñas (móviles) */
+@media(max-width: 480px) {
+    /* Títulos */
+    .titulo-flex h1 {
+        font-size: 26px;
+    }
+
+    /* Card Externo */
+    .card {
+        padding: 20px 10px; 
+    }
+
+    /* Botón de mejorar plan */
+    .boton-enviar input[type="submit"] {
+        width: 90%; 
+    }
+
+    /* Subtítulos */
+    .subtitulo h2 {
+        font-size: 25px; 
+    }
+
+    .titulo-plan h2 {
+        font-size: 24px;  
+    }
+}

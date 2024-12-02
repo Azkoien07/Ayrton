@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="Styles/styleS.css">
+    <!-- Icon -->
+     <link rel="shortcut icon" href="Imagenes/pixelcut-export.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <h1>Ajustes</h1>
+    </header>
+    <main>
+        <form id="formulario-configuracion" autocomplete="on">
+            <section class="ajustes-contenedor">
+                
+                <!-- Sección General -->
+                <section id="sección-general">
+                    <div class="ajustes-seccion">
+                        <h2>General</h2>
+                        <div class="ajuste-item">
+                            <label for="idioma">Idioma</label>
+                            <select id="idioma">
+                                <option value="es">Español</option>
+                                <option value="en">Inglés</option>
+                                <option value="fr">Francés</option>
+                                <option value="de">Alemán</option>
+                                <option value="it">Italiano</option>
+                                <option value="pt">Portugués</option>
+                                <option value="zh">Chino</option>
+                                <option value="ja">Japonés</option>
+                                <option value="ru">Ruso</option>
+                                <option value="ar">Árabe</option>
+                                <option value="ko">Coreano</option>
+                                <option value="hi">Hindi</option>
+                                <option value="tr">Turco</option>
+                                <option value="nl">Neerlandés</option>
+                                <option value="sv">Sueco</option>
+                                <option value="pl">Polaco</option>
+                                <option value="he">Hebreo</option>
+                                <option value="el">Griego</option>
+                                <option value="cs">Checo</option>
+                                <option value="vi">Vietnamita</option>
+                            </select>
+                        </div>
+
+                        <div class="ajuste-item">
+                            <label for="tamañoFuente">Tamaño de Fuente</label>
+                            <select id="tamañoFuente">
+                                <option value="pequeño">Pequeño</option>
+                                <option value="mediano" selected>Mediano</option>
+                                <option value="grande">Grande</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Sección Personalización -->
+                <section id="sección-personalizacion">
+                    <div class="ajustes-seccion">
+                        <h2>Personalización</h2>
+                        <div class="ajuste-item">
+                            <label for="modoOscuro">Modo Oscuro</label>
+                            <input type="checkbox" id="modoOscuro">
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Sección Notificaciones -->
+                <section id="sección-notificaciones">
+                    <div class="ajustes-seccion">
+                        <h2>Notificaciones</h2>
+                        <div class="ajuste-item">
+                            <label for="notificaciones">Habilitar Notificaciones</label>
+                            <input type="checkbox" id="notificaciones" checked>
+                        </div>
+                        <div class="ajuste-item">
+                            <label for="sonidos">Sonido de Notificaciones</label>
+                            <input type="checkbox" id="sonidos">
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Sección Cuenta -->
+                <section id="sección-cuenta">
+                    <div class="ajustes-seccion">
+                        <h2>Cuenta</h2>
+                        <div class="ajuste-item">
+                            <label for="nombreUsuario">Nombre de Usuario</label>
+                            <input type="text" id="nombreUsuario" placeholder="TuNombreDeUsuario">
+                        </div>
+                        <div class="ajuste-item">
+                            <label for="email">Correo Electrónico</label>
+                            <input type="email" id="email" placeholder="correo@ejemplo.com">
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Sección Seguridad -->
+                <section id="sección-seguridad">
+                    <div class="ajustes-seccion">
+                        <h2>Seguridad</h2>
+                        <div class="ajuste-item">
+                            <label for="autenticacionDosPasos">Autenticación en Dos Pasos</label>
+                            <input type="checkbox" id="autenticacionDosPasos">
+                        </div>
+
+                        <div class="ajuste-item">
+                            <button type="button" class="guardar-btn-alerta">Cerrar Sesión en Otros Dispositivos</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Sección Privacidad -->
+                <section id="sección-privacidad">
+                    <div class="ajustes-seccion">
+                        <h2>Privacidad</h2>
+                        <div class="ajuste-item">
+                            <label for="bloqueoUsuarios">Bloquear Usuarios</label>
+                            <input type="text" id="bloqueoUsuarios" placeholder="Ingresar nombre de usuario">
+                        </div>
+
+                        <div class="ajuste-item">
+                            <button type="button" class="guardar-btn-gestion">Gestión de Datos</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Sección Aplicación -->
+                <section id="sección-aplicacion">
+                    <div class="ajustes-seccion">
+                        <h2>Aplicación</h2>
+                        <div class="ajuste-item">
+                            <label for="actualizaciones">Actualizaciones Automáticas</label>
+                            <input type="checkbox" id="actualizaciones" checked>
+                        </div>
+
+                        <div class="ajuste-item">
+                            <button type="button" class="guardar-btn-cache">Borrar Caché</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Botón Guardar -->
+                <button type="submit" class="guardar-btn">Guardar Cambios</button>
+            </section>
+        </form>
+    </main>
+        <script src="Scripts/scriptSettings.js"></script>
+</body>
+</html>
