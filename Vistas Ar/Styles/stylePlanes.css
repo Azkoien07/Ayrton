@@ -1,0 +1,119 @@
+/* General */
+body {
+    font-family: 'Merriweather', serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #b8e2c8, #f7f7f7);
+    color: #2d4a53;
+    text-align: center;
+}
+
+header {
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #1f695b;
+}
+
+header p {
+    color: black;
+    margin: 10px auto;
+    font-size: 1.2rem;
+    max-width: 600px;
+}
+
+/* Planes */
+.planes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 0 10px;
+}
+
+.plan {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    width: 300px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plan:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.plan-header {
+    padding: 20px;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.plan-header.premium {
+    background: linear-gradient(135deg, #97c6ab, #2d4a53);
+}
+
+.plan-header.platino {
+    background: linear-gradient(135deg, #c798db, #ac71b2);
+}
+
+.plan-content {
+    padding: 20px;
+}
+
+.price {
+    font-size: 2rem;
+    color: #1f695b;
+    margin: 10px 0;
+}
+
+.price span {
+    font-size: 1rem;
+    color: #4d4d4d;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    color: #5055df;
+    text-align: left;
+}
+
+ul li {
+    margin: 5px 0;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+ul li:before {
+    content: '✔';
+    color: #1f695b;
+    margin-right: 8px;
+}
+
+/* Botón */
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 20px;
+    background-color: #2d4a53;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #5055df;
+    transform: translateY(-3px);
+}

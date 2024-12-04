@@ -1,0 +1,130 @@
+body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-style: italic;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(45, 74, 83, 0.8), rgba(240, 246, 249, -0.5)), url(../Imagenes/spenser-sembrat-vKzQ2B-yquw-unsplash.jpg);
+    background-size: cover;
+    background-position: center;
+}
+/* TItulos */
+.titulo-flex{
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+.titulo-flex h1{
+    font-size: 47px;
+    color: black;
+}
+.titulo-flex h2{
+    font-size: 20px;
+    font-weight: normal;
+    color: #2D4A53;
+}
+/* card externo */
+.card{
+    background: rgba(255, 255, 255, 0.4); 
+    width: 100%;
+    max-width: 500px;
+    padding: 40px 30px;
+    border-radius: 8px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    border: 4px solid #1f695b;
+}
+
+/* Formulario de ingreso */
+.formulario{
+    margin-top: 30px;
+    text-align: left;
+}
+.formulario input{
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #A3A39B;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #fff;
+}
+.boton-enviar{
+    text-align: center;
+}
+.boton-enviar input[type="submit"] {
+    width: 20%;
+    text-align: center;
+    background-color: #2D4A53;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    padding: 14px;
+    margin: 0 auto;
+    margin-top: 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+/* Metodos de ingreso */
+.metodos-alternos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.metodo-1 a, .metodo-2 a, .metodo-3 a {
+    background-color: #7f8c97; 
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    width: 90%;
+    display: block;
+    text-align: center; 
+    font-size: 1rem;
+}
+.metodo-1 a:hover, .metodo-2 a:hover, .metodo-3 a:hover{
+    background-color:  #6f7b88;
+}
+p{
+    color: #2D4A53; 
+    margin-bottom: 10px; 
+    border-bottom: 2px solid #2D4A53; 
+    padding-bottom: 5px; 
+}
+h4{
+    font-size: 25px;
+}
+label{
+    font-weight: bold;
+}
+/* Responsive */
+/* Media Query para (Telefonos) */
+@media(max-width:768px){
+    main{
+        max-width: 90%;
+    }
+    .titulo-flex h1 {
+        font-size: 30px; 
+    }
+    .titulo-flex h2 {
+        font-size: 16px; 
+    }
+    .card {
+        padding: 20px 15px; 
+    }
+    .formulario input {
+        width: 90%; 
+        padding: 10px;
+    }
+    .boton-enviar input[type="submit"] {
+        width: 60%; 
+    }
+    .metodo-1 a, .metodo-2 a, .metodo-3 a {
+        width: 90%; 
+    }
+}

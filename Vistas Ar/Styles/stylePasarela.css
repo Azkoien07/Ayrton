@@ -1,0 +1,310 @@
+/* Estilos generales */
+body {
+font-family: 'Merriweather', serif;
+background-color: #f7f7f7; 
+color: #333;
+margin: 0;
+padding: 0;
+}
+
+/* Contenedor principal de la pasarela */
+.contenedor-pasarela {
+display: flex;
+flex-direction: column;
+align-items: center;
+margin-top: 30px;
+}
+
+/* Estilo para el resumen del plan */
+.card-resumen {
+background-color: #ffffff; 
+padding: 20px;
+border-radius: 10px;
+margin-bottom: 20px;
+width: 100%;
+max-width: 500px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+}
+
+.card-resumen h2 {
+font-size: 1.5rem;
+color: #2D4A53; 
+margin-bottom: 10px;
+}
+
+.card-resumen ul {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+.card-resumen li {
+font-size: 1rem;
+color: #4d4d4d; 
+}
+
+/* Estilos para el formulario de pago */
+.formulario-pago {
+background-color: #fff;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+max-width: 500px;
+width: 100%;
+}
+
+h2 {
+font-size: 1.5rem;
+color: #2D4A53; 
+margin-bottom: 20px;
+}
+
+label {
+font-size: 1rem;
+color: #333;
+margin-bottom: 5px;
+display: block;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+select {
+width: 100%;
+padding: 10px;
+margin-bottom: 15px;
+border: 1px solid #ddd;
+border-radius: 5px;
+font-size: 1rem;
+color: #333;
+}
+
+/* Estilos para el campo de selección mensual o anual */
+select {
+background-color: #f4f6f9; 
+border: 1px solid #ddd;
+border-radius: 5px;
+font-size: 1rem;
+padding: 10px;
+color: #333;
+}
+
+select option {
+padding: 10px;
+}
+
+/* Estilos del botón de pago */
+button[type="submit"] {
+background-color: #2D4A53; 
+color: #fff;
+padding: 14px 24px;
+border-radius: 8px;
+cursor: pointer;
+font-size: 1rem;
+width: 100%;
+border: none;
+transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+background-color: #1f695b; 
+}
+
+button[type="submit"]:active {
+background-color: #1a5e51; 
+}
+
+/* Estilos de flexbox para la expiración y el CVC */
+.flex-input {
+display: flex;
+justify-content: space-between;
+gap: 10px;
+}
+
+/* Estilos para los input de expiración y CVC */
+.flex-input input {
+width: 48%;
+}
+
+/* Estilo para los encabezados */
+h1 {
+font-size: 2rem;
+font-weight: bold;
+color: #2D4A53; 
+margin-bottom: 10px;
+}
+
+/* Estilo para la descripción del plan */
+#plan-seleccionado {
+font-weight: bold;
+color: #4d4d4d; 
+}
+
+/* Estilo de los textos */
+p {
+font-size: 1rem;
+color: #333;
+margin: 0 0 15px 0;
+}
+
+span {
+font-weight: bold;
+color: #2D4A53; 
+}
+
+/* Estilo de los enlaces */
+a {
+color: #2D4A53; 
+text-decoration: none;
+}
+
+a:hover {
+text-decoration: underline;
+}
+
+/* Estilos para el contenedor principal */
+main {
+padding: 20px;
+}
+
+/* Estilos para el contenedor del header */
+header {
+text-align: center;
+margin-bottom: 30px;
+}
+
+/* Estilo de los campos de texto */
+input[type="text"],
+input[type="email"],
+input[type="number"]{
+border-radius: 5px;
+padding: 12px;
+font-size: 1rem;
+width: 95%;
+}
+#cvc{
+width: 90%;
+}
+
+/* Estilo para la parte de resumen de pago */
+.card-resumen ul li {
+font-size: 1rem;
+color: #333;
+}
+
+/* Estilo del botón "Pagar Ahora" */
+.btn-pagar {
+background-color: #0c0c0c; 
+color: white;
+padding: 14px 24px;
+border-radius: 8px;
+font-size: 1.1rem;
+width: 100%;
+border: none;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.btn-pagar:hover {
+background-color: #1f695b; 
+}
+
+.btn-pagar:active {
+background-color: #1a5e51;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-contenido {
+    position: relative; 
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.3s ease;
+    max-width: 400px;
+    width: 90%;
+    overflow: hidden; 
+}
+
+.modal-contenido h2 {
+    margin-bottom: 10px;
+    color: #2D4A53;
+}
+
+.modal-contenido p {
+    color: #4d4d4d;
+}
+
+/* Botón cerrar (X) */
+.cerrar-modal {
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    z-index: 10; 
+}
+
+.cerrar-modal:hover {
+    color: #5055df;
+}
+
+/* Animación del modal */
+@keyframes slideDown {
+    /* Estado inicial Animación */
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    /* Estado final */
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Responsive */
+/* Media Query para (Telefonos) */
+@media (max-width: 768px) {
+.contenedor-pasarela {
+padding: 20px;
+}
+    
+.card-resumen,
+.formulario-pago {
+width: 100%;
+margin-bottom: 20px;
+}
+#cvc{
+margin-bottom: 20px;
+width: 90%;
+}
+.flex-input {
+    flex-direction: column; 
+    gap: 5px;
+}
+
+.flex-input div {
+    width: 100%; 
+}
+
+input {
+    width: 100%; 
+}
+}

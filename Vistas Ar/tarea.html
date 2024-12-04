@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarea</title>
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="Styles/styleT.css">
+    <!-- Link Icon -->
+    <link rel="shortcut icon" href="Imagenes/pixelcut-export.ico" type="image/x-icon">
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+    
+</head>
+<body> 
+    <div class="tarea-contenedor">
+        <h1>Mis Tareas</h1>
+        <button id="añadir-tarea">Nueva Tarea</button>
+    
+        <!-- Lista de tareas -->
+        <ul class="lista-tareas">
+            <!-- Ejemplo de tarea -->
+            <li class="tarea">
+                <div class="tarea-info">
+                    <h3>Tarea 1</h3>
+                    <p>Descripción de la tarea</p>
+                    <span class="prioridad">Alta</span>
+                </div>
+                <div class="tarea-acciones">
+                    <button class="editar-tarea">Editar</button>
+                    <button class="eliminar-tarea">Eliminar</button>
+                </div>
+            </li>
+        </ul>
+    
+        <!-- Modal para agregar/editar tareas -->
+        <div id="tarea-modal" class="modal-hidden">
+            <form id="tarea-formulario">
+                <label for="tarea-titulo">Título</label>
+                <input type="text" id="tarea-titulo" required>
+                
+                <label for="tarea-descripcion">Descripción</label>
+                <textarea id="tarea-descripcion" rows="4"></textarea>
+                
+                <label for="tarea-fecha">Fecha</label>
+                <input type="date" id="tarea-fecha" required>
+
+                <label for="tarea-prioridad">Prioridad</label>
+                <select id="tarea-prioridad">
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
+                </select>
+                
+                <button type="submit">Guardar</button>
+            </form>
+        </div>
+    </div>    
+
+    <!-- Script Funciones -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+    <script src="Scripts/scriptT.js"></script>
+</body>
+</html>

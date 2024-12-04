@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Estilo general -->
+    <link rel="stylesheet" href="Styles/styleD.css">
+    <!-- Icon -->
+    <link rel="shortcut icon" href="Imagenes/pixelcut-export.ico" type="image/x-icon">
+    <!-- Recursos -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="contenedor">
+        <!-- Botón de hamburguesa -->
+        <button id="hamburgerBtn" class="menu-icon" aria-label="Abrir menú">&#9776;</button>
+
+        <!-- Barra lateral -->
+        <aside class="barra-lateral oculto" id="menu">
+            <div class="user-info">
+                <div class="user-avatar"></div>
+                <p>Bienvenido, <strong>Usuario</strong></p>
+            </div>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="tarea.html">Mis Tareas</a></li>
+                <li><a href="ranking.html">Progreso</a></li>
+                <li><a href="planes.html">Planes</a></li>
+                <li><a href="pqr.html">Pqr</a></li>
+            </ul>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="contenido-principal">
+            <header class="header">
+                <h1>Dashboard Ayrton</h1>
+                <div class="header-actions">
+                    <button class="button" onclick="location.href='settings.html'">Configuraciones</button>
+                    <button class="button" onclick="location.href='login.html'">Cerrar sesión</button>
+                </div>
+            </header>
+            <section class="cards">
+                <div class="card">
+                    <h3>Tareas Pendientes</h3>
+                    <p>5 tareas pendientes</p>
+                </div>
+                <div class="card">
+                    <h3>Progreso General</h3>
+                    <p>80% completado</p>
+                </div>
+                <div class="card">
+                    <h3>Logros</h3>
+                    <p>2 nuevos logros alcanzados</p>
+                </div>
+            </section>
+            <section class="calendar">
+                <div id="calendary"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="Scripts/scriptDash.js"></script>
+</body>
+</html>

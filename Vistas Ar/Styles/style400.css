@@ -1,0 +1,47 @@
+body {
+    font-family: 'Merriweather', serif;
+    background-color: #f4f6f9;
+    color: #4d4d4d;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+.error-container {
+    max-width: 600px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.error-codigo {
+    font-size: 72px;
+    font-weight: bold;
+    color: #2d4a53;
+}
+.error-mensaje {
+    font-size: 24px;
+    margin: 20px 0;
+}
+.error-descripcion {
+    font-size: 16px;
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+.atras-button {
+    font-size: 16px;
+    color: #fff;
+    background-color: #2d4a53;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+.back-button:hover {
+    background-color: #1f695b;
+}

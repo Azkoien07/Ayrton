@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ranking</title>
+  <!-- Estilos CSS -->
+  <link rel="stylesheet" href="Styles/styleRank.css">
+  <!-- Link Iconos -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="shortcut icon" href="Imagenes/pixelcut-export.ico" type="image/x-icon">
+
+</head>
+<body>
+  <div class="container">
+    <!-- Barra lateral -->
+    <aside class="sidebar">
+      <div class="user-info">
+        <div  class="user-avatar"></div>
+        <div class="user-name">Nombre de usuario</div>
+      </div>
+      <div class="desafios">
+        <h3>Desafíos</h3>
+        <ul class="objetivos">
+          <li><i class="fa-solid fa-calendar-days"></i> Jefe Maestro del Orden<br>3 meses - 12 semanas</li>
+          <li><i class="fa-regular fa-eye"></i> Guerrero Ninja<br>5 meses - 22 semanas</li>
+          <li><i class="fa-solid fa-chart-line"></i> Ejecutor de las Tareas<br>6 meses - 25 semanas</li>
+          <li><i class="fa-solid fa-crown"></i> Emperador del Hábito<br>8 meses - 35 semanas</li>
+          <li><i class="fa-solid fa-bullseye"></i> Monje del Orden<br>12 meses - 52 semanas</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <div class="header">
+        <img src="Imagenes/wallpapersden.com_trillectro_1200x480.jpg" alt="Header Img" class="header-img">
+        <h1>Tu progreso</h1>
+      </div>
+
+      <!-- Gráfica -->
+      <div class="progress">
+        <div class="tabs">
+          <button>7D</button>
+          <button>1M</button>
+          <button>3M</button>
+          <button>6M</button>
+          <button>1Y</button>
+        </div>
+        <div class="chart-container">
+          <canvas id="myChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Ranking -->
+      <div class="ranking">
+        <h2>Tu Ranking</h2>
+        <div class="ranking-checkboxes">
+          <label><input type="checkbox"> Weeks</label>
+          <label><input type="checkbox"> Months</label>
+          <label><input type="checkbox"> Years</label>
+        </div>
+      </div>
+
+      <!-- Logros -->
+      <div class="logros">
+        <h2>Logros</h2>
+        <ul>
+          <li><i class="fa-solid fa-bolt-lightning"></i> Maestro de la productividad <br> Oct 30, 2024</li>
+          <li><i class="fa-solid fa-book"></i> Guerrero antiprocrastinación <br> Oct 20, 2024</li>
+          <li><i class="fa-solid fa-bottle-water"></i> Campeón de los hábitos <br> Sept 15, 2024</li>
+          <li><i class="fa-solid fa-key"></i> Comienza el cambio <br> Sept 7, 2024</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+  <!-- Scripts para la gráfica -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="Scripts/scriptRank.js"></script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+/* Estilo General */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #f4f6f9;
+}
+
+/* Contenedor principal */
+.tarea-contenedor {
+    max-width: 600px;
+    margin: 50px auto; 
+    padding: 20px;
+    background-color: #ffffff; 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    border: 4px solid #a3a09a ;
+}
+
+/* Título */
+.tarea-contenedor h1 {
+    text-align: center;
+    font-size: 32px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Botón para añadir nueva tarea */
+#añadir-tarea {
+    display: block;
+    margin: 0 auto 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #4CAF50; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#añadir-tarea:hover {
+    background-color: #45a049; 
+}
+
+/* Lista de tareas */
+.lista-tareas {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Cada tarea individual */
+.tarea {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+/* Información de la tarea */
+.tarea-info h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.tarea-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.prioridad {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.prioridad-alta {
+    background-color: #e74c3c; 
+}
+
+.prioridad-media {
+    background-color: #f1c40f; 
+}
+
+.prioridad-baja {
+    background-color: #2ecc71;
+}
+
+/* Botones de acción (Editar y Eliminar) */
+.tarea-acciones button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.editar-tarea {
+    background-color: #3498db; 
+    color: #fff;
+}
+
+.editar-tarea:hover {
+    background-color: #2980b9; 
+}
+
+.eliminar-tarea {
+    background-color: #e74c3c; 
+    color: #fff;
+}
+
+.eliminar-tarea:hover {
+    background-color: #c0392b; 
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    display: none; 
+    z-index: 1000;
+}
+
+.modal-hidden {
+    display: none; 
+}
+
+#tarea-formulario label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+#tarea-formulario input,
+#tarea-formulario textarea,
+#tarea-formulario select {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#tarea-formulario button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #4CAF50; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#tarea-formulario button:hover {
+    background-color: #45a049; 
+}
+#calendary {
+    min-height: 400px;
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro</title>
+  <!-- Estilos CSS -->
+  <link rel="stylesheet" href="Styles/styleR.css">
+  <!-- Icon -->
+  <link rel="icon" type="image/png" href="Imagenes/pixelcut-export.ico">
+</head>
+<body>
+  <main>
+
+    <div class="card">
+      <!-- Primera Sección -->
+      <section class="titulo">
+        <div class="titulo-flex">
+          <h1>Ayrton</h1>
+          <h2>Comienza a trabajar con Ayrton</h2>
+        </div>
+      </section>
+
+      <!-- Segunda Sección -->
+      <section class="formulario">
+        <div class="contenedor-formulario">
+          <form action="dashboard.html">
+            <!-- Primer Campo -->
+            <label for="Nombre_usuario">Nombre de usuario:</label>
+            <input type="text" name="Nombre_usuario" id="Nombre_usuario" required>
+            <br>
+
+            <!-- Segundo Campo -->
+            <label for="Correo">Correo:</label>
+            <input type="email" name="Correo" id="Correo" required autocomplete="email">
+            <br>
+
+            <!-- Tercer Campo -->
+            <label for="Contraseña">Contraseña:</label>
+            <input type="password" name="Contraseña" id="Contraseña" required>
+            <br>
+
+            <!-- Cuarto Campo -->
+            <label for="Confirmar_Contraseña">Confirmar Contraseña:</label>
+            <input type="password" name="Confirmar_Contraseña" id="Confirmar_Contraseña" required>
+            <br>
+
+            <!-- Quinto Campo -->
+            <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento">
+            <br>
+
+            <!-- Sexto Campo -->
+            <label for="Modo_uso">Modo de uso:</label>
+            <select name="Modo_uso" id="Modo_uso" required>
+              <option value="" disabled selected>Selecciona un modo de uso</option>
+              <option value="personal">Personal</option>
+              <option value="trabajo">Trabajo</option>
+              <option value="educacion">Educación</option>
+              <option value="otro">Otro</option>
+            </select>
+
+            <br>
+            <p>‎</p>
+
+            <!-- Tercera Sección -->
+            <section class="terminos-condiciones">
+              <!-- Aceptar Términos y Condiciones -->
+              <div class="terminos">
+                <input type="checkbox" name="Terminos_condiciones" id="Terminos_condiciones" required>
+                <label for="Terminos_condiciones">
+                  Acepto los <a href="terminos-y-condiciones" target="_blank">Términos y Condiciones</a> y la <a
+                    href="politica-de-privacidad" target="_blank">Política de Privacidad</a> de Ayrton, que incluyen
+                  las condiciones específicas para el uso de la plataforma de gestión de tareas.
+                </label>
+              </div>
+              
+              <!-- Botón de Enviar -->
+              <div class="boton-enviar">
+                <input type="submit" name="submit" id="registrarse" value="Registrarse">
+              </div>
+            </section>
+          </form>
+        </div>
+      </section>
+      
+      <!-- Seccion Ayuda -->
+      <div class="ayuda">
+        <a href="">¿Necesitas ayuda?</a>
+      </div>
+      <h4>Ayrton</h4>
+    </div>
+  </main>
+</body>
+</html>

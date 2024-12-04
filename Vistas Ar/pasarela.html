@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasarela de Pago</title>
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="Styles/stylePasarela.css">
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900&display=swap" rel="stylesheet">
+    <!-- Icon -->
+    <link rel="icon" type="image/png" href="Imagenes/pixelcut-export.ico">
+</head>
+<body>
+    <main>
+        <header>
+            <h1>Finaliza tu Compra</h1>
+            <p>Completa los datos de tu pago para activar el plan</p>
+        </header>
+        <div class="contenedor-pasarela">
+            <!-- Resumen del Plan -->
+            <div class="card-resumen">
+                <h2>Resumen del Plan</h2>
+                <p id="nombre-plan">Plan Premium</p>
+                <ul>
+                    <li><strong>Total:</strong> <span id="precio-plan">$34,000/mes</span></li>
+                    <li><strong>Beneficios:</strong> Acceso avanzado, Soporte 24/7</li>
+                </ul>
+            </div>
+            <!-- Formulario de Pago -->
+            <div class="formulario-pago">
+                <h2>Detalles del Pago</h2>
+                <form id="formPago" class="formulario">
+                    <!-- Nombre -->
+                    <label for="nombre">Facturado a:</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Tu Nombre" required>
+                    
+                    <!-- Correo -->
+                    <label for="correo">Correo Electrónico:</label>
+                    <input type="email" id="correo" name="correo" placeholder="Tu Correo" required autocomplete="email">
+
+                    <!-- Tipo de Plan (Mensual/Anual) -->
+                    <label for="tipo-plan">Selecciona el tipo de plan:</label>
+
+                    <select id="tipo-plan" name="tipo-plan" required>
+                    <option value="mensual">Mensual</option>
+                    <option value="anual">Anual</option>
+                    </select>
+
+                    
+                    <!-- Tarjeta -->
+                    <label for="numero-tarjeta">Número de Tarjeta:</label>
+                    <input type="text" id="numero-tarjeta" name="numero-tarjeta" placeholder="•••• •••• •••• ••••" maxlength="19" required>
+                    
+                    <!-- Expiración -->
+                    <div class="flex-input">
+                        <div>
+                            <label for="expiracion">Expiración (MM/AA):</label>
+                            <input type="text" id="expiracion" name="expiracion" placeholder="MM/AA" maxlength="5" required>
+                        </div>
+                        <div>
+                            <label for="cvc">CVC:</label>
+                            <input type="text" id="cvc" name="cvc" placeholder="•••" maxlength="3" required>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Pago -->
+                    <button type="submit" class="button">Pagar Ahora</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <!-- Modal -->
+    <div id="modalConfirmacion" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" id="cerrarModal">&times;</span>
+            <h2>🎉 ¡Gracias por elegir Ayrton!</h2>
+            <p>¡Tu suscripción al Plan ha sido activada exitosamente!
+                Disfruta de acceso completo a todas nuestras funcionalidades y beneficios
+            </p>
+        </div>
+    </div>
+    <!-- Script -->
+    <script src="Scripts/scriptPasarela.js"></script>
+</body>
+</html>

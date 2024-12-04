@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="Styles/styleL.css">
+    <!-- Icon -->
+    <link rel="icon" type="image/png" href="Imagenes/pixelcut-export.ico">
+    <!-- Recursos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <main>
+        <!-- Fondo -->
+        <div class="card">
+            <section class="titulo">
+                <div class="titulo-flex">
+                    <h1>Ayrton</h1>
+                    <h2>Iniciar Sesión</h2>
+                </div>
+            </section>
+            <!-- Formulario Login -->
+            <section class="formulario">
+                <div class="Formulario-login">
+                    <form action="dashboard.html">
+                        <label for="email">Correo electrónico:</label>
+                        <input type="email" name="email" id="email" placeholder="Ingrese su correo" required autocomplete="email">
+                        <br>
+                        
+                        <label for="password">Contraseña:</label>
+                        <input type="password" name="password" id="password" placeholder="Ingrese su contraseña" required>
+                        <br>
+                        <div class="boton-enviar">
+                            <input type="submit" name="submit" id="submit" value="Continuar" >
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <h3>O continua con:</h3>
+            <br>
+            <!-- Metodos de login aparte -->
+            <section class="metodos-ingreso">
+                <div class="metodos-alternos">
+                    <!-- Metodo 1 Google -->
+                    <div class="metodo-1">
+                        <a href="https://accounts.google.com/v3/signin/identifier?continue=https%3A%2F%2Fwww.google.com.co%2F%3Fhl%3Des&ec=GAZAmgQ&hl=es&ifkv=AcMMx-fZf8AwQINzvuQZNEPilIiUt-_JY8oudvwNtnbQysv_0m7Nry6Ecxp5G-ugY8mkD1pzDH56Qg&passive=true&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1310043761%3A1730928191749516&ddm=1"><i class="fa-brands fa-google"></i></a>
+                    </div>
+                    <br>
+
+                    <!-- Metodo 2 Microsoft -->
+                    <div class="metodo-2">
+                        <a href="https://login.live.com/"><i class="fa-brands fa-microsoft"></i></a>
+                    </div>
+                    <br>
+                    
+                    <!-- Metodo 3 Apple -->
+                    <div class="metodo-3">
+                        <a href="https://account.apple.com/sign-in"><i class="fa-brands fa-apple"></i></a>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <p>‎</p>
+            <div class="registrarse">   
+                <a href="">¿No puedes iniciar sesión?</a>
+                <a href="registration.html">Registrarse</a>
+            </div>
+            <h4>Ayrton</h4>
+        </div>
+    </main>
+</body>
+</html>

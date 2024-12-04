@@ -1,0 +1,225 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: #f7f7f7;
+}
+
+.container {
+    display: flex;
+}
+
+/* Barra lateral */
+.sidebar {
+    width: 20%;
+    background-color: #2D4A53;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease; 
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    background-color: #97C6AB;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.desafios h3 {
+    margin-bottom: 10px;
+}
+
+.objetivos {
+    list-style: none;
+    padding: 0;
+}
+
+.objetivos li {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.objetivos i {
+    margin-right: 10px;
+}
+
+/* Contenido principal */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.header {
+    position: relative;
+    width: 100%; 
+    height: 200px; 
+    overflow: hidden; 
+    border: 4px solid #4D6F5C;
+}
+
+.header-img {
+    width: 200%;
+    height: 350%;
+    object-fit: cover;
+}
+
+.header h1 {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.tabs button {
+    background-color: #547378;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chart {
+    width: 100%;
+    height: auto;
+}
+
+.ranking-checkboxes {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0;
+}
+
+.ranking h2 {
+    text-align: center;
+}
+
+.logros {
+    margin-top: 20px;
+}
+
+.logros ul {
+    list-style: none;
+    padding: 0;
+}
+
+.logros li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 19px;
+}
+
+.logros i {
+    margin-right: 10px;
+}
+
+/* Responsive */
+/* Media Query para dispositivos medianos (tabletas y pantallas de más de 768px) */
+@media(max-width: 768px) {
+    .sidebar {
+        width: 15%;
+        padding: 15px;
+    }
+
+    .main-content {
+        padding: 15px;
+    }
+
+    .header {
+        height: 150px;
+    }
+
+    .header-img {
+        width: 150%;
+        height: 250%;
+    }
+
+    .header h1 {
+        font-size: 1.2rem;
+        left: 10px;
+    }
+
+    .tabs button {
+        padding: 8px 12px;
+    }
+
+    .ranking h2 {
+        font-size: 1.2rem;
+    }
+
+    .logros li {
+        font-size: 16px;
+    }
+}
+
+/* Media Query para dispositivos más pequeños */
+@media(max-width: 480px) {
+    .sidebar {
+        width: 100%; /* La barra lateral se convierte en un menú desplegable */
+        padding: 10px;
+        display: none; /* Ocultar la barra lateral en pantallas pequeñas */
+    }
+
+    .main-content {
+        padding: 10px;
+        margin-left: 0;
+    }
+
+    .header {
+        height: 120px;
+    }
+
+    .header-img {
+        width: 120%;
+        height: 220%;
+    }
+
+    .header h1 {
+        font-size: 1rem;
+        left: 5px;
+    }
+
+    .tabs button {
+        padding: 6px 10px;
+    }
+
+    .ranking h2 {
+        font-size: 1rem;
+    }
+
+    .logros li {
+        font-size: 14px;
+    }
+
+    /* Mostrar la barra lateral al hacer clic en el botón del menú */
+    .sidebar.show {
+        display: block;
+        width: 80%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        z-index: 10;
+    }
+}

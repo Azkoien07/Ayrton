@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PQR - Ayrton</title>
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="Styles/stylePQR.css">
+    <!-- Icon -->
+    <link rel="shortcut icon" href="Imagenes/pixelcut-export.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Menú flotante -->
+    <div class="menu-flotante">
+        <button class="boton-menu" id="botonMenu">
+            <div class="linea"></div>
+            <div class="linea"></div>
+            <div class="linea"></div>
+        </button>
+        <nav class="navegacion-oculta" id="menuNavegacion">
+            <ul>
+                <li><a href="index.html">🏠 Inicio</a></li>
+                <li><a href="dashboard.html">📝 Dashboard</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Contenido principal -->
+    <main class="contenido-principal">
+        <!-- Encabezado -->
+        <header class="header">
+            <h1>PQR - Preguntas, Quejas y Reclamos</h1>
+        </header>
+
+        <!-- Formulario de PQR -->
+        <section class="formulario-pqr">
+            <h2>Envíanos tus comentarios</h2>
+            <form id="formPQR" class="formulario">
+                <label for="tipo">Tipo de solicitud:</label>
+                <select id="tipo" name="tipo" required>
+                    <option value="pregunta">Pregunta</option>
+                    <option value="queja">Queja</option>
+                    <option value="reclamo">Reclamo</option>
+                </select>
+
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre" required>
+
+                <label for="correo">Correo electrónico:</label>
+                <input type="email" id="correo" name="correo" placeholder="Escribe tu correo" required autocomplete="email">
+
+                <label for="mensaje">Mensaje:</label>
+                <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
+
+                <button type="submit" class="button">Enviar</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="modalConfirmacion" class="modal">
+        <div class="modal-contenido">
+            <span class="cerrar-modal" id="cerrarModal">&times;</span>
+            <h2>PQR enviado exitosamente</h2>
+            <p>Tu solicitud ha sido enviada exitosamente y está en proceso de respuesta. ¡Gracias por contactarnos!</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="Scripts/scriptPQR.js"></script>
+</body>
+</html>
