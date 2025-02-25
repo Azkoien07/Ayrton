@@ -47,8 +47,7 @@ Ayrton es una aplicación web diseñada para mejorar la gestión del tiempo y la
 ## 🔧 Tecnologías Utilizadas
 
 - **Frontend:** React.js con Tailwind CSS.
-- **Backend:** Spring Boot con arquitectura JBOSS.
+- **Backend:** Java con Spring Boot.
 - **Base de Datos:** PostgreSQL.
-- **Servidor de Despliegue:** WildFly.
+- **Servidor de Despliegue:** Vercel.
 - **Autenticación y Seguridad:** JWT, OAuth2.
-- **Caching y Optimización:** Implementación de caché para mejorar la respuesta del sistema.
