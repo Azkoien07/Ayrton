@@ -51,3 +51,45 @@ Ayrton es una aplicación web diseñada para mejorar la gestión del tiempo y la
 - **Base de Datos:** PostgreSQL.
 - **Servidor de Despliegue:** Vercel.
 - **Autenticación y Seguridad:** JWT, OAuth2.
+
+
+## 📜 Instalación y Configuración
+
+### 1️⃣ Clonar el Repositorio
+```bash
+git clone https://github.com/tu-usuario/ayrton.git
+cd ayrton
+```
+
+### 2️⃣ Configurar el Backend
+```bash
+cd backend
+mvn clean install
+mvn spring-boot:run
+```
+
+### 3️⃣ Configurar el Frontend
+```bash
+cd frontend
+npm install
+npm start
+```
+
+## 🤝 Contribuciones
+
+Si deseas contribuir a **Ayrton**, sigue estos pasos:
+1. Haz un fork del repositorio.
+2. Crea una nueva rama (`git checkout -b feature-nueva-funcionalidad`).
+3. Realiza tus cambios y haz un commit (`git commit -m "Descripción del cambio"`).
+4. Sube tus cambios (`git push origin feature-nueva-funcionalidad`).
+5. Abre un Pull Request.
+
+## 🏅 Licencia
+
+Este proyecto está bajo la **Licencia MIT**, lo que significa que puedes usarlo, modificarlo y distribuirlo libremente.
+
+## 📩 Contacto
+
+Si tienes dudas o sugerencias, contáctanos:
+📧 Email: caceresgabriel305@gmail.com
+📧 Email: juliancamilorodriguezcamelo21@gmail.com
