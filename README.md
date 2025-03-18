@@ -52,8 +52,19 @@ Ayrton es una aplicación web diseñada para mejorar la gestión del tiempo y la
 - **Servidor de Despliegue:** Vercel.
 - **Autenticación y Seguridad:** JWT, OAuth2.
 
-
 ## 📜 Instalación y Configuración
+
+### 🏗️ Estructura del Monorepositorio
+El proyecto Ayrton se organiza como un **monorepositorio**, lo que significa que tanto el frontend como el backend están dentro del mismo repositorio, pero en carpetas separadas.
+
+```
+/ayrton
+  ├── backend/   # Contiene el código del backend con Spring Boot
+  ├── frontend/  # Contiene el código del frontend con React y Next.js
+  ├── docs/      # Documentación del proyecto
+  ├── .gitignore # Configuración para ignorar archivos en Git
+  ├── README.md  # Documentación principal
+```
 
 ### 1️⃣ Clonar el Repositorio
 ```bash
