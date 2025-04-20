@@ -8,12 +8,13 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.List;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "plans")
-public class PlanEntity implements Serializable {
+@Table(name = "roles")
+public class RoleEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,20 +23,11 @@ public class PlanEntity implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", nullable = false)
-    private String description;
-
-    @Column(name = "price", nullable = false)
-    private double price;
-
-    @Column(name = "state", nullable = false)
-    private boolean state;
-
-    @Column(name = "duration", nullable = false)
-    private int duration;
+    @Column(name = "access_level", nullable = false)
+    private int accessLevel;
 
     // Relations
     // 1. (1-M) con users
-    @OneToMany(mappedBy = "plan")
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserEntity> users;
 }
