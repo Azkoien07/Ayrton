@@ -1,0 +1,9 @@
+# Ignorar node_modules
+node_modules/
+
+# Otras reglas comunes
+.env
+dist/
+build/
+.DS_Store
+*.log
