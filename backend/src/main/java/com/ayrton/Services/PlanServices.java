@@ -2,10 +2,16 @@ package com.ayrton.Services;
 
 import com.ayrton.Entity.PlanEntity;
 import com.ayrton.Entity.PlanEntity;
+import com.ayrton.Entity.PlanEntity;
 import com.ayrton.Repository.PlanRepository;
 import com.ayrton.Services.Dao.Idao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class PlanServices implements Idao<PlanEntity,Long> {
@@ -14,20 +20,40 @@ public class PlanServices implements Idao<PlanEntity,Long> {
 
     // Metodos
     @Override
+    public Page<PlanEntity> findAll(PageRequest pageable) {
+        return planRepository.findAll(pageable);
+    }
+
+    @Override
     public PlanEntity getById(Long id) {
-        return null;
+        Optional<PlanEntity> challenge = planRepository.findById(id);
+        return challenge.orElse(null);
     }
 
     @Override
-    public void save(PlanEntity obje) {
-
+    public PlanEntity save(PlanEntity entity) {
+        return planRepository.save(entity);
     }
-    @Override
-    public void saveAll(Iterable<PlanEntity> obje) {
 
+    @Transactional
+    @Override
+    public void create(PlanEntity entity) {
+        if (entity.getId() == null || !planRepository.existsById(entity.getId())) {
+            planRepository.save(entity);
+        }
     }
-    @Override
-    public void delete(PlanEntity obje) {
 
+    @Transactional
+    @Override
+    public void update(PlanEntity entity) {
+        if (entity.getId() != null && planRepository.existsById(entity.getId())) {
+            planRepository.save(entity);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id) {
+        planRepository.deleteById(id);
     }
 }

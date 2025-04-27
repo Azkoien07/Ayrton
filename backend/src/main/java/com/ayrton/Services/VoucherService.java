@@ -2,10 +2,16 @@ package com.ayrton.Services;
 
 import com.ayrton.Entity.VoucherEntity;
 import com.ayrton.Entity.VoucherEntity;
+import com.ayrton.Entity.VoucherEntity;
 import com.ayrton.Repository.VoucherRepository;
 import com.ayrton.Services.Dao.Idao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class VoucherService implements Idao<VoucherEntity,Long> {
@@ -15,20 +21,40 @@ public class VoucherService implements Idao<VoucherEntity,Long> {
 
     // Metodos
     @Override
+    public Page<VoucherEntity> findAll(PageRequest pageable) {
+        return voucherRepository.findAll(pageable);
+    }
+
+    @Override
     public VoucherEntity getById(Long id) {
-        return null;
+        Optional<VoucherEntity> challenge = voucherRepository.findById(id);
+        return challenge.orElse(null);
     }
 
     @Override
-    public void save(VoucherEntity obje) {
-
+    public VoucherEntity save(VoucherEntity entity) {
+        return voucherRepository.save(entity);
     }
-    @Override
-    public void saveAll(Iterable<VoucherEntity> obje) {
 
+    @Transactional
+    @Override
+    public void create(VoucherEntity entity) {
+        if (entity.getId() == null || !voucherRepository.existsById(entity.getId())) {
+            voucherRepository.save(entity);
+        }
     }
-    @Override
-    public void delete(VoucherEntity obje) {
 
+    @Transactional
+    @Override
+    public void update(VoucherEntity entity) {
+        if (entity.getId() != null && voucherRepository.existsById(entity.getId())) {
+            voucherRepository.save(entity);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id) {
+        voucherRepository.deleteById(id);
     }
 }

@@ -2,31 +2,58 @@ package com.ayrton.Services;
 
 import com.ayrton.Entity.PaymentEntity;
 import com.ayrton.Entity.PaymentEntity;
+import com.ayrton.Entity.PaymentEntity;
 import com.ayrton.Repository.PaymentRepository;
 import com.ayrton.Services.Dao.Idao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
-public class PaymentServices implements Idao<PaymentEntity,Long> {
+public class PaymentServices implements Idao<PaymentEntity, Long> {
     @Autowired
     private PaymentRepository paymentRepository;
+
     // Metodos
     @Override
+    public Page<PaymentEntity> findAll(PageRequest pageable) {
+        return paymentRepository.findAll(pageable);
+    }
+
+    @Override
     public PaymentEntity getById(Long id) {
-        return null;
+        Optional<PaymentEntity> challenge = paymentRepository.findById(id);
+        return challenge.orElse(null);
     }
 
     @Override
-    public void save(PaymentEntity obje) {
-
+    public PaymentEntity save(PaymentEntity entity) {
+        return paymentRepository.save(entity);
     }
-    @Override
-    public void saveAll(Iterable<PaymentEntity> obje) {
 
+    @Transactional
+    @Override
+    public void create(PaymentEntity entity) {
+        if (entity.getId() == null || !paymentRepository.existsById(entity.getId())) {
+            paymentRepository.save(entity);
+        }
     }
-    @Override
-    public void delete(PaymentEntity obje) {
 
+    @Transactional
+    @Override
+    public void update(PaymentEntity entity) {
+        if (entity.getId() != null && paymentRepository.existsById(entity.getId())) {
+            paymentRepository.save(entity);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id) {
+        paymentRepository.deleteById(id);
     }
 }
