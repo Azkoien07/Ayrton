@@ -12,5 +12,9 @@
   "packageManager": "pnpm@10.8.1",
   "devDependencies": {
     "concurrently": "^9.1.2"
-  }
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
 }
