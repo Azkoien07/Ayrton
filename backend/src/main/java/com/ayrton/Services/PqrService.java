@@ -30,11 +30,6 @@ public class PqrService implements Idao<PqrEntity, Long> {
         return challenge.orElse(null);
     }
 
-    @Override
-    public PqrEntity save(PqrEntity entity) {
-        return pqrRepository.save(entity);
-    }
-
     @Transactional
     @Override
     public void create(PqrEntity entity) {

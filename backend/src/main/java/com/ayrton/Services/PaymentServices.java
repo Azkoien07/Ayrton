@@ -30,11 +30,6 @@ public class PaymentServices implements Idao<PaymentEntity, Long> {
         return challenge.orElse(null);
     }
 
-    @Override
-    public PaymentEntity save(PaymentEntity entity) {
-        return paymentRepository.save(entity);
-    }
-
     @Transactional
     @Override
     public void create(PaymentEntity entity) {

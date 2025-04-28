@@ -29,10 +29,6 @@ public class UserService implements Idao<UserEntity,Long> {
         return challenge.orElse(null);
     }
 
-    @Override
-    public UserEntity save(UserEntity entity) {
-        return userRepository.save(entity);
-    }
     @Transactional
     @Override
     public void create(UserEntity entity) {

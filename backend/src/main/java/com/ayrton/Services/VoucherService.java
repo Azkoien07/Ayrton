@@ -31,11 +31,6 @@ public class VoucherService implements Idao<VoucherEntity,Long> {
         return challenge.orElse(null);
     }
 
-    @Override
-    public VoucherEntity save(VoucherEntity entity) {
-        return voucherRepository.save(entity);
-    }
-
     @Transactional
     @Override
     public void create(VoucherEntity entity) {

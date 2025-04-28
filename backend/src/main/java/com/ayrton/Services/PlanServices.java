@@ -30,11 +30,6 @@ public class PlanServices implements Idao<PlanEntity,Long> {
         return challenge.orElse(null);
     }
 
-    @Override
-    public PlanEntity save(PlanEntity entity) {
-        return planRepository.save(entity);
-    }
-
     @Transactional
     @Override
     public void create(PlanEntity entity) {

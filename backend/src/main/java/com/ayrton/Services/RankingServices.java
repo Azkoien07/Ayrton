@@ -31,11 +31,6 @@ public class RankingServices implements Idao<RankingEntity,Long> {
         return challenge.orElse(null);
     }
 
-    @Override
-    public RankingEntity save(RankingEntity entity) {
-        return rankingRepository.save(entity);
-    }
-
     @Transactional
     @Override
     public void create(RankingEntity entity) {

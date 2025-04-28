@@ -30,11 +30,6 @@ public class RoleService implements Idao<RoleEntity,Long> {
         return challenge.orElse(null);
     }
 
-    @Override
-    public RoleEntity save(RoleEntity entity) {
-        return roleRepository.save(entity);
-    }
-
     @Transactional
     @Override
     public void create(RoleEntity entity) {

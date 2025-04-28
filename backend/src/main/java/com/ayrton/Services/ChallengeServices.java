@@ -31,12 +31,6 @@ public class ChallengeServices implements Idao<ChallengeEntity, Long> {
 
     @Transactional
     @Override
-    public ChallengeEntity save(ChallengeEntity entity) {
-        return challengeRepository.save(entity);
-    }
-
-    @Transactional
-    @Override
     public void create(ChallengeEntity entity) {
         if (entity.getId() == null || !challengeRepository.existsById(entity.getId())) {
             challengeRepository.save(entity);

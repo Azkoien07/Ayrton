@@ -27,7 +27,6 @@ public class PaymentEntity implements Serializable {
         TarjetaCredito,
         TarjetaDebito,
         Paypal
-
     }
     // Columns
     @Column(name = "purchase_amount", nullable = false)

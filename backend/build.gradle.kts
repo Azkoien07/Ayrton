@@ -24,15 +24,22 @@ repositories {
 }
 
 dependencies {
+	// Persistencia
 	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	// Security
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.hibernate.validator:hibernate-validator:8.0.0.Final")
 	implementation("jakarta.validation:jakarta.validation-api:3.0.0")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	// Email
+	implementation("org.springframework.boot:spring-boot-starter-mail")
+	// ModelMapper
+	implementation("org.modelmapper:modelmapper:3.2.2")
 	compileOnly("org.projectlombok:lombok")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	// conectores BD
 	runtimeOnly("com.mysql:mysql-connector-j")
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")

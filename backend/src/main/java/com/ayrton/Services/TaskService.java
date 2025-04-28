@@ -29,11 +29,6 @@ public class TaskService implements Idao<TaskEntity,Long> {
         return challenge.orElse(null);
     }
 
-    @Override
-    public TaskEntity save(TaskEntity entity) {
-        return taskRepository.save(entity);
-    }
-
     @Transactional
     @Override
     public void create(TaskEntity entity) {
