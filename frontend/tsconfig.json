@@ -24,10 +24,23 @@
     ],
     "types": [
       "node"
-    ], // Añadir esta línea
+    ],
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@types/*": [
+        "./src/app/Types/*"
+      ],
+      "@components/*": [
+        "./src/app/Components/*"
+      ],
+      "@styles/*": [
+        "./src/app/Styles/*"
+      ],
+      "@services/*": [
+        "./src/app/Services/*"
       ]
     }
   },
