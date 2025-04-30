@@ -183,7 +183,7 @@ El sistema se divide en cinco módulos principales:
 ## Especificaciones Técnicas
 
 ### Frontend
-- **Framework**: React.js 19.0.0 con Vite
+- **Framework**: React.js 19.0.0 con Next.js
 - **Lenguaje**: TypeScript 5.7.2
 - **Estilos**: Tailwind CSS
 - **Estado Global**: Redux Toolkit
