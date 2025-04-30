@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class RankingBusiness {
     @Autowired
-    private RankingServices rankingservices;
+    private final RankingServices rankingservices;
     private final ModelMapper modelMapper = new ModelMapper();
+
+    public RankingBusiness(RankingServices rankingservices) {
+        this.rankingservices = rankingservices;
+    }
 }

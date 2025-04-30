@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaymentBusiness {
     @Autowired
-    private PaymentServices paymentServices;
+    private final PaymentServices paymentServices;
     private final ModelMapper modelMapper = new ModelMapper();
+
+    public PaymentBusiness(PaymentServices paymentServices) {
+        this.paymentServices = paymentServices;
+    }
 }

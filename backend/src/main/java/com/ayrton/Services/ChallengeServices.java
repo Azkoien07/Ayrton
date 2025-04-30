@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +24,10 @@ public class ChallengeServices implements Idao<ChallengeEntity, Long> {
         return challengeRepository.findAll(pageable);
     }
 
+    @Override
+    public List<ChallengeEntity> getAll() {
+        return challengeRepository.findAll();
+    }
     @Override
     public ChallengeEntity getById(Long id) {
         Optional<ChallengeEntity> challenge = challengeRepository.findById(id);

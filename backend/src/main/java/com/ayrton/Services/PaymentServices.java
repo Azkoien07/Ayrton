@@ -2,7 +2,6 @@ package com.ayrton.Services;
 
 import com.ayrton.Entity.PaymentEntity;
 import com.ayrton.Entity.PaymentEntity;
-import com.ayrton.Entity.PaymentEntity;
 import com.ayrton.Repository.PaymentRepository;
 import com.ayrton.Services.Dao.Idao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +22,11 @@ public class PaymentServices implements Idao<PaymentEntity, Long> {
     @Override
     public Page<PaymentEntity> findAll(PageRequest pageable) {
         return paymentRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<PaymentEntity> getAll() {
+        return paymentRepository.findAll();
     }
 
     @Override

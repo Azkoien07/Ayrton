@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class TaskBusiness {
     @Autowired
-    private TaskService taskService;
+    private final TaskService taskService;
     private final ModelMapper modelMapper = new ModelMapper();
+
+    public TaskBusiness(TaskService taskService) {
+        this.taskService = taskService;
+    }
 }

@@ -3,6 +3,7 @@ package com.ayrton.Services;
 import com.ayrton.Entity.RankingEntity;
 import com.ayrton.Entity.RankingEntity;
 import com.ayrton.Entity.RankingEntity;
+import com.ayrton.Entity.RankingEntity;
 import com.ayrton.Repository.RankingRepository;
 import com.ayrton.Services.Dao.Idao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -23,6 +25,11 @@ public class RankingServices implements Idao<RankingEntity,Long> {
     @Override
     public Page<RankingEntity> findAll(PageRequest pageable) {
         return rankingRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<RankingEntity> getAll() {
+        return rankingRepository.findAll();
     }
 
     @Override

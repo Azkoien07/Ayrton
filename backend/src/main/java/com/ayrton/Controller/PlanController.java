@@ -5,38 +5,75 @@ import com.ayrton.Dto.PlanDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/plan")
 public class PlanController {
+
     @Autowired
     private PlanBusiness planBusiness;
+/*
     // 1. Obtener una lista de todos los planes (con paginación)
-    /*
     @GetMapping
-    public Page<PlanDto> findAll(@RequestParam int page, @RequestParam int size) {
-        PageRequest pageable = PageRequest.of(page, size);
-        return planBusiness.findAll(pageable);
+    public ResponseEntity<?> findAll(@RequestParam int page, @RequestParam int size) {
+        try {
+            PageRequest pageable = PageRequest.of(page, size);
+            Page<PlanDto> result = planBusiness.findAll(pageable);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener los planes: " + e.getMessage());
+        }
     }
 
     // 2. Obtener un plan por su ID
     @GetMapping("/{id}")
-    public PlanDto getById(@PathVariable Long id) {
-        return planBusiness.getById(id);
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        try {
+            PlanDto result = planBusiness.getById(id);
+            return ResponseEntity.ok(result);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Plan no encontrado con ID: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener el plan: " + e.getMessage());
+        }
     }
 
-
-    // 4. Crear un nuevo plan
+    // 3. Crear un nuevo plan
     @PostMapping("/create")
-    public PlanDto create(@RequestBody PlanDto planDto) {
-        return planBusiness.save(planDto);
+    public ResponseEntity<?> create(@RequestBody PlanDto planDto) {
+        try {
+            PlanDto result = planBusiness.save(planDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Datos inválidos: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al crear el plan: " + e.getMessage());
+        }
     }
 
-    // 5. Eliminar un plan por su ID
+    // 4. Eliminar un plan por su ID
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        planBusiness.delete(id);
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            planBusiness.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Plan no encontrado con ID: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al eliminar el plan: " + e.getMessage());
+        }
     }
-     */
+ */
 }

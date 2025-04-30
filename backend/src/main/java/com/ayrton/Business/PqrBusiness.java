@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class PqrBusiness {
     @Autowired
-    private PqrService pqrService;
+    private final PqrService pqrService;
     private final ModelMapper modelMapper = new ModelMapper();
+
+    public PqrBusiness(PqrService pqrService) {
+        this.pqrService = pqrService;
+    }
 }

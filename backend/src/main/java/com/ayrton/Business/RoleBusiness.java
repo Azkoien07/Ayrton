@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 public class RoleBusiness {
 
     @Autowired
-    private RoleService roleService;
+    private final RoleService roleService;
     private final ModelMapper modelMapper = new ModelMapper();
+
+    public RoleBusiness(RoleService roleService) {
+        this.roleService = roleService;
+    }
 }

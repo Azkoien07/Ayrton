@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +23,11 @@ public class PqrService implements Idao<PqrEntity, Long> {
     @Override
     public Page<PqrEntity> findAll(PageRequest pageable) {
         return pqrRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<PqrEntity> getAll() {
+        return pqrRepository.findAll();
     }
 
     @Override

@@ -5,37 +5,75 @@ import com.ayrton.Dto.VoucherDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/voucher")
 public class VoucherController {
+
     @Autowired
     private VoucherBusiness voucherBusiness;
 /*
     // 1. Obtener una lista de todos los vouchers (con paginación)
     @GetMapping
-    public Page<VoucherDto> findAll(@RequestParam int page, @RequestParam int size) {
-        PageRequest pageable = PageRequest.of(page, size);
-        return voucherBusiness.findAll(pageable);
+    public ResponseEntity<?> findAll(@RequestParam int page, @RequestParam int size) {
+        try {
+            PageRequest pageable = PageRequest.of(page, size);
+            Page<VoucherDto> result = voucherBusiness.findAll(pageable);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener los vouchers: " + e.getMessage());
+        }
     }
 
     // 2. Obtener un voucher por su ID
     @GetMapping("/{id}")
-    public VoucherDto getById(@PathVariable Long id) {
-        return voucherBusiness.getById(id);
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        try {
+            VoucherDto result = voucherBusiness.getById(id);
+            return ResponseEntity.ok(result);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Voucher no encontrado con ID: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al obtener el voucher: " + e.getMessage());
+        }
     }
 
-    // 4. Crear un nuevo voucher
+    // 3. Crear un nuevo voucher
     @PostMapping("/create")
-    public VoucherDto create(@RequestBody VoucherDto voucherDto) {
-        return voucherBusiness.save(voucherDto);
+    public ResponseEntity<?> create(@RequestBody VoucherDto voucherDto) {
+        try {
+            VoucherDto result = voucherBusiness.save(voucherDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Datos inválidos: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al crear el voucher: " + e.getMessage());
+        }
     }
 
-    // 5. Eliminar un voucher por su ID
+    // 4. Eliminar un voucher por su ID
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        voucherBusiness.delete(id);
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            voucherBusiness.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Voucher no encontrado con ID: " + id);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al eliminar el voucher: " + e.getMessage());
+        }
     }
  */
 }

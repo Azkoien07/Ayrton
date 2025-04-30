@@ -1,171 +1,250 @@
 "use client";
-import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useState, useEffect, useRef } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [registerForm, setRegisterForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const particlesContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleLoginSubmit = async (e: React.FormEvent) => {
+  useEffect(() => {
+    const container = particlesContainerRef.current;
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const count = 50;
+    for (let i = 0; i < count; i++) {
+      const particle = document.createElement("div");
+      particle.className = "absolute rounded-full opacity-70";
+
+      const size = Math.random() * 6 + 3;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+
+      const hue = theme === "dark" ? 220 : 280;
+      const sat = `${Math.random() * 40 + 60}%`;
+      const light = theme === "dark"
+        ? `${Math.random() * 30 + 60}%`
+        : `${Math.random() * 20 + 40}%`;
+
+      particle.style.backgroundColor = `hsl(${hue}, ${sat}, ${light})`;
+      particle.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
+      particle.style.animationDelay = `${Math.random() * 5}s`;
+
+      container.appendChild(particle);
+    }
+
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = `
+      @keyframes float {
+        0% { transform: translateY(0) translateX(0); }
+        25% { transform: translateY(-20px) translateX(10px); }
+        50% { transform: translateY(0) translateX(20px); }
+        75% { transform: translateY(20px) translateX(10px); }
+        100% { transform: translateY(0) translateX(0); }
+      }
+    `;
+    document.head.appendChild(styleSheet);
+
+    // Cleanup function
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
+
+  const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("¡Inicio de sesión exitoso!");
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      toast.success("¡Inicio de sesión exitoso!");
+    }, 1500);
   };
 
-  const openModal = () => {
-    document.getElementById('registerModal')?.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+  const handleRegisterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (registerForm.password !== registerForm.confirmPassword) {
+      toast.error("Las contraseñas no coinciden");
+      return;
+    }
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      toast.success("¡Cuenta creada con éxito!");
+      setIsFlipped(false);
+    }, 1500);
   };
 
-  const closeModal = () => {
-    document.getElementById('registerModal')?.classList.add('hidden');
-    document.body.style.overflow = 'auto';
+  const updateRegisterForm = (field: keyof typeof registerForm, value: string) => {
+    setRegisterForm((prev) => ({ ...prev, [field]: value }));
   };
+
+  const bgClass =
+    theme === "dark"
+      ? "bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white"
+      : "bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 text-gray-800";
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-100 text-gray-800">
-      <ToastContainer />
+    <div
+      className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-500 ${bgClass}`}
+    >
+      <div
+        ref={particlesContainerRef}
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+      />
+      <ToastContainer position="top-right" autoClose={3000} theme={theme} />
 
-      <div className="min-h-screen flex flex-col items-center justify-center p-6">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-extrabold text-indigo-600 mb-3">AYRTON</h1>
-          <div className="h-1 w-20 bg-indigo-600 rounded-full mx-auto mb-4"></div>
-          <p className="text-xl text-gray-600 mt-4 font-medium">Organiza tus</p>
+      <button
+        onClick={toggleTheme}
+        className="absolute top-4 right-4 p-2 rounded-full shadow-md z-50 transition-all"
+        style={{
+          background: theme === "dark"
+            ? "rgba(255, 255, 255, 0.1)"
+            : "rgba(0, 0, 0, 0.05)",
+        }}
+      >
+        {theme === "dark" ? (
+          <svg className="w-6 h-6 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414z" />
+          </svg>
+        ) : (
+          <svg className="w-6 h-6 text-indigo-900" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+          </svg>
+        )}
+      </button>
+
+      <div className="absolute w-full max-w-sm">
+        <div className="text-center mb-4">
+          <h1 className="text-6xl font-extrabold tracking-tight drop-shadow-md animate__animated animate__fadeIn">
+            Ayrton
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 animate__animated animate__fadeIn animate__delay-1s">
+            Organiza tus tareas y equipos
+          </p>
         </div>
 
-        {/* Card del formulario */}
-        <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md transition-all duration-300 hover:shadow-xl border border-gray-300">
-          <form onSubmit={handleLoginSubmit} className="space-y-6">
-            {/* Campo: Correo electrónico */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                  </svg>
-                </div>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 transition bg-white"
-                  placeholder="tu@email.com"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Campo: Contraseña */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <svg className="h-5 w-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 transition bg-white"
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-all shadow-md hover:shadow-lg"
+        <div
+          className={`relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}
+        >
+          {/* Login */}
+          <div className="absolute w-full [backface-visibility:hidden]">
+            <form
+              onSubmit={handleLoginSubmit}
+              className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8 flex flex-col gap-4 transition-transform duration-500 transform hover:scale-105"
             >
-              Iniciar Sesión
-            </button>
-
-            <div className="text-center text-sm text-gray-500 pt-2">
-              ¿No tienes una cuenta?
-              <button type="button" onClick={openModal} className="text-indigo-600 hover:text-indigo-700 font-medium ml-1">
-                Regístrate
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      {/* Modal de registro */}
-      <div id="registerModal" className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
-        <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto border border-gray-300">
-          <button onClick={closeModal} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Crear una cuenta</h2>
-
-          {/* Formulario de registro */}
-          <form className="space-y-4">
-            <div>
-              <label htmlFor="register-name" className="block text-sm font-medium text-gray-700 mb-2">Nombre Completo</label>
-              <input
-                type="text"
-                id="register-name"
-                name="name"
-                className="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 transition bg-white"
-                placeholder="Juan Pérez"
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="register-email" className="block text-sm font-medium text-gray-700 mb-2">Correo Electrónico</label>
+              <h2 className="text-xl font-bold text-center">Iniciar Sesión</h2>
               <input
                 type="email"
-                id="register-email"
-                name="email"
-                className="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 transition bg-white"
-                placeholder="tu@email.com"
+                placeholder="Correo electrónico"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
+                className="px-4 py-2 rounded-md bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-            </div>
-            <div>
-              <label htmlFor="register-password" className="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
               <input
                 type="password"
-                id="register-password"
-                name="password"
-                className="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 transition bg-white"
-                placeholder="••••••••"
+                placeholder="Contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
+                className="px-4 py-2 rounded-md bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-            </div>
-            <div>
-              <label htmlFor="register-confirm-password" className="block text-sm font-medium text-gray-700 mb-2">Confirmar Contraseña</label>
-              <input
-                type="password"
-                id="register-confirm-password"
-                name="confirm-password"
-                className="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 transition bg-white"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-all shadow-md hover:shadow-lg mt-4"
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+              >
+                {loading ? "Cargando..." : "Ingresar"}
+              </button>
+              <p className="text-center text-sm">
+                ¿No tienes cuenta?{" "}
+                <button
+                  type="button"
+                  onClick={() => setIsFlipped(true)}
+                  className="text-blue-500 hover:underline"
+                >
+                  Regístrate
+                </button>
+              </p>
+            </form>
+          </div>
+
+          {/* Register */}
+          <div className="absolute w-full [transform:rotateY(180deg)] [backface-visibility:hidden]">
+            <form
+              onSubmit={handleRegisterSubmit}
+              className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8 flex flex-col gap-4 transition-transform duration-500 transform hover:scale-105"
             >
-              Crear Cuenta
-            </button>
-          </form>
+              <h2 className="text-xl font-bold text-center">Crear Cuenta</h2>
+              <input
+                type="text"
+                placeholder="Nombre completo"
+                value={registerForm.name}
+                onChange={(e) => updateRegisterForm("name", e.target.value)}
+                required
+                className="px-4 py-2 rounded-md bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="email"
+                placeholder="Correo electrónico"
+                value={registerForm.email}
+                onChange={(e) => updateRegisterForm("email", e.target.value)}
+                required
+                className="px-4 py-2 rounded-md bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="password"
+                placeholder="Contraseña"
+                value={registerForm.password}
+                onChange={(e) => updateRegisterForm("password", e.target.value)}
+                required
+                className="px-4 py-2 rounded-md bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <input
+                type="password"
+                placeholder="Confirmar contraseña"
+                value={registerForm.confirmPassword}
+                onChange={(e) => updateRegisterForm("confirmPassword", e.target.value)}
+                required
+                className="px-4 py-2 rounded-md bg-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
+              >
+                {loading ? "Cargando..." : "Registrarse"}
+              </button>
+              <p className="text-center text-sm">
+                ¿Ya tienes cuenta?{" "}
+                <button
+                  type="button"
+                  onClick={() => setIsFlipped(false)}
+                  className="text-blue-500 hover:underline"
+                >
+                  Inicia sesión
+                </button>
+              </p>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default LoginPage;
+}

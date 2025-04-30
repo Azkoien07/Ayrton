@@ -2,6 +2,7 @@ package com.ayrton.Services;
 
 import com.ayrton.Entity.RoleEntity;
 import com.ayrton.Entity.RoleEntity;
+import com.ayrton.Entity.RoleEntity;
 import com.ayrton.Repository.RoleRepository;
 import com.ayrton.Services.Dao.Idao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -22,6 +24,11 @@ public class RoleService implements Idao<RoleEntity,Long> {
     @Override
     public Page<RoleEntity> findAll(PageRequest pageable) {
         return roleRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<RoleEntity> getAll() {
+        return roleRepository.findAll();
     }
 
     @Override
