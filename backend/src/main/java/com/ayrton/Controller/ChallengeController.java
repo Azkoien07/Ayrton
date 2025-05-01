@@ -8,19 +8,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/challenge")
+@RequestMapping("api/challenge")
 public class ChallengeController {
 
     @Autowired
     private ChallengeBusiness challengeBusiness;
 /*
-@RestController
-@RequestMapping("/challenges")
-public class ChallengeController {
-
-    @Autowired
-    private ChallengeBusiness challengeBusiness;
-
     // 1. Obtener una lista de todos los desafíos (con paginación)
     @GetMapping
     public ResponseEntity<?> findAll(@RequestParam int page, @RequestParam int size) {

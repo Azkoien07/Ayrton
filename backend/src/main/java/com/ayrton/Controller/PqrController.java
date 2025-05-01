@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/pqr")
+@RequestMapping("api/pqr")
 public class PqrController {
 
     @Autowired

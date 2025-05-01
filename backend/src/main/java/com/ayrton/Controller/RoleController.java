@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/role")
+@RequestMapping("api/role")
 public class RoleController {
 
     @Autowired

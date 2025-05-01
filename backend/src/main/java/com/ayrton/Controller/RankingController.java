@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/ranking")
+@RequestMapping("api/ranking")
 public class RankingController {
 
     @Autowired

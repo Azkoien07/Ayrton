@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/task")
+@RequestMapping("api/task")
 public class TaskController {
 
     @Autowired

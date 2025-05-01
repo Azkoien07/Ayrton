@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/voucher")
+@RequestMapping("api/voucher")
 public class VoucherController {
 
     @Autowired
