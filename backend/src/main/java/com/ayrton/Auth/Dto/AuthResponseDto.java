@@ -1,5 +1,4 @@
 package com.ayrton.Auth.Dto;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
