@@ -30,7 +30,7 @@
       "@/*": [
         "./src/*"
       ],
-      "@types/*": [
+      "@Types/*": [
         "./src/app/Types/*"
       ],
       "@components/*": [
@@ -48,7 +48,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/app/Types/techStack.ts"
   ],
   "exclude": [
     "node_modules"

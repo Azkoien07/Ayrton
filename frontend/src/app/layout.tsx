@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@styles/globals.css";
+import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,6 +25,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
+      <Head>
+        {/* Cargar la tipografía Palmer Script */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Palmer+Script&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased h-full`}
       >

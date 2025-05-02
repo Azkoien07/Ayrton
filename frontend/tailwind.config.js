@@ -8,21 +8,40 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        indigo: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
-        },
+      fontFamily: {
+        palmer: ['"Palmer Script"', 'cursive'],
       },
-    },
+      colors: {
+        light: {
+          background: '#F9FAFB',    // Blanco puro limpio
+          card: '#FFFFFF',
+          text: '#111827',          // Gris negruzco para elegancia
+          textSecondary: '#6B7280', // Gris medio neutral
+          border: '#E5E7EB',        // Gris claro para bordes sutiles
+          primary: '#1F2937',       // Charcoal sobrio
+          secondary: '#4B5563',     // Gris medio
+          accent: '#6366F1',        // **Indigo Figma-style (elegante, moderno)**
+          accentSoft: '#E0E7FF',    // Fondo indigo muy suave (hover/badge)
+          success: '#10B981',       // Verde suave (para states OK)
+          warning: '#F59E0B',       // Amarillo sobrio (warning)
+          error: '#EF4444',         // Rojo moderno (error)
+        },
+        dark: {
+          background: '#0B0F19',     // Azul-negruzco profundo (super moderno)
+          card: '#1F2937',           // Charcoal suave
+          text: '#F3F4F6',           // Gris muy claro
+          textSecondary: '#9CA3AF',
+          border: '#374151',         // Gris oscuro para bordes
+          primary: '#E5E7EB',
+          secondary: '#9CA3AF',
+          accent: '#818CF8',         // Indigo claro (resalta en oscuro)
+          accentSoft: '#312E81',     // Fondo indigo suave (hover)
+          success: '#22C55E',
+          warning: '#FBBF24',
+          error: '#F87171',
+        }
+      }
+    }
   },
   plugins: [],
 }
