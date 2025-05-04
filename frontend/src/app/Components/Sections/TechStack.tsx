@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { FaReact } from "react-icons/fa";
-import { SiTypescript, SiTailwindcss, SiNextdotjs } from "react-icons/si";
-import { SiJenkins } from 'react-icons/si';
+import type { TechStackItem } from "@/app/Types/techStack";
+import { technologies } from "@/app/Types/techStack";
 
-interface TechStackItem {
-    title: string;
-    description: string;
-    icon: React.ReactNode;
-    color: string;
-    delay: number;
-}
+const getColorClasses = (color: string) => {
+    return {
+        textColor: `text-${color}`,
+        shadowColor: `hover:shadow-${color}/10`,
+        borderColor: `hover:border-${color}/30`,
+    };
+};
 
 const TechnologyCard: React.FC<TechStackItem> = ({
     title,
     description,
-    icon,
+    icon: Icon,
     color,
     delay
 }) => {
+
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const [isVisible, setIsVisible] = useState<boolean>(false);
 
@@ -31,14 +31,26 @@ const TechnologyCard: React.FC<TechStackItem> = ({
 
     return (
         <div
-            className={`bg-zinc-900 border border-zinc-800 rounded-lg p-6 transition-all duration-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                } hover:shadow-lg hover:shadow-${color}/10 hover:border-${color}/30`}
+            className={`bg-zinc-900 border rounded-lg p-6 transition-all duration-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+                }`}
+            style={{
+                borderColor: isHovered ?
+                    (color === "#000000" ? "#333333" : `${color}4D`) : '#27272a',
+                boxShadow: isHovered ?
+                    `0 4px 12px 0 ${color === "#000000" ? "#3333331A" : `${color}1A`}` : 'none'
+            }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             <div className="flex items-start justify-between mb-4">
-                <div className={`text-${color} text-4xl transition-transform duration-300 ${isHovered ? 'scale-110' : ''}`}>
-                    {icon}
+                <div
+                    className="text-4xl transition-transform duration-300"
+                    style={{
+                        color: color,
+                        transform: isHovered ? 'scale(1.1)' : 'scale(1)'
+                    }}
+                >
+                    <Icon size={32} />
                 </div>
                 <div className="text-zinc-400 cursor-pointer transition-all duration-300 hover:text-white">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -54,6 +66,7 @@ const TechnologyCard: React.FC<TechStackItem> = ({
     );
 };
 
+
 const TechStack: React.FC = () => {
     const [visible, setVisible] = useState<boolean>(false);
 
@@ -62,54 +75,13 @@ const TechStack: React.FC = () => {
         setVisible(true);
     }, []);
 
-    // Technology data
-    const technologies = [
-        {
-            title: "React",
-            description: "Biblioteca de JavaScript para construir interfaces de usuario reactivas y declarativas en aplicaciones web.",
-            color: "cyan",
-            delay: 200,
-            icon: <FaReact size={32} color="#61DBFB" />,
-        },
-        {
-            title: "TypeScript",
-            description: "Superconjunto de JavaScript que añade tipado estático opcional y otras características modernas al lenguaje.",
-            color: "blue",
-            delay: 400,
-            icon: <SiTypescript size={32} color="#3178C6" />,
-        },
-        {
-            title: "Next.js",
-            description: "Framework basado en React para crear aplicaciones web modernas con renderizado del lado del servidor y generación de sitios estáticos.",
-            color: "white",
-            delay: 600,
-            icon: <SiNextdotjs size={32} color="#ffffff" />,
-        }, {
-            title: "Java",
-            description: "Lenguaje de programación orientado a objetos, ampliamente utilizado para desarrollar aplicaciones empresariales, móviles y sistemas backend robustos.",
-            color: "orange",
-            delay: 800,
-            icon: <SiJenkins size={32} color="#ffffff" />,
-        },
-        {
-            title: "Tailwind CSS",
-            description: "Framework de CSS utilitario que permite diseñar interfaces rápidamente con clases predefinidas.",
-            color: "sky",
-            delay: 1000,
-            icon: <SiTailwindcss size={32} color="#38BDF8" />,
-        }
-    ];
-
     return (
         <div className="bg-black text-white w-full min-h-screen flex flex-col items-center justify-center p-4">
-            <h1 className={`text-4xl font-bold text-center mb-16 transition-all duration-1000 ${visible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'
-                }`}>
-                Integraciones y <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">Tecnologías</span>
+            <h1 className={`text-4xl font-bold text-center mb-16 transition-all duration-1000 ${visible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}>
+                Integraciones y <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#61DAFB] via-[#3178C6] to-[#D24939]">Tecnologías</span>
             </h1>
 
-            {/* Main container with connections */}
             <div className="relative w-full max-w-5xl">
-                {/* Central "Powered By" chip */}
                 <div className={`absolute left-1/2 top-0 transform -translate-x-1/2 bg-zinc-800 border border-zinc-700 rounded-full px-6 py-3 z-10 shadow-lg transition-all duration-1000 ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
                     }`}>
                     <div className="text-lg font-medium flex items-center gap-2">
@@ -121,13 +93,10 @@ const TechStack: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Connection lines from central component */}
                 <div className="w-full h-48 relative">
-                    {/* Main horizontal line */}
                     <div className={`absolute left-1/2 top-16 w-4/5 h-0.5 transform -translate-x-1/2 transition-all duration-1500 ${visible ? 'bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 opacity-100' : 'opacity-0'
                         }`}></div>
 
-                    {/* Vertical connection lines */}
                     {[1, 2, 3, 4, 5].map((_, index) => (
                         <div
                             key={index}
@@ -137,14 +106,12 @@ const TechStack: React.FC = () => {
                                 left: `${10 + (index * 20)}%`,
                                 top: '16px',
                                 transitionDelay: `${200 * index}ms`,
-                                background: `linear-gradient(to bottom, ${['#38bdf8', '#3b82f6', '#f9a8d4', '#10b981', '#6366f1'][index]
-                                    } 0%, rgba(255,255,255,0.3) 100%)`
+                                background: `linear-gradient(to bottom, ${['#38bdf8', '#3b82f6', '#f9a8d4', '#10b981', '#6366f1'][index]} 0%, rgba(255,255,255,0.3) 100%)`
                             }}
                         ></div>
                     ))}
                 </div>
 
-                {/* Technology boxes */}
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-24">
                     {technologies.map((tech, index) => (
                         <TechnologyCard
