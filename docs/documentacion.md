@@ -85,7 +85,6 @@ El sistema está estructurado en torno a las siguientes entidades principales:
 [Incluir diagrama de arquitectura]
 
 ### Diagrama de Componentes
-
 La arquitectura del sistema está organizada en módulos claramente definidos que interactúan entre sí:
 
 #### 1. Componente de Presentación
@@ -189,7 +188,7 @@ El sistema se divide en cinco módulos principales:
 - **Estado Global**: Redux Toolkit
 - **Enrutamiento**: React Router v6
 - **Validaciones**: Zod
-- **Testing**: Vitest + React Testing Library
+- **Testing**: Next.js Testing Library (basado en Jest)
 
 ### Backend
 - **Framework**: Spring Boot 3.1.0
@@ -198,29 +197,52 @@ El sistema se divide en cinco módulos principales:
 - **Base de Datos**: PostgreSQL 15
 - **ORM**: Hibernate
 - **Testing**: JUnit 5 + Mockito
+- **Seguridad**: Spring Security + JWT
 
 ## Estructura del Proyecto
 
 ### Frontend (React)
 ```
 frontend/
+├── .next/              # Archivos generados por Next.js
+├── public/             # Archivos estáticos públicos
 ├── src/
-│   ├── Components/     # Componentes reutilizables
-│   ├── Routes/         # Configuración de rutas
-│   ├── Services/       # Servicios y llamadas API
-│   ├── Styles/         # Estilos y temas
-│   ├── Types/          # Definiciones de tipos
-│   └── Utils/          # Utilidades y helpers
+│   ├── app/            # Configuración principal de la aplicación
+│   │   ├── (Routes)/   # Rutas principales (Login, Admin, etc.)
+│   │   ├── Components/ # Componentes reutilizables
+│   │   ├── Styles/     # Estilos globales
+│   │   ├── Types/      # Definiciones de tipos
+│   │   └── page.tsx    # Página principal
+├── eslint.config.mjs   # Configuración de ESLint
+├── next.config.ts      # Configuración de Next.js
+├── package.json        # Dependencias del proyecto
+├── tailwind.config.js  # Configuración de Tailwind CSS
+├── tsconfig.json       # Configuración de TypeScript
+└── README.md           # Documentación del frontend
 ```
 
 ### Backend (Java)
 ```
 backend/
+├── .gradle/            # Archivos de configuración de Gradle
+├── build/              # Archivos generados por el build
+├── gradle/
+│   └── wrapper/        # Wrapper de Gradle
 ├── src/
 │   ├── main/
-│   │   ├── java/      # Código fuente Java
-│   │   └── resources/ # Configuraciones
-│   └── test/          # Pruebas unitarias
+│   │   ├── java/
+│   │   │   └── com/ayrton/
+│   │   │       ├── Business/    # Lógica de negocio
+│   │   │       ├── Controller/  # Controladores REST
+│   │   │       ├── Dto/         # Clases DTO
+│   │   │       ├── Entity/      # Entidades JPA
+│   │   │       ├── Repository/  # Repositorios JPA
+│   │   │       └── Services/    # Servicios de aplicación
+│   │   └── resources/           # Configuraciones (application.properties, etc.)
+│   └── test/                    # Pruebas unitarias
+├── build.gradle.kts    # Configuración de Gradle
+├── settings.gradle.kts # Configuración de Gradle
+└── gradlew             # Wrapper de Gradle
 ```
 
 ## Flujo de Trabajo
@@ -258,7 +280,7 @@ El proyecto sigue una metodología ágil basada en Scrum, con las siguientes car
   - Desarrollo de componentes
   - Implementación de interfaces
   - Integración con APIs
-  - Testing unitario con Vitest
+  - Testing unitario con Next.js Testing Library
 
 - **Backend (Java)**
   - Desarrollo de servicios REST
@@ -338,7 +360,7 @@ El proyecto sigue una metodología ágil basada en Scrum, con las siguientes car
 5. Aprobación por pares
 
 ### Gestión de Tareas
-- Uso de Jira para seguimiento
+- Uso de AzureDevops para seguimiento
 - Tablero Kanban para visualización
 - Estimación por puntos de historia
 - Priorización basada en valor de negocio
