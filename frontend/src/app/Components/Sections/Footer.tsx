@@ -1,5 +1,5 @@
-// components/Footer.tsx
 import React from 'react';
+import Link from 'next/link';
 
 const Footer = () => {
     return (
@@ -7,9 +7,9 @@ const Footer = () => {
             <div className="max-w-6xl mx-auto text-center">
                 <div className="space-y-4">
                     <div className="flex justify-center gap-8">
-                        <a href="#" className="hover:text-light-accent dark:hover:text-dark-accent">Sobre Nosotros</a>
+                        <Link href="#" className="hover:text-light-accent dark:hover:text-dark-accent">Sobre Nosotros</Link>
                         <a href="#" className="hover:text-light-accent dark:hover:text-dark-accent">Política de Privacidad</a>
-                        <a href="#" className="hover:text-light-accent dark:hover:text-dark-accent">Términos de Uso</a>
+                        <Link href="/Terms" className="hover:text-light-accent dark:hover:text-dark-accent">Términos de Uso</Link>
                     </div>
                     <div className="mt-6">
                         <p>&copy; 2025 Ayrton. Todos los derechos reservados.</p>

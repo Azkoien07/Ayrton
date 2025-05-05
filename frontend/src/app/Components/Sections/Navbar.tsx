@@ -1,5 +1,6 @@
 // components/Navbar.tsx
 import React from 'react';
+import Link from 'next/link';
 
 const Navbar = () => {
     return (
@@ -12,9 +13,9 @@ const Navbar = () => {
                 <li><a href="#plans" className="hover:text-light-accent dark:hover:text-dark-accent transition-colors">Precios</a></li>
                 <li><a href="#footer" className="hover:text-light-accent dark:hover:text-dark-accent transition-colors">Contacto</a></li>
             </ul>
-            <a href="#" className="hidden md:block bg-light-accent text-white py-2 px-6 rounded-full font-semibold hover:bg-light-primary transition-all duration-300 dark:bg-dark-accent dark:hover:bg-dark-hover">
+            <Link href="/Login" className="hidden md:block bg-light-accent text-white py-2 px-6 rounded-full font-semibold hover:bg-light-primary transition-all duration-300 dark:bg-dark-accent dark:hover:bg-dark-hover">
                 Comienza gratis
-            </a>
+            </Link>
         </nav>
     );
 };

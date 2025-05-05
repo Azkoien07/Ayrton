@@ -1,4 +1,3 @@
-// components/StatsSection.tsx
 import React from 'react';
 
 const StatsSection = () => {

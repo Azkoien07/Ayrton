@@ -1,5 +1,6 @@
 // components/Hero.tsx
 import React from 'react';
+import Link from 'next/link';
 
 const Hero = () => {
     return (
@@ -25,9 +26,9 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#" className="bg-light-accent text-white py-3 px-8 rounded-full text-lg font-semibold hover:bg-light-primary transition-all duration-300 dark:bg-dark-accent dark:hover:bg-dark-hover">
+                <Link href="/Login" className="bg-light-accent text-white py-3 px-8 rounded-full text-lg font-semibold hover:bg-light-primary transition-all duration-300 dark:bg-dark-accent dark:hover:bg-dark-hover">
                     Comienza gratis
-                </a>
+                </Link>
                 <a href="#" className="border border-light-border text-light-primary py-3 px-8 rounded-full text-lg font-semibold hover:bg-light-card transition-all duration-300 dark:border-dark-border dark:text-dark-primary dark:hover:bg-dark-card">
                     Ver demo
                 </a>

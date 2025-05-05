@@ -1,4 +1,3 @@
-// components/Testimonials.tsx
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaQuoteLeft } from 'react-icons/fa';
