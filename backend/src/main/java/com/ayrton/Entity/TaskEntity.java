@@ -38,13 +38,13 @@ public class TaskEntity implements Serializable {
     }
 
     // Columns
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "state", nullable = false)
+    @Column(name = "state", nullable = false, length = 10)
     private boolean state;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 1000)
     private String description;
 
     @Enumerated(EnumType.STRING)

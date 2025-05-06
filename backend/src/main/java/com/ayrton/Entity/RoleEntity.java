@@ -22,10 +22,10 @@ public class RoleEntity implements Serializable {
     private Long id;
 
     // Columns
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "access_level", nullable = false)
+    @Column(name = "access_level", nullable = false, length = 10)
     private int accessLevel;
 
     // Relations

@@ -31,19 +31,19 @@ public class PqrEntity implements Serializable {
     @NotNull
     private TypePqr typePqr;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 50)
     private String title;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, length = 1000)
     private String description;
 
-    @Column(name = "argument")
+    @Column(name = "argument", nullable = false, length = 1000000000)
     private String argument;
 
-    @Column(name = "answer", nullable = false)
+    @Column(name = "answer", nullable = false, length = 1000000000)
     private String answer;
 
-    @Column(name = "state", nullable = false)
+    @Column(name = "state", nullable = false, length = 10)
     private boolean state;
 
     // Relations

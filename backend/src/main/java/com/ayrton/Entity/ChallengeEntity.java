@@ -36,21 +36,21 @@ public class ChallengeEntity implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", nullable = false, length = 1000)
     private String description;
 
     @Enumerated(EnumType.STRING)
     @NotNull
     private Category category;
 
-    @Column(name = "state", nullable = false)
+    @Column(name = "state", nullable = false, columnDefinition = "boolean default false")
     private boolean state;
 
     @Enumerated(EnumType.STRING)
     @NotNull
     private Dificulty dificulty;
 
-    @Column(name = "points")
+    @Column(name = "points", nullable = false)
     private int points;
 
     // Relations

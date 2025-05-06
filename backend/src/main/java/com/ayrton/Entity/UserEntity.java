@@ -21,16 +21,16 @@ public class UserEntity implements Serializable {
     private Long id;
 
     //Columns
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, length = 50, unique = true)
     private String username;
 
     // Relations

@@ -21,16 +21,16 @@ public class PlanEntity implements Serializable {
     private Long id;
 
     // Columns
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, length = 1000)
     private String description;
 
     @Column(name = "price", nullable = false)
     private double price;
 
-    @Column(name = "state", nullable = false)
+    @Column(name = "state", nullable = false, columnDefinition = "boolean default false")
     private boolean state;
 
     @Column(name = "duration", nullable = false)

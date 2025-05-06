@@ -20,7 +20,7 @@ public class VoucherEntity implements Serializable {
     private Long id;
 
     // Columns
-    @Column(name = "code", nullable = false)
+    @Column(name = "code", nullable = false, length = 10)
     private String code;
 
     // Relations

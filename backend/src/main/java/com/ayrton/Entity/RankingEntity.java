@@ -21,10 +21,10 @@ public class RankingEntity implements Serializable {
     private Long id;
 
     // Columns
-    @Column(name = "level", nullable = false)
+    @Column(name = "level", nullable = false, length = 10)
     private int level;
 
-    @Column(name = "position", nullable = false)
+    @Column(name = "position", nullable = false, length = 10)
     private int position;
 
     // Relations
