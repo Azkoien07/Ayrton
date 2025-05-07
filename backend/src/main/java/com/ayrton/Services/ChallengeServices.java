@@ -36,18 +36,20 @@ public class ChallengeServices implements Idao<ChallengeEntity, Long> {
 
     @Transactional
     @Override
-    public void create(ChallengeEntity entity) {
+    public ChallengeEntity create(ChallengeEntity entity) {
         if (entity.getId() == null || !challengeRepository.existsById(entity.getId())) {
-            challengeRepository.save(entity);
+            throw new IllegalArgumentException("El Challenge con ID " + entity.getId() + " ya existe.");
         }
+        return challengeRepository.save(entity);
     }
 
     @Transactional
     @Override
-    public void update(ChallengeEntity entity) {
+    public ChallengeEntity update(ChallengeEntity entity) {
         if (entity.getId() != null && challengeRepository.existsById(entity.getId())) {
-            challengeRepository.save(entity);
+            throw new IllegalArgumentException("No se puede actualizar un Challenge que no existe o sin ID.");
         }
+        return challengeRepository.save(entity);
     }
 
     @Transactional

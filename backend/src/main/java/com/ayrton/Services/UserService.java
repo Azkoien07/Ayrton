@@ -19,7 +19,7 @@ public class UserService implements Idao<UserEntity,Long> {
     @Autowired
     private UserRepository userRepository;
 
-    // Metodos
+    // Métodos
     @Override
     public Page<UserEntity> findAll(PageRequest pageable) {
         return userRepository.findAll(pageable);
@@ -38,17 +38,21 @@ public class UserService implements Idao<UserEntity,Long> {
 
     @Transactional
     @Override
-    public void create(UserEntity entity) {
+    public UserEntity create(UserEntity entity) {
         if (entity.getId() == null || !userRepository.existsById(entity.getId())) {
-            userRepository.save(entity);
+            throw new IllegalArgumentException("El usuario con ID " + entity.getId() + " ya existe.");
         }
+        return userRepository.save(entity);
     }
 
     @Transactional
     @Override
-    public void update(UserEntity entity) {
+    public UserEntity update(UserEntity entity) {
+        // Aseguramos que tenga ID (para evitar crear en update)
         if (entity.getId() != null && userRepository.existsById(entity.getId())) {
-            userRepository.save(entity);
+            return userRepository.save(entity);
+        } else {
+            throw new IllegalArgumentException("No se puede actualizar un usuario que no existe o sin ID.");
         }
     }
 

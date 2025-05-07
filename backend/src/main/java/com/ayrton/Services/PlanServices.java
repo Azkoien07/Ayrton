@@ -20,7 +20,7 @@ public class PlanServices implements Idao<PlanEntity,Long> {
     @Autowired
     private PlanRepository planRepository;
 
-    // Metodos
+    // Métodos
     @Override
     public Page<PlanEntity> findAll(PageRequest pageable) {
         return planRepository.findAll(pageable);
@@ -39,18 +39,20 @@ public class PlanServices implements Idao<PlanEntity,Long> {
 
     @Transactional
     @Override
-    public void create(PlanEntity entity) {
+    public PlanEntity create(PlanEntity entity) {
         if (entity.getId() == null || !planRepository.existsById(entity.getId())) {
-            planRepository.save(entity);
+            throw new IllegalArgumentException("El plan con ID " + entity.getId() + " ya existe.");
         }
+        return planRepository.save(entity);
     }
 
     @Transactional
     @Override
-    public void update(PlanEntity entity) {
+    public PlanEntity update(PlanEntity entity) {
         if (entity.getId() != null && planRepository.existsById(entity.getId())) {
-            planRepository.save(entity);
+            throw new IllegalArgumentException("No se puede actualizar un plan que no existe o sin ID.");
         }
+        return planRepository.save(entity);
     }
 
     @Transactional

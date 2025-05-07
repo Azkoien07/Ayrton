@@ -37,18 +37,20 @@ public class PaymentServices implements Idao<PaymentEntity, Long> {
 
     @Transactional
     @Override
-    public void create(PaymentEntity entity) {
+    public PaymentEntity create(PaymentEntity entity) {
         if (entity.getId() == null || !paymentRepository.existsById(entity.getId())) {
-            paymentRepository.save(entity);
+            throw new IllegalArgumentException("El pago con ID " + entity.getId() + " ya existe.");
         }
+        return paymentRepository.save(entity);
     }
 
     @Transactional
     @Override
-    public void update(PaymentEntity entity) {
+    public PaymentEntity update(PaymentEntity entity) {
         if (entity.getId() != null && paymentRepository.existsById(entity.getId())) {
-            paymentRepository.save(entity);
+            throw new IllegalArgumentException("No se puede actualizar un pago que no existe o sin ID.");
         }
+        return paymentRepository.save(entity);
     }
 
     @Transactional

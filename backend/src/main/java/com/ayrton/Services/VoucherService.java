@@ -21,7 +21,7 @@ public class VoucherService implements Idao<VoucherEntity,Long> {
     @Autowired
     private VoucherRepository voucherRepository;
 
-    // Metodos
+    // Métodos
     @Override
     public Page<VoucherEntity> findAll(PageRequest pageable) {
         return voucherRepository.findAll(pageable);
@@ -40,18 +40,20 @@ public class VoucherService implements Idao<VoucherEntity,Long> {
 
     @Transactional
     @Override
-    public void create(VoucherEntity entity) {
+    public VoucherEntity create(VoucherEntity entity) {
         if (entity.getId() == null || !voucherRepository.existsById(entity.getId())) {
-            voucherRepository.save(entity);
+            throw new IllegalArgumentException("El voucher con ID " + entity.getId() + " ya existe.");
         }
+        return voucherRepository.save(entity);
     }
 
     @Transactional
     @Override
-    public void update(VoucherEntity entity) {
+    public VoucherEntity update(VoucherEntity entity) {
         if (entity.getId() != null && voucherRepository.existsById(entity.getId())) {
-            voucherRepository.save(entity);
+            throw new IllegalArgumentException("No se puede actualizar un voucher que no existe o sin ID.");
         }
+        return voucherRepository.save(entity);
     }
 
     @Transactional

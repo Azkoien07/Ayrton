@@ -40,18 +40,20 @@ public class RankingServices implements Idao<RankingEntity,Long> {
 
     @Transactional
     @Override
-    public void create(RankingEntity entity) {
+    public RankingEntity create(RankingEntity entity) {
         if (entity.getId() == null || !rankingRepository.existsById(entity.getId())) {
-            rankingRepository.save(entity);
+            throw new IllegalArgumentException("El ranking con ID " + entity.getId() + " ya existe.");
         }
+        return rankingRepository.save(entity);
     }
 
     @Transactional
     @Override
-    public void update(RankingEntity entity) {
+    public RankingEntity update(RankingEntity entity) {
         if (entity.getId() != null && rankingRepository.existsById(entity.getId())) {
-            rankingRepository.save(entity);
+            throw new IllegalArgumentException("No se puede actualizar un ranking que no existe o sin ID.");
         }
+        return rankingRepository.save(entity);
     }
 
     @Transactional

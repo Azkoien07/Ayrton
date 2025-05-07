@@ -38,18 +38,20 @@ public class PqrService implements Idao<PqrEntity, Long> {
 
     @Transactional
     @Override
-    public void create(PqrEntity entity) {
+    public PqrEntity create(PqrEntity entity) {
         if (entity.getId() == null || !pqrRepository.existsById(entity.getId())) {
-            pqrRepository.save(entity);
+            throw new IllegalArgumentException("La pqr con ID " + entity.getId() + " ya existe.");
         }
+        return pqrRepository.save(entity);
     }
 
     @Transactional
     @Override
-    public void update(PqrEntity entity) {
+    public PqrEntity update(PqrEntity entity) {
         if (entity.getId() != null && pqrRepository.existsById(entity.getId())) {
-            pqrRepository.save(entity);
+            throw new IllegalArgumentException("No se puede actualizar una pqr que no existe o sin ID.");
         }
+        return pqrRepository.save(entity);
     }
 
     @Transactional

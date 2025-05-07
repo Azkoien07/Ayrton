@@ -19,7 +19,7 @@ public class TaskService implements Idao<TaskEntity,Long> {
     @Autowired
     private TaskRepository taskRepository;
 
-    // Metodos
+    // Métodos
     @Override
     public Page<TaskEntity> findAll(PageRequest pageable) {
         return taskRepository.findAll(pageable);
@@ -38,18 +38,20 @@ public class TaskService implements Idao<TaskEntity,Long> {
 
     @Transactional
     @Override
-    public void create(TaskEntity entity) {
+    public TaskEntity create(TaskEntity entity) {
         if (entity.getId() == null || !taskRepository.existsById(entity.getId())) {
-            taskRepository.save(entity);
+            throw new IllegalArgumentException("La tarea con ID " + entity.getId() + " ya existe.");
         }
+        return taskRepository.save(entity);
     }
 
     @Transactional
     @Override
-    public void update(TaskEntity entity) {
+    public TaskEntity update(TaskEntity entity) {
         if (entity.getId() != null && taskRepository.existsById(entity.getId())) {
-            taskRepository.save(entity);
+            throw new IllegalArgumentException("No se puede actualizar una tarea que no existe o sin ID.");
         }
+        return taskRepository.save(entity);
     }
 
     @Transactional
