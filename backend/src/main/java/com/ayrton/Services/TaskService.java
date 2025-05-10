@@ -20,22 +20,27 @@ public class TaskService implements Idao<TaskEntity,Long> {
     private TaskRepository taskRepository;
 
     // Métodos
+
+    // FindAll
     @Override
     public Page<TaskEntity> findAll(PageRequest pageable) {
         return taskRepository.findAll(pageable);
     }
 
+    // FindAll (without pagination)
     @Override
     public List<TaskEntity> getAll() {
         return taskRepository.findAll();
     }
 
+    // GetById
     @Override
     public TaskEntity getById(Long id) {
         Optional<TaskEntity> challenge = taskRepository.findById(id);
         return challenge.orElse(null);
     }
 
+    // Delete
     @Transactional
     @Override
     public TaskEntity create(TaskEntity entity) {
@@ -45,6 +50,7 @@ public class TaskService implements Idao<TaskEntity,Long> {
         return taskRepository.save(entity);
     }
 
+    // Update
     @Transactional
     @Override
     public TaskEntity update(TaskEntity entity) {
@@ -54,6 +60,7 @@ public class TaskService implements Idao<TaskEntity,Long> {
         return taskRepository.save(entity);
     }
 
+    // Delete
     @Transactional
     @Override
     public void delete(Long id) {

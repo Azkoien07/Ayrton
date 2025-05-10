@@ -13,27 +13,33 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ChallengeServices implements Idao<ChallengeEntity, Long> {
+public class ChallengeService implements Idao<ChallengeEntity, Long> {
 
     @Autowired
     private ChallengeRepository challengeRepository;
 
-    // Metodos
+    // Métodos
+
+    // FindAll
     @Override
     public Page<ChallengeEntity> findAll(PageRequest pageable) {
         return challengeRepository.findAll(pageable);
     }
 
+    // FindAll (without pagination)
     @Override
     public List<ChallengeEntity> getAll() {
         return challengeRepository.findAll();
     }
+
+    // GetById
     @Override
     public ChallengeEntity getById(Long id) {
         Optional<ChallengeEntity> challenge = challengeRepository.findById(id);
         return challenge.orElse(null);
     }
 
+    // Create
     @Transactional
     @Override
     public ChallengeEntity create(ChallengeEntity entity) {
@@ -43,6 +49,7 @@ public class ChallengeServices implements Idao<ChallengeEntity, Long> {
         return challengeRepository.save(entity);
     }
 
+    // Update
     @Transactional
     @Override
     public ChallengeEntity update(ChallengeEntity entity) {
@@ -52,6 +59,7 @@ public class ChallengeServices implements Idao<ChallengeEntity, Long> {
         return challengeRepository.save(entity);
     }
 
+    // Delete
     @Transactional
     @Override
     public void delete(Long id) {

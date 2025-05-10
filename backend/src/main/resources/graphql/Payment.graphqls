@@ -1,0 +1,49 @@
+type Payment {
+    id: ID!
+    purchaseAmount: Float!
+    paymentMethod: PaymentMethod!
+}
+
+enum PaymentMethod {
+    TarjetaCredito
+    TarjetaDebito
+    Paypal
+}
+
+type PaymentPage {
+    code: String
+    data: [Payment]
+    date: String
+    totalPages: Int
+    totalItems: Int
+    currentPage: Int
+    message: String
+}
+
+type PaymentPageId {
+    data: Payment
+    date: String
+    code: String
+    message: String
+}
+
+input PaymentInput {
+    purchaseAmount: Float!
+    paymentMethod: PaymentMethod!
+}
+
+input PaymentUpdateInput {
+    purchaseAmount: Float!
+    paymentMethod: PaymentMethod!
+}
+
+extend type Query {
+    allPayments(page: Int!, size: Int!): PaymentPage
+    paymentById(id: ID!): PaymentPageId
+}
+
+extend type Mutation {
+    addPayment(input: PaymentInput): Response
+    updatePayment(id: ID!, input: PaymentUpdateInput): Response
+    deletePayment(id: ID!): Response
+}

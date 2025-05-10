@@ -21,22 +21,27 @@ public class RoleService implements Idao<RoleEntity,Long> {
     private RoleRepository roleRepository;
 
     // Metodos
+
+    // FindAll
     @Override
     public Page<RoleEntity> findAll(PageRequest pageable) {
         return roleRepository.findAll(pageable);
     }
 
+    // FindAll (without pagination)
     @Override
     public List<RoleEntity> getAll() {
         return roleRepository.findAll();
     }
 
+    // GetById
     @Override
     public RoleEntity getById(Long id) {
         Optional<RoleEntity> challenge = roleRepository.findById(id);
         return challenge.orElse(null);
     }
 
+    // Create
     @Transactional
     @Override
     public RoleEntity create(RoleEntity entity) {
@@ -46,6 +51,7 @@ public class RoleService implements Idao<RoleEntity,Long> {
         return roleRepository.save(entity);
     }
 
+    // Update
     @Transactional
     @Override
     public RoleEntity update(RoleEntity entity) {
@@ -55,6 +61,7 @@ public class RoleService implements Idao<RoleEntity,Long> {
         return roleRepository.save(entity);
     }
 
+    // Delete
     @Transactional
     @Override
     public void delete(Long id) {

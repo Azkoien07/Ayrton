@@ -1,8 +1,6 @@
 package com.ayrton.Services;
 
 import com.ayrton.Entity.PqrEntity;
-import com.ayrton.Entity.PqrEntity;
-import com.ayrton.Entity.PqrEntity;
 import com.ayrton.Repository.PqrRepository;
 import com.ayrton.Services.Dao.Idao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +17,26 @@ public class PqrService implements Idao<PqrEntity, Long> {
     @Autowired
     private PqrRepository pqrRepository;
 
-    // Metodos
+    // FindAll
     @Override
     public Page<PqrEntity> findAll(PageRequest pageable) {
         return pqrRepository.findAll(pageable);
     }
 
+    // FindAll (without pagination)
     @Override
     public List<PqrEntity> getAll() {
         return pqrRepository.findAll();
     }
 
+    // GetById
     @Override
     public PqrEntity getById(Long id) {
         Optional<PqrEntity> challenge = pqrRepository.findById(id);
         return challenge.orElse(null);
     }
 
+    // Create
     @Transactional
     @Override
     public PqrEntity create(PqrEntity entity) {
@@ -45,6 +46,7 @@ public class PqrService implements Idao<PqrEntity, Long> {
         return pqrRepository.save(entity);
     }
 
+    // Update
     @Transactional
     @Override
     public PqrEntity update(PqrEntity entity) {
@@ -54,6 +56,7 @@ public class PqrService implements Idao<PqrEntity, Long> {
         return pqrRepository.save(entity);
     }
 
+    // Delete
     @Transactional
     @Override
     public void delete(Long id) {

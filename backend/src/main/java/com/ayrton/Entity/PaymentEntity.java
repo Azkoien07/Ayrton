@@ -46,6 +46,6 @@ public class PaymentEntity implements Serializable {
     private Set<UserEntity> users;
     // 2. (M-1) con voucher
     @ManyToOne
-    @JoinColumn(name = "voucher_id", nullable = false)
+    @JoinColumn(name = "voucher_id", nullable = true)
     private VoucherEntity voucher;
 }

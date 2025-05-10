@@ -1,17 +1,75 @@
 package com.ayrton.Business;
 
+import com.ayrton.Dto.VoucherDto;
+import com.ayrton.Entity.VoucherEntity;
 import com.ayrton.Services.VoucherService;
+import com.ayrton.Utilities.Exception.CustomException;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 
-@Service
+
+@Component
 public class VoucherBusiness {
-    @Autowired
+
     private final VoucherService voucherService;
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public VoucherBusiness(VoucherService voucherService) {
-        this.voucherService = voucherService;
+    public VoucherBusiness(VoucherService voucherServices) {
+        this.voucherService = voucherServices;
+    }
+
+
+    // Find All
+    public Page<VoucherDto> findAll(int page, int size) {
+        try {
+            PageRequest pageRequest = PageRequest.of(page, size);
+            Page<VoucherEntity> voucherEntityPage = voucherService.findAll(pageRequest);
+            return voucherEntityPage.map(entity -> modelMapper.map(entity, VoucherDto.class));
+        } catch (Exception e) {
+            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Find By Id
+    public VoucherDto findById(Long id) {
+        try {
+            VoucherEntity voucher = voucherService.getById(id);
+            return modelMapper.map(voucher, VoucherDto.class);
+        } catch (Exception e) {
+            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Add
+    public VoucherDto add(VoucherDto voucherDto) {
+        try {
+            VoucherEntity voucherEnity = modelMapper.map(voucherDto, VoucherEntity.class);
+            return modelMapper.map(voucherService.create(voucherEnity), VoucherDto.class);
+        } catch (Exception e) {
+            throw new CustomException("Error adding Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Update
+    public void update(Long id, VoucherDto voucherDto) {
+        try{
+            voucherDto.setId(id);
+            VoucherEntity voucherEntity = modelMapper.map(voucherDto, VoucherEntity.class);
+            voucherService.update(voucherEntity);
+        } catch (Exception e) {
+            throw new CustomException("Error updating Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Delete
+    public void delete(Long id) {
+        try{
+            voucherService.delete(id);
+        } catch (Exception e) {
+            throw new CustomException("Error deleting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

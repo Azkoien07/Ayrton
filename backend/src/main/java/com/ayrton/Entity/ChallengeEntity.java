@@ -21,6 +21,7 @@ public class ChallengeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Enums
     public enum Category {
         Desarrollo,
         Productividad,
@@ -32,6 +33,7 @@ public class ChallengeEntity implements Serializable {
         Intermedia,
         Alta
     }
+
     // Columns
     @Column(name = "name", nullable = false)
     private String name;
@@ -62,6 +64,7 @@ public class ChallengeEntity implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "task_id")
     )
     private Set<TaskEntity> tasks;
+
     // 2. (M-M) con ranking
     @ManyToMany
     @JoinTable(

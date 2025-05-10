@@ -2,75 +2,111 @@ package com.ayrton.Controller;
 
 import com.ayrton.Business.ChallengeBusiness;
 import com.ayrton.Dto.ChallengeDto;
+import com.ayrton.Utilities.Http.ResponseHttp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("api/challenge")
+import java.util.Map;
+@Controller
 public class ChallengeController {
+    private final ChallengeBusiness challengeBusiness;
 
-    @Autowired
-    private ChallengeBusiness challengeBusiness;
-/*
-    // 1. Obtener una lista de todos los desafíos (con paginación)
-    @GetMapping
-    public ResponseEntity<?> findAll(@RequestParam int page, @RequestParam int size) {
+    public ChallengeController(ChallengeBusiness challengeBusiness) {
+        this.challengeBusiness = challengeBusiness;
+    }
+    // 1. FindAll Challenge (GraphQL)
+    @QueryMapping
+    public Map<String, Object> allChallenges(@Argument int page, @Argument int size) {
         try {
-            PageRequest pageable = PageRequest.of(page, size);
-            Page<ChallengeDto> result = challengeBusiness.findAll(pageable);
-            return ResponseEntity.ok(result);
+            Page<ChallengeDto> challengeDtoPage = challengeBusiness.findAll(page, size);
+            return ResponseHttp.responseHttpFindAll(
+                    challengeDtoPage.getContent(),
+                    ResponseHttp.CODE_OK,
+                    "Query ok",
+                    challengeDtoPage.getTotalPages(),
+                    page,
+                    (int) challengeDtoPage.getTotalElements()
+            );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-             .body("Error al obtener los desafíos: " + e.getMessage());
+            return ResponseHttp.responseHttpError(
+                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    // 2. Obtener un desafío por su ID
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
+    // 2. FindById Challenge (GraphQL)
+    @QueryMapping
+    public Map<String, Object> challengeById(@Argument Long id) {
         try {
-            ChallengeDto result = challengeBusiness.getById(id);
-            return ResponseEntity.ok(result);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-             .body("Desafío no encontrado con ID: " + id);
+            ChallengeDto challengeDto = challengeBusiness.findById(id);
+            return ResponseHttp.responseHttpFindId(
+                    challengeDto,
+                    ResponseHttp.CODE_OK,
+                    "Query by id ok"
+            );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-             .body("Error al obtener el desafío: " + e.getMessage());
+            return ResponseHttp.responseHttpError(
+                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    // 4. Crear un nuevo desafío
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody ChallengeDto challengeDto) {
+    // 4. Add a new Challenge (GraphQL)
+    @MutationMapping
+    public Map<String, Object> addChallenge(@Argument("input") ChallengeDto challengeDto) {
         try {
-            ChallengeDto result = challengeBusiness.save(challengeDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(result);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-             .body("Datos inválidos: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-             .body("Error al crear el desafío: " + e.getMessage());
+            ChallengeDto challengeDto1 = challengeBusiness.add(challengeDto);
+            return ResponseHttp.responseHttpAction(
+                    challengeDto1.getId(),
+                    ResponseHttp.CODE_OK,
+                    "Add ok"
+            );
+        }catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    // 5. Eliminar un desafío por su ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    // 5. Update Challenge (GraphQL)
+    @MutationMapping
+    public Map<String, Object> updateChallenge(@Argument Long id, @Argument ("input")ChallengeDto challengeDto) {
+        try {
+            challengeBusiness.update(id, challengeDto );
+            return ResponseHttp.responseHttpAction(
+                    id,
+                    ResponseHttp.CODE_OK,
+                    "Update ok"
+            );
+        }
+        catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    // 5. Delete Challenge By ID (GraphQL)
+    @MutationMapping
+    public Map<String, Object> deleteChallenge(@Argument Long id) {
         try {
             challengeBusiness.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-             .body("Desafío no encontrado con ID: " + id);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-             .body("Error al eliminar el desafío: " + e.getMessage());
+            return ResponseHttp.responseHttpAction(
+                    id,
+                    ResponseHttp.CODE_OK,
+                    "Delete ok"
+            );
+        }
+        catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
-}
- */
 }

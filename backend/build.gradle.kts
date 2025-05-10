@@ -27,6 +27,8 @@ dependencies {
 	// Persistencia
 	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	// GraphQL
+	implementation("org.springframework.boot:spring-boot-starter-graphql")
 	// Security
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 	implementation("org.springframework.boot:spring-boot-starter-security")

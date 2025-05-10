@@ -20,22 +20,27 @@ public class UserService implements Idao<UserEntity,Long> {
     private UserRepository userRepository;
 
     // Métodos
+
+    // FindAll
     @Override
     public Page<UserEntity> findAll(PageRequest pageable) {
         return userRepository.findAll(pageable);
     }
 
+    // FindAll (without pagination)
     @Override
     public List<UserEntity> getAll() {
         return userRepository.findAll();
     }
 
+    // GetById
     @Override
     public UserEntity getById(Long id) {
         Optional<UserEntity> challenge = userRepository.findById(id);
         return challenge.orElse(null);
     }
 
+    // Create
     @Transactional
     @Override
     public UserEntity create(UserEntity entity) {
@@ -45,6 +50,7 @@ public class UserService implements Idao<UserEntity,Long> {
         return userRepository.save(entity);
     }
 
+    // Update
     @Transactional
     @Override
     public UserEntity update(UserEntity entity) {
@@ -56,6 +62,7 @@ public class UserService implements Idao<UserEntity,Long> {
         }
     }
 
+    // Delete
     @Transactional
     @Override
     public void delete(Long id) {

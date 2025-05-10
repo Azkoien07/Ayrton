@@ -1,9 +1,6 @@
 package com.ayrton.Services;
 
 import com.ayrton.Entity.PlanEntity;
-import com.ayrton.Entity.PlanEntity;
-import com.ayrton.Entity.PlanEntity;
-import com.ayrton.Entity.PlanEntity;
 import com.ayrton.Repository.PlanRepository;
 import com.ayrton.Services.Dao.Idao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PlanServices implements Idao<PlanEntity,Long> {
+public class PlanService implements Idao<PlanEntity,Long> {
     @Autowired
     private PlanRepository planRepository;
 

@@ -22,22 +22,27 @@ public class VoucherService implements Idao<VoucherEntity,Long> {
     private VoucherRepository voucherRepository;
 
     // Métodos
+
+    // FindAll
     @Override
     public Page<VoucherEntity> findAll(PageRequest pageable) {
         return voucherRepository.findAll(pageable);
     }
 
+    // FindAll (without pagination)
     @Override
     public List<VoucherEntity> getAll() {
         return voucherRepository.findAll();
     }
 
+    // GetById
     @Override
     public VoucherEntity getById(Long id) {
         Optional<VoucherEntity> challenge = voucherRepository.findById(id);
         return challenge.orElse(null);
     }
 
+    // Create
     @Transactional
     @Override
     public VoucherEntity create(VoucherEntity entity) {
@@ -47,6 +52,7 @@ public class VoucherService implements Idao<VoucherEntity,Long> {
         return voucherRepository.save(entity);
     }
 
+    // Update
     @Transactional
     @Override
     public VoucherEntity update(VoucherEntity entity) {
@@ -56,6 +62,7 @@ public class VoucherService implements Idao<VoucherEntity,Long> {
         return voucherRepository.save(entity);
     }
 
+    // Delete
     @Transactional
     @Override
     public void delete(Long id) {

@@ -2,78 +2,109 @@ package com.ayrton.Controller;
 
 import com.ayrton.Business.UserBusiness;
 import com.ayrton.Dto.UserDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ayrton.Utilities.Http.ResponseHttp;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.NoSuchElementException;
-
-@RestController
-@RequestMapping("api/user")
+import org.springframework.stereotype.Controller;
+import java.util.Map;
+@Controller
 public class UserController {
 
-    @Autowired
-    private UserBusiness userBusiness;
-/*
-    // 1. Obtener una lista de todos los usuarios (con paginación)
-    @GetMapping
-    public ResponseEntity<?> findAll(@RequestParam int page, @RequestParam int size) {
+    private final UserBusiness userBusiness;
+
+    public UserController(UserBusiness userBusiness) {
+        this.userBusiness = userBusiness;
+    }
+
+    // 1. FindAll Users (GraphQL)
+    @QueryMapping
+    public Map<String, Object> allUsers(@Argument int page, @Argument int size) {
         try {
-            PageRequest pageable = PageRequest.of(page, size);
-            Page<UserDto> result = userBusiness.findAll(pageable);
-            return ResponseEntity.ok(result);
+            Page<UserDto> userDtoPage = userBusiness.findAll(page, size);
+            return ResponseHttp.responseHttpFindAll(
+                    userDtoPage.getContent(),
+                    ResponseHttp.CODE_OK,
+                    "Query ok",
+                    userDtoPage.getTotalPages(),
+                    page,
+                    (int) userDtoPage.getTotalElements()
+            );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener los usuarios: " + e.getMessage());
+            return ResponseHttp.responseHttpError(
+                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    // 2. Obtener un usuario por su ID
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
+    // 2. FindById User (GraphQL)
+    @QueryMapping
+    public Map<String, Object> userById(@Argument Long id) {
         try {
-            UserDto result = userBusiness.getById(id);
-            return ResponseEntity.ok(result);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Usuario no encontrado con ID: " + id);
+            UserDto userDto = userBusiness.findById(id);
+            return ResponseHttp.responseHttpFindId(
+                    userDto,
+                    ResponseHttp.CODE_OK,
+                    "Query by id ok"
+            );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener el usuario: " + e.getMessage());
+            return ResponseHttp.responseHttpError(
+                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    // 3. Crear un nuevo usuario
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody UserDto userDto) {
+    // 4. Add a new User (GraphQL)
+    @MutationMapping
+    public Map<String, Object> addUser(@Argument("input") UserDto userDto) {
         try {
-            UserDto result = userBusiness.save(userDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(result);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Datos inválidos: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al crear el usuario: " + e.getMessage());
+            UserDto userDto1 = userBusiness.add(userDto);
+            return ResponseHttp.responseHttpAction(
+                    userDto1.getId(),
+                    ResponseHttp.CODE_OK,
+                    "Add ok"
+            );
+        }catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    // 4. Eliminar un usuario por su ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    // 5. Update User (GraphQL)
+    @MutationMapping
+    public Map<String, Object> updateUser(@Argument Long id, @Argument ("input")UserDto userDto) {
+        try {
+            userBusiness.update(id, userDto );
+            return ResponseHttp.responseHttpAction(
+                    id,
+                    ResponseHttp.CODE_OK,
+                    "Update ok"
+            );
+        }
+        catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    // 5. Delete User By ID (GraphQL)
+    @MutationMapping
+    public Map<String, Object> deleteUser(@Argument Long id) {
         try {
             userBusiness.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Usuario no encontrado con ID: " + id);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al eliminar el usuario: " + e.getMessage());
+            return ResponseHttp.responseHttpAction(
+                    id,
+                    ResponseHttp.CODE_OK,
+                    "Delete ok"
+            );
+        }
+        catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
- */
 }

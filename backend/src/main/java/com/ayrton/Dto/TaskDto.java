@@ -1,5 +1,8 @@
 package com.ayrton.Dto;
 
+import com.ayrton.Entity.TaskEntity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +19,14 @@ public class TaskDto {
 
     @NotNull(message = "La descripción de la tarea no puede ser nula.")
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "La prioridad de la tarea no puede ser nula.")
+    private TaskEntity.Priority Priority;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "El tipo de tarea no puede ser nulo.")
+    private TaskEntity.TypeTask TypeTask;
 
     @NotNull(message = "El estado de la tarea no puede ser nulo.")
     private String state;

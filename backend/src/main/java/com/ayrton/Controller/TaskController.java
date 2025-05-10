@@ -2,78 +2,110 @@ package com.ayrton.Controller;
 
 import com.ayrton.Business.TaskBusiness;
 import com.ayrton.Dto.TaskDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ayrton.Utilities.Http.ResponseHttp;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
 
-import java.util.NoSuchElementException;
-
-@RestController
-@RequestMapping("api/task")
+import java.util.Map;
+@Controller
 public class TaskController {
 
-    @Autowired
-    private TaskBusiness taskBusiness;
-/*
-    // 1. Obtener una lista de todas las tareas (con paginación)
-    @GetMapping
-    public ResponseEntity<?> findAll(@RequestParam int page, @RequestParam int size) {
+    private final TaskBusiness taskBusiness;
+
+    public TaskController(TaskBusiness taskBusiness) {
+        this.taskBusiness = taskBusiness;
+    }
+
+    // 1. FindAll Tasks (GraphQL)
+    @QueryMapping
+    public Map<String, Object> allTasks(@Argument int page, @Argument int size) {
         try {
-            PageRequest pageable = PageRequest.of(page, size);
-            Page<TaskDto> result = taskBusiness.findAll(pageable);
-            return ResponseEntity.ok(result);
+            Page<TaskDto> taskDtoPage = taskBusiness.findAll(page, size);
+            return ResponseHttp.responseHttpFindAll(
+                    taskDtoPage.getContent(),
+                    ResponseHttp.CODE_OK,
+                    "Query ok",
+                    taskDtoPage.getTotalPages(),
+                    page,
+                    (int) taskDtoPage.getTotalElements()
+            );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener las tareas: " + e.getMessage());
+            return ResponseHttp.responseHttpError(
+                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    // 2. Obtener una tarea por su ID
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
+    // 2. FindById Task (GraphQL)
+    @QueryMapping
+    public Map<String, Object> taskById(@Argument Long id) {
         try {
-            TaskDto result = taskBusiness.getById(id);
-            return ResponseEntity.ok(result);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Tarea no encontrada con ID: " + id);
+            TaskDto taskDto = taskBusiness.findById(id);
+            return ResponseHttp.responseHttpFindId(
+                    taskDto,
+                    ResponseHttp.CODE_OK,
+                    "Query by id ok"
+            );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener la tarea: " + e.getMessage());
+            return ResponseHttp.responseHttpError(
+                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    // 3. Crear una nueva tarea
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody TaskDto taskDto) {
+    // 4. Add a new Task (GraphQL)
+    @MutationMapping
+    public Map<String, Object> addTask(@Argument("input") TaskDto taskDto) {
         try {
-            TaskDto result = taskBusiness.save(taskDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(result);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Datos inválidos: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al crear la tarea: " + e.getMessage());
+            TaskDto taskDto1 = taskBusiness.add(taskDto);
+            return ResponseHttp.responseHttpAction(
+                    taskDto1.getId(),
+                    ResponseHttp.CODE_OK,
+                    "Add ok"
+            );
+        }catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    // 4. Eliminar una tarea por su ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    // 5. Update Task (GraphQL)
+    @MutationMapping
+    public Map<String, Object> updateTask(@Argument Long id, @Argument ("input")TaskDto taskDto) {
+        try {
+            taskBusiness.update(id, taskDto );
+            return ResponseHttp.responseHttpAction(
+                    id,
+                    ResponseHttp.CODE_OK,
+                    "Update ok"
+            );
+        }
+        catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    // 5. Delete Task By ID (GraphQL)
+    @MutationMapping
+    public Map<String, Object> deleteTask(@Argument Long id) {
         try {
             taskBusiness.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Tarea no encontrada con ID: " + id);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al eliminar la tarea: " + e.getMessage());
+            return ResponseHttp.responseHttpAction(
+                    id,
+                    ResponseHttp.CODE_OK,
+                    "Delete ok"
+            );
+        }
+        catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
- */
 }

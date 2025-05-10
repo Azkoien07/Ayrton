@@ -2,78 +2,110 @@ package com.ayrton.Controller;
 
 import com.ayrton.Business.PaymentBusiness;
 import com.ayrton.Dto.PaymentDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ayrton.Utilities.Http.ResponseHttp;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import java.util.Map;
 
-import java.util.NoSuchElementException;
-
-@RestController
-@RequestMapping("api/payment")
+@Controller
 public class PaymentController {
 
-    @Autowired
-    private PaymentBusiness paymentBusiness;
-/*
-    // 1. Obtener una lista de todos los pagos (con paginación)
-    @GetMapping
-    public ResponseEntity<?> findAll(@RequestParam int page, @RequestParam int size) {
+    private final PaymentBusiness paymentBusiness;
+
+    public PaymentController(PaymentBusiness paymentBusiness) {
+        this.paymentBusiness = paymentBusiness;
+    }
+
+    // 1. FindAll Payments (GraphQL)
+    @QueryMapping
+    public Map<String, Object> allPayment(@Argument int page, @Argument int size) {
         try {
-            PageRequest pageable = PageRequest.of(page, size);
-            Page<PaymentDto> result = paymentBusiness.findAll(pageable);
-            return ResponseEntity.ok(result);
+            Page<PaymentDto> paymentDtoPage = paymentBusiness.findAll(page, size);
+            return ResponseHttp.responseHttpFindAll(
+                    paymentDtoPage.getContent(),
+                    ResponseHttp.CODE_OK,
+                    "Query ok",
+                    paymentDtoPage.getTotalPages(),
+                    page,
+                    (int) paymentDtoPage.getTotalElements()
+            );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener los pagos: " + e.getMessage());
+            return ResponseHttp.responseHttpError(
+                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    // 2. Obtener un pago por su ID
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
+    // 2. FindById Payment (GraphQL)
+    @QueryMapping
+    public Map<String, Object> paymentById(@Argument Long id) {
         try {
-            PaymentDto result = paymentBusiness.getById(id);
-            return ResponseEntity.ok(result);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Pago no encontrado con ID: " + id);
+            PaymentDto paymentDto = paymentBusiness.findById(id);
+            return ResponseHttp.responseHttpFindId(
+                    paymentDto,
+                    ResponseHttp.CODE_OK,
+                    "Query by id ok"
+            );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al obtener el pago: " + e.getMessage());
+            return ResponseHttp.responseHttpError(
+                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    // 3. Crear un nuevo pago
-    @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody PaymentDto paymentDto) {
+    // 4. Add a new Payment (GraphQL)
+    @MutationMapping
+    public Map<String, Object> addPayment(@Argument("input") PaymentDto paymentDto) {
         try {
-            PaymentDto result = paymentBusiness.save(paymentDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(result);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Datos inválidos: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al crear el pago: " + e.getMessage());
+            PaymentDto paymentDto1 = paymentBusiness.add(paymentDto);
+            return ResponseHttp.responseHttpAction(
+                    paymentDto1.getId(),
+                    ResponseHttp.CODE_OK,
+                    "Add ok"
+            );
+        }catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    // 4. Eliminar un pago por su ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    // 5. Update Payment (GraphQL)
+    @MutationMapping
+    public Map<String, Object> updatePayment(@Argument Long id, @Argument ("input")PaymentDto paymentDto) {
+        try {
+            paymentBusiness.update(id, paymentDto );
+            return ResponseHttp.responseHttpAction(
+                    id,
+                    ResponseHttp.CODE_OK,
+                    "Update ok"
+            );
+        }
+        catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    // 5. Delete Payment By ID (GraphQL)
+    @MutationMapping
+    public Map<String, Object> deletePayment(@Argument Long id) {
         try {
             paymentBusiness.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Pago no encontrado con ID: " + id);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al eliminar el pago: " + e.getMessage());
+            return ResponseHttp.responseHttpAction(
+                    id,
+                    ResponseHttp.CODE_OK,
+                    "Delete ok"
+            );
+        }
+        catch (Exception e) {
+            return ResponseHttp.responseHttpError(
+                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
- */
 }

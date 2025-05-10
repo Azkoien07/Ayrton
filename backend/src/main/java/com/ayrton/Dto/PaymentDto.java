@@ -1,5 +1,8 @@
 package com.ayrton.Dto;
 
+import com.ayrton.Entity.PaymentEntity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +18,9 @@ public class PaymentDto {
     private double purchaseAmount;
 
     @NotNull(message = "El método de pago no puede ser nulo.")
-    private String paymentMethod;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentEntity.PaymentMethod paymentMethod;
 
     // Relations
     @NotNull(message = "El usuario asociado al pago no puede ser nulo.")

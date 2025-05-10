@@ -1,9 +1,6 @@
 package com.ayrton.Services;
 
 import com.ayrton.Entity.RankingEntity;
-import com.ayrton.Entity.RankingEntity;
-import com.ayrton.Entity.RankingEntity;
-import com.ayrton.Entity.RankingEntity;
 import com.ayrton.Repository.RankingRepository;
 import com.ayrton.Services.Dao.Idao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,27 +14,32 @@ import java.util.Optional;
 
 
 @Service
-public class RankingServices implements Idao<RankingEntity,Long> {
+public class RankingService implements Idao<RankingEntity,Long> {
     @Autowired
     private RankingRepository rankingRepository;
 
     // Metodos
+
+    // FindAll
     @Override
     public Page<RankingEntity> findAll(PageRequest pageable) {
         return rankingRepository.findAll(pageable);
     }
 
+    // FindAll (without pagination)
     @Override
     public List<RankingEntity> getAll() {
         return rankingRepository.findAll();
     }
 
+    // GetById
     @Override
     public RankingEntity getById(Long id) {
         Optional<RankingEntity> challenge = rankingRepository.findById(id);
         return challenge.orElse(null);
     }
 
+    // Create
     @Transactional
     @Override
     public RankingEntity create(RankingEntity entity) {
@@ -47,6 +49,7 @@ public class RankingServices implements Idao<RankingEntity,Long> {
         return rankingRepository.save(entity);
     }
 
+    // Update
     @Transactional
     @Override
     public RankingEntity update(RankingEntity entity) {
@@ -56,6 +59,7 @@ public class RankingServices implements Idao<RankingEntity,Long> {
         return rankingRepository.save(entity);
     }
 
+    // Delete
     @Transactional
     @Override
     public void delete(Long id) {
