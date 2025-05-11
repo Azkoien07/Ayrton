@@ -10,6 +10,7 @@
 7. [Consideraciones de Seguridad](#consideraciones-de-seguridad)
 8. [Pruebas y Calidad](#pruebas-y-calidad)
 9. [Despliegue y Mantenimiento](#despliegue-y-mantenimiento)
+<a href="https://deepwiki.com/Azkoien07/Ayrton"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
 
 ## Introducción
 En un mundo donde las exigencias laborales, personales y sociales crecen constantemente, las herramientas de gestión del tiempo se han vuelto esenciales. Sin embargo, muchas de estas aplicaciones no logran mantener a los usuarios comprometidos debido a su complejidad o a la falta de elementos motivacionales. Este vacío en el mercado representa una oportunidad para desarrollar una solución innovadora que combina la funcionalidad con la motivación personal.

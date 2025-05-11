@@ -34,7 +34,7 @@ public class VoucherController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    "Error retrieving vouchers: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -50,12 +50,12 @@ public class VoucherController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error retrieving voucher: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 4. Add a new Voucher (GraphQL)
+    // 3. Add a new Voucher (GraphQL)
     @MutationMapping
     public Map<String, Object> addVoucher(@Argument("input") VoucherDto voucherDto) {
         try {
@@ -67,12 +67,12 @@ public class VoucherController {
             );
         }catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error adding voucher: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 5. Update Voucher (GraphQL)
+    // 4. Update Voucher (GraphQL)
     @MutationMapping
     public Map<String, Object> updateVoucher(@Argument Long id, @Argument ("input")VoucherDto voucherDto) {
         try {
@@ -85,7 +85,7 @@ public class VoucherController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error updating voucher: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -103,7 +103,7 @@ public class VoucherController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error deleting voucher: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }

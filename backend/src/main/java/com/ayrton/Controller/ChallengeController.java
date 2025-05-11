@@ -3,15 +3,12 @@ package com.ayrton.Controller;
 import com.ayrton.Business.ChallengeBusiness;
 import com.ayrton.Dto.ChallengeDto;
 import com.ayrton.Utilities.Http.ResponseHttp;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 @Controller
@@ -37,7 +34,7 @@ public class ChallengeController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    "Error retrieving challenges: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -53,12 +50,12 @@ public class ChallengeController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error retrieving challenge: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 4. Add a new Challenge (GraphQL)
+    // 3. Add a new Challenge (GraphQL)
     @MutationMapping
     public Map<String, Object> addChallenge(@Argument("input") ChallengeDto challengeDto) {
         try {
@@ -70,12 +67,12 @@ public class ChallengeController {
             );
         }catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error adding challenge: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 5. Update Challenge (GraphQL)
+    // 4. Update Challenge (GraphQL)
     @MutationMapping
     public Map<String, Object> updateChallenge(@Argument Long id, @Argument ("input")ChallengeDto challengeDto) {
         try {
@@ -88,7 +85,7 @@ public class ChallengeController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error updating challenge: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -106,7 +103,7 @@ public class ChallengeController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error deleting challenge: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }

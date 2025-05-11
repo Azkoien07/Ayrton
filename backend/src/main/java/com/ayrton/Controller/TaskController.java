@@ -35,7 +35,7 @@ public class TaskController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    "Error retrieving tasks: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -51,12 +51,12 @@ public class TaskController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error retrieving task: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 4. Add a new Task (GraphQL)
+    // 3. Add a new Task (GraphQL)
     @MutationMapping
     public Map<String, Object> addTask(@Argument("input") TaskDto taskDto) {
         try {
@@ -68,12 +68,12 @@ public class TaskController {
             );
         }catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error adding task: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 5. Update Task (GraphQL)
+    // 4. Update Task (GraphQL)
     @MutationMapping
     public Map<String, Object> updateTask(@Argument Long id, @Argument ("input")TaskDto taskDto) {
         try {
@@ -86,7 +86,7 @@ public class TaskController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error updating task: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -104,7 +104,7 @@ public class TaskController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error deleting task: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }

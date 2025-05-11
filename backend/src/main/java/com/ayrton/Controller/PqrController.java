@@ -9,7 +9,6 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 @Controller
@@ -36,7 +35,7 @@ public class PqrController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    "Error retrieving pqrs: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -52,12 +51,12 @@ public class PqrController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error retrieving pqr: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 4. Add a new Pqr (GraphQL)
+    // 3. Add a new Pqr (GraphQL)
     @MutationMapping
     public Map<String, Object> addPqr(@Argument("input") PqrDto pqrDto) {
         try {
@@ -69,12 +68,12 @@ public class PqrController {
             );
         }catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error adding pqr: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 5. Update Pqr (GraphQL)
+    // 4. Update Pqr (GraphQL)
     @MutationMapping
     public Map<String, Object> updatePqr(@Argument Long id, @Argument ("input")PqrDto pqrDto) {
         try {
@@ -87,7 +86,7 @@ public class PqrController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error updating pqr: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -105,7 +104,7 @@ public class PqrController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error deleting pqr: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }

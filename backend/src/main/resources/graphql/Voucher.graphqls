@@ -1,0 +1,43 @@
+type Voucher {
+    id: ID
+    code: String!
+    payment: Payment!
+}
+
+input VoucherInput {
+    code: String!
+    paymentId: ID!
+}
+
+input VoucherUpdateInput {
+    code: String!
+    paymentId: ID!
+}
+
+type VoucherPage {
+    code: String
+    data: [Voucher]
+    date: String
+    totalPages: Int
+    totalItems: Int
+    currentPage: Int
+    message: String
+}
+
+type VoucherPageId {
+    data: Voucher
+    date: String
+    code: String
+    message: String
+}
+
+extend type Query {
+    allVouchers(page: Int!, size: Int!): VoucherPage
+    voucherById(id: ID!): VoucherPageId
+}
+
+extend type Mutation {
+    addVoucher(input: VoucherInput): Response
+    updateVoucher(id: ID!, input: VoucherUpdateInput): Response
+    deleteVoucher(id: ID!): Response
+}

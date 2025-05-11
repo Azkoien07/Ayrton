@@ -34,7 +34,7 @@ public class RankingController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    "Error retrieving rankings: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -50,12 +50,12 @@ public class RankingController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error retrieving ranking: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 4. Add a new Ranking (GraphQL)
+    // 3. Add a new Ranking (GraphQL)
     @MutationMapping
     public Map<String, Object> addRanking(@Argument("input") RankingDto rankingDto) {
         try {
@@ -67,12 +67,12 @@ public class RankingController {
             );
         }catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error adding ranking: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 5. Update Ranking (GraphQL)
+    // 4. Update Ranking (GraphQL)
     @MutationMapping
     public Map<String, Object> updateRanking(@Argument Long id, @Argument ("input")RankingDto rankingDto) {
         try {
@@ -85,7 +85,7 @@ public class RankingController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error updating ranking: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -103,7 +103,7 @@ public class RankingController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error deleting ranking: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }

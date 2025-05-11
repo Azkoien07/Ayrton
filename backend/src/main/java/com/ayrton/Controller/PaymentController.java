@@ -22,9 +22,10 @@ public class PaymentController {
 
     // 1. FindAll Payments (GraphQL)
     @QueryMapping
-    public Map<String, Object> allPayment(@Argument int page, @Argument int size) {
+    public Map<String, Object> allPayments(@Argument int page, @Argument int size) {
         try {
-            Page<PaymentDto> paymentDtoPage = paymentBusiness.findAll(page, size);
+            int adjustedPage = (page > 0) ? page - 1 : 0;
+            Page<PaymentDto> paymentDtoPage = paymentBusiness.findAll(adjustedPage, size);
             return ResponseHttp.responseHttpFindAll(
                     paymentDtoPage.getContent(),
                     ResponseHttp.CODE_OK,
@@ -35,7 +36,7 @@ public class PaymentController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    "Error retrieving payments: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -51,12 +52,12 @@ public class PaymentController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error retrieving payment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 4. Add a new Payment (GraphQL)
+    // 3. Add a new Payment (GraphQL)
     @MutationMapping
     public Map<String, Object> addPayment(@Argument("input") PaymentDto paymentDto) {
         try {
@@ -68,12 +69,12 @@ public class PaymentController {
             );
         }catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error adding payment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 5. Update Payment (GraphQL)
+    // 4. Update Payment (GraphQL)
     @MutationMapping
     public Map<String, Object> updatePayment(@Argument Long id, @Argument ("input")PaymentDto paymentDto) {
         try {
@@ -86,7 +87,7 @@ public class PaymentController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error updating payment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -104,7 +105,7 @@ public class PaymentController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error deleting payment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }

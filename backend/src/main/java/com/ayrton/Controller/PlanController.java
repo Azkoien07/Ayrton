@@ -35,7 +35,7 @@ public class PlanController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    "Error retrieving payments: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -51,12 +51,12 @@ public class PlanController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error retrieving payment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 4. Add a new Plan (GraphQL)
+    // 3. Add a new Plan (GraphQL)
     @MutationMapping
     public Map<String, Object> addPlan(@Argument("input") PlanDto planDto) {
         try {
@@ -68,12 +68,12 @@ public class PlanController {
             );
         }catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error adding payment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 5. Update Plan (GraphQL)
+    // 4. Update Plan (GraphQL)
     @MutationMapping
     public Map<String, Object> updatePlan(@Argument Long id, @Argument ("input")PlanDto planDto) {
         try {
@@ -86,7 +86,7 @@ public class PlanController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error updating payments: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -104,7 +104,7 @@ public class PlanController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error deleting payment: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }

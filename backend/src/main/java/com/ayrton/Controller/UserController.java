@@ -34,7 +34,7 @@ public class UserController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    "Error retrieving users: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -50,12 +50,12 @@ public class UserController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error retrieving user: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 4. Add a new User (GraphQL)
+    // 3. Add a new User (GraphQL)
     @MutationMapping
     public Map<String, Object> addUser(@Argument("input") UserDto userDto) {
         try {
@@ -67,12 +67,12 @@ public class UserController {
             );
         }catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error adding user: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 5. Update User (GraphQL)
+    // 4. Update User (GraphQL)
     @MutationMapping
     public Map<String, Object> updateUser(@Argument Long id, @Argument ("input")UserDto userDto) {
         try {
@@ -85,7 +85,7 @@ public class UserController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error updating user: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -103,7 +103,7 @@ public class UserController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error deleting user: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }

@@ -35,7 +35,7 @@ public class RoleController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+                    "Error retrieving roles: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -51,12 +51,12 @@ public class RoleController {
             );
         } catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error retrieving attendances: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error retrieving role: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 4. Add a new Role (GraphQL)
+    // 3. Add a new Role (GraphQL)
     @MutationMapping
     public Map<String, Object> addRole(@Argument("input") RoleDto roleDto) {
         try {
@@ -68,12 +68,12 @@ public class RoleController {
             );
         }catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error adding attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error adding role: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
-    // 5. Update Role (GraphQL)
+    // 4. Update Role (GraphQL)
     @MutationMapping
     public Map<String, Object> updateRole(@Argument Long id, @Argument ("input")RoleDto roleDto) {
         try {
@@ -86,7 +86,7 @@ public class RoleController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error updating attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error updating role: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -104,7 +104,7 @@ public class RoleController {
         }
         catch (Exception e) {
             return ResponseHttp.responseHttpError(
-                    "Error deleting attendance: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
+                    "Error deleting role: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
