@@ -1,8 +1,6 @@
 package com.ayrton.Services;
 
 import com.ayrton.Entity.TaskEntity;
-import com.ayrton.Entity.TaskEntity;
-import com.ayrton.Entity.TaskEntity;
 import com.ayrton.Repository.TaskRepository;
 import com.ayrton.Services.Dao.Idao;
 import org.springframework.beans.factory.annotation.Autowired;

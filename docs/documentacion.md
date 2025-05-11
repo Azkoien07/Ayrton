@@ -146,22 +146,20 @@ El sistema se divide en cinco módulos principales:
 ### Interacciones entre Componentes
 
 1. **Flujo de Usuarios**
-   - El usuario interactúa con las interfaces HTML
-   - Las solicitudes son procesadas por los controladores correspondientes
-   - Los módulos funcionales ejecutan la lógica de negocio
-   - La capa de persistencia gestiona el almacenamiento de datos
+   - El usuario interactúa con las interfaces del frontend.
+   - Apollo Client envía consultas y mutaciones GraphQL al backend.
+   - Los controladores en el backend procesan las operaciones y actualizan la base de datos.
+   - Los datos se devuelven al frontend mediante respuestas GraphQL.
 
 2. **Gestión de Tareas**
-   - Las tareas se crean a través de la interfaz de usuario
-   - El Tareas_Controller procesa las operaciones
-   - El módulo de Creación de Tareas gestiona la lógica
-   - Los datos se almacenan en la base de datos
+   - Las tareas se crean, actualizan o eliminan a través de mutaciones GraphQL.
+   - Los controladores de tareas manejan estas operaciones.
+   - Los datos se almacenan en la base de datos y se sincronizan con el frontend.
 
 3. **Sistema de Desafíos**
-   - Los desafíos se gestionan mediante el Desafio_Controller
-   - Se integran con el sistema de tareas
-   - Los logros se registran en la base de datos
-   - Las notificaciones se envían a través del módulo de recordatorios
+   - Los desafíos se gestionan mediante consultas y mutaciones GraphQL.
+   - Los controladores de desafíos integran las tareas con el sistema de gamificación.
+   - Los logros y puntos se registran en la base de datos.
 
 ### Componentes Principales
 1. **Frontend**
@@ -189,6 +187,7 @@ El sistema se divide en cinco módulos principales:
 - **Enrutamiento**: React Router v6
 - **Validaciones**: Zod
 - **Testing**: Next.js Testing Library (basado en Jest)
+- **Peticiones al Backend**: Apollo Client para GraphQL
 
 ### Backend
 - **Framework**: Spring Boot 3.1.0
@@ -198,6 +197,8 @@ El sistema se divide en cinco módulos principales:
 - **ORM**: Hibernate
 - **Testing**: JUnit 5 + Mockito
 - **Seguridad**: Spring Security + JWT
+- **API**: GraphQL con Spring Boot GraphQL Starter
+- **Controladores**: Los controladores manejan las consultas y mutaciones GraphQL.
 
 ## Estructura del Proyecto
 
@@ -205,17 +206,35 @@ El sistema se divide en cinco módulos principales:
 ```
 frontend/
 ├── .next/              # Archivos generados por Next.js
-├── public/             # Archivos estáticos públicos
+├── public/             # Archivos estáticos públicos (favicon, imágenes, etc.)
 ├── src/
 │   ├── app/            # Configuración principal de la aplicación
 │   │   ├── (Routes)/   # Rutas principales (Login, Admin, etc.)
 │   │   ├── Components/ # Componentes reutilizables
+│   │   │   ├── Sections/  # Secciones principales de la página (Navbar, Footer, Hero, etc.)
+│   │   │   ├── Card.tsx   # Componente genérico de tarjeta
+│   │   │   └── Task.tsx   # Componente para tareas
+│   │   ├── Graphql/    # Consultas y mutaciones GraphQL
+│   │   │   ├── Mutations/
+│   │   │   │   └── createTask.graphql
+│   │   │   ├── Querys/
+│   │   │   │   └── getTasks.graphql
+│   │   │   └── Fragments/
+│   │   │       └── taskFragment.graphql
+│   │   ├── Lib/        # Configuración de librerías (Apollo Client, etc.)
+│   │   │   └── apollo-client.ts
 │   │   ├── Styles/     # Estilos globales
-│   │   ├── Types/      # Definiciones de tipos
+│   │   │   └── globals.css
+│   │   ├── Types/      # Definiciones de tipos TypeScript
+│   │   │   ├── faq.ts
+│   │   │   ├── plans.ts
+│   │   │   └── techStack.ts
 │   │   └── page.tsx    # Página principal
+├── .env.local          # Variables de entorno locales
 ├── eslint.config.mjs   # Configuración de ESLint
 ├── next.config.ts      # Configuración de Next.js
 ├── package.json        # Dependencias del proyecto
+├── postcss.config.js   # Configuración de PostCSS
 ├── tailwind.config.js  # Configuración de Tailwind CSS
 ├── tsconfig.json       # Configuración de TypeScript
 └── README.md           # Documentación del frontend
@@ -233,13 +252,37 @@ backend/
 │   │   ├── java/
 │   │   │   └── com/ayrton/
 │   │   │       ├── Business/    # Lógica de negocio
-│   │   │       ├── Controller/  # Controladores REST
-│   │   │       ├── Dto/         # Clases DTO
+│   │   │       │   ├── PlanBusiness.java
+│   │   │       │   └── TaskBusiness.java
+│   │   │       ├── Controller/  # Controladores REST/GraphQL
+│   │   │       │   ├── PlanController.java
+│   │   │       │   └── TaskController.java
+│   │   │       ├── Dto/         # Clases DTO (Data Transfer Objects)
+│   │   │       │   ├── PlanDto.java
+│   │   │       │   └── TaskDto.java
 │   │   │       ├── Entity/      # Entidades JPA
+│   │   │       │   ├── PlanEntity.java
+│   │   │       │   └── TaskEntity.java
 │   │   │       ├── Repository/  # Repositorios JPA
-│   │   │       └── Services/    # Servicios de aplicación
-│   │   └── resources/           # Configuraciones (application.properties, etc.)
+│   │   │       │   ├── PlanRepository.java
+│   │   │       │   └── TaskRepository.java
+│   │   │       ├── Services/    # Servicios de aplicación
+│   │   │       │   ├── PlanService.java
+│   │   │       │   └── TaskService.java
+│   │   │       └── Config/      # Configuraciones (CORS, seguridad, etc.)
+│   │   │           ├── CorsConfig.java
+│   │   │           └── SecurityConfig.java
+│   │   └── resources/
+│   │       ├── application.properties  # Configuración de Spring Boot
+│   │       └── graphql/                # Esquemas GraphQL
+│   │           ├── Plan.graphqls
+│   │           └── Task.graphqls
 │   └── test/                    # Pruebas unitarias
+│       ├── java/
+│       │   └── com/ayrton/
+│       │       ├── PlanServiceTest.java
+│       │       └── TaskServiceTest.java
+│       └── resources/
 ├── build.gradle.kts    # Configuración de Gradle
 ├── settings.gradle.kts # Configuración de Gradle
 └── gradlew             # Wrapper de Gradle
@@ -279,11 +322,11 @@ El proyecto sigue una metodología ágil basada en Scrum, con las siguientes car
 - **Frontend (React)**
   - Desarrollo de componentes
   - Implementación de interfaces
-  - Integración con APIs
+  - Integración con APIs GraphQL mediante Apollo Client
   - Testing unitario con Next.js Testing Library
 
 - **Backend (Java)**
-  - Desarrollo de servicios REST
+  - Desarrollo de controladores GraphQL
   - Implementación de lógica de negocio
   - Gestión de base de datos
   - Testing con JUnit
@@ -367,12 +410,12 @@ El proyecto sigue una metodología ágil basada en Scrum, con las siguientes car
 
 ## Consideraciones de Seguridad
 
-### Implementación con Spring Security
+### Implementación con Spring Security y GraphQL
 
 #### 1. Autenticación
 - **JWT (JSON Web Tokens)**
   - Generación de tokens seguros
-  - Validación de tokens en cada petición
+  - Validación de tokens en cada petición GraphQL
   - Renovación automática de tokens
   - Blacklist de tokens revocados
 
@@ -394,6 +437,10 @@ El proyecto sigue una metodología ágil basada en Scrum, con las siguientes car
   - `@PostAuthorize`
   - `@Secured`
   - `@RolesAllowed`
+
+- **Protección de Endpoints GraphQL**
+  - Validación de roles en resolvers
+  - Middleware para verificar autenticación en cada consulta o mutación
 
 #### 3. Protección contra Vulnerabilidades Comunes
 - **Cross-Site Scripting (XSS)**
@@ -487,19 +534,27 @@ public class CorsConfig {
 - Backups seguros
 
 ## Pruebas y Calidad
-- [Estrategia de pruebas]
-- [Cobertura de código]
-- [Métricas de calidad]
+
+### Estrategia de Pruebas
+- **Frontend**:
+  - Mocking de consultas y mutaciones GraphQL con Apollo Client MockedProvider
+  - Pruebas unitarias de componentes que interactúan con GraphQL
+- **Backend**:
+  - Testing de resolvers GraphQL con JUnit y Mockito
+  - Validación de esquemas GraphQL
+  - Pruebas de integración para consultas y mutaciones
+  - Testing de controladores GraphQL con JUnit y Mockito.
+  - Validación de esquemas GraphQL para garantizar que las consultas y mutaciones cumplen con el contrato definido.
+  - Pruebas de integración para consultas y mutaciones, verificando la interacción entre los controladores y la base de datos.
 
 ## Despliegue y Mantenimiento
-- [Proceso de despliegue]
-- [Monitoreo]
-- [Plan de mantenimiento]
+- **Endpoint de GraphQL**: Todas las consultas y mutaciones se manejan a través de un único endpoint `/graphql`.
+- **Configuración de Apollo Client**: El frontend está configurado para interactuar con este endpoint, manejando errores y reintentos automáticamente.
 
 ## Conclusiones y Trabajo Futuro
-- [Resumen de logros]
-- [Lecciones aprendidas]
-- [Mejoras planificadas]
+
+- **Integración de GraphQL**: La adopción de GraphQL ha permitido una comunicación más eficiente entre el frontend y el backend, reduciendo la sobrecarga de datos y mejorando la experiencia del desarrollador.
+- **Trabajo Futuro**: Optimizar las consultas y mutaciones para manejar grandes volúmenes de datos y mejorar el rendimiento general del sistema.
 
 ### Base de Datos
 

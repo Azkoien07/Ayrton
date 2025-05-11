@@ -1,0 +1,8 @@
+schema: "http://localhost:8081/graphql" # endpoint GraphQL de Spring Boot
+documents: "src/app/graphql/**/*.graphql"  # Queries y Mutations GraphQL
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo

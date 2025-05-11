@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaReact } from "react-icons/fa";
-import { SiTypescript, SiTailwindcss, SiJenkins, SiNextdotjs } from "react-icons/si";
+import { SiTypescript, SiTailwindcss, SiJenkins, SiNextdotjs, SiGraphql } from "react-icons/si";
+import { FaJava } from "react-icons/fa";
 
 interface TechStackItem {
     title: string;
@@ -71,7 +72,7 @@ const TechStack: React.FC = () => {
         {
             title: "React",
             description: "Biblioteca de JavaScript para construir interfaces de usuario reactivas y declarativas en aplicaciones web.",
-            color: "#61DBFB",  // React color
+            color: "#61DBFB",
             delay: 200,
             icon: <FaReact size={32} color="#61DBFB" />,
         },
@@ -92,9 +93,15 @@ const TechStack: React.FC = () => {
         {
             title: "Java",
             description: "Lenguaje de programación orientado a objetos, ampliamente utilizado para desarrollar aplicaciones empresariales, móviles y sistemas backend robustos.",
-            color: "#F8981D",
+            color: "#F89820",
             delay: 800,
-            icon: <SiJenkins size={32} color="black" />,
+            icon: (
+                <FaJava
+                    size={32}
+                    color="#F89820"
+                    style={{ filter: 'drop-shadow(0 0 2px #5382A1)' }} // Sombra azul vibrante
+                />
+            ),
         },
         {
             title: "Next.js",
@@ -103,7 +110,15 @@ const TechStack: React.FC = () => {
             delay: 600,
             icon: <SiNextdotjs size={32} color="black" />,
         },
+        {
+            title: "GraphQL",
+            description: "Lenguaje de consulta para APIs que permite obtener exactamente los datos necesarios de manera eficiente y flexible, utilizando un único endpoint.",
+            color: "#E10098",
+            delay: 1200,
+            icon: <SiGraphql size={32} color="#E10098" />,
+        },
     ];
+
 
     return (
         <div className="dark:bg-dark-background bg-light-background dark:text-dark-text text-light-text w-full min-h-screen flex flex-col items-center justify-center p-4">
@@ -112,6 +127,7 @@ const TechStack: React.FC = () => {
             </h1>
 
             <div className="relative w-full max-w-5xl">
+                {/* Powered By Badge */}
                 <div className={`absolute left-1/2 top-0 transform -translate-x-1/2 dark:bg-dark-card bg-light-card dark:border-dark-border border-light-border rounded-full px-6 py-3 z-10 shadow-lg transition-all duration-1000 ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
                     <div className="text-lg font-medium flex items-center gap-2 dark:text-dark-text text-light-text">
                         <svg className="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -122,36 +138,31 @@ const TechStack: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="w-full h-48 relative">
-                    <div className={`absolute left-1/2 top-16 w-4/5 h-0.5 transform -translate-x-1/2 transition-all duration-1500 ${visible ? 'bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 opacity-100' : 'opacity-0'}`}></div>
+                {/* Conectores dinámicos */}
+                <div className={`relative mt-24 transition-all duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center relative">
 
-                    {[1, 2, 3, 4, 5].map((_, index) => (
-                        <div
-                            key={index}
-                            className={`absolute w-0.5 transition-all duration-700 ${visible ? 'h-32 opacity-100' : 'h-0 opacity-0'}`}
-                            style={{
-                                left: `${10 + (index * 20)}%`,
-                                top: '16px',
-                                transitionDelay: `${200 * index}ms`,
-                                background: `linear-gradient(to bottom, ${['#38bdf8', '#3b82f6', '#f9a8d4', '#10b981', '#6366f1'][index]} 0%, rgba(255,255,255,0.3) 100%)`
-                            }}
-                        ></div>
-                    ))}
-                </div>
+                        {/* Línea horizontal */}
+                        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 opacity-50"></div>
 
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mt-24">
-                    {technologies.map((tech, index) => (
-                        <TechnologyCard
-                            key={index}
-                            title={tech.title}
-                            description={tech.description}
-                            icon={tech.icon}
-                            color={tech.color}
-                            delay={tech.delay}
-                        />
-                    ))}
+                        {technologies.map((tech, index) => (
+                            <div key={index} className="relative flex flex-col items-center">
+                                {/* Línea vertical */}
+                                <div className="w-0.5 h-8 bg-gradient-to-b from-blue-400 to-transparent mb-2"></div>
+                                <TechnologyCard
+                                    title={tech.title}
+                                    description={tech.description}
+                                    icon={tech.icon}
+                                    color={tech.color}
+                                    delay={tech.delay}
+                                />
+                            </div>
+                        ))}
+
+                    </div>
                 </div>
             </div>
+
         </div>
     );
 };

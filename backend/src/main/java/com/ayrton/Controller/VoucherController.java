@@ -21,7 +21,7 @@ public class VoucherController {
 
     // 1. FindAll Vouchers (GraphQL)
     @QueryMapping
-    public Map<String, Object> allChallenges(@Argument int page, @Argument int size) {
+    public Map<String, Object> allVouchers(@Argument int page, @Argument int size) {
         try {
             Page<VoucherDto> voucherDtoPage = voucherBusiness.findAll(page, size);
             return ResponseHttp.responseHttpFindAll(
@@ -40,7 +40,7 @@ public class VoucherController {
 
     // 2. FindById Voucher (GraphQL)
     @QueryMapping
-    public Map<String, Object> attendanceById(@Argument Long id) {
+    public Map<String, Object> voucherById(@Argument Long id) {
         try {
             VoucherDto voucherDto = voucherBusiness.findById(id);
             return ResponseHttp.responseHttpFindId(
@@ -57,7 +57,7 @@ public class VoucherController {
 
     // 4. Add a new Voucher (GraphQL)
     @MutationMapping
-    public Map<String, Object> addChallenge(@Argument("input") VoucherDto voucherDto) {
+    public Map<String, Object> addVoucher(@Argument("input") VoucherDto voucherDto) {
         try {
             VoucherDto voucherDto1 = voucherBusiness.add(voucherDto);
             return ResponseHttp.responseHttpAction(
@@ -74,7 +74,7 @@ public class VoucherController {
 
     // 5. Update Voucher (GraphQL)
     @MutationMapping
-    public Map<String, Object> updateChallenge(@Argument Long id, @Argument ("input")VoucherDto voucherDto) {
+    public Map<String, Object> updateVoucher(@Argument Long id, @Argument ("input")VoucherDto voucherDto) {
         try {
             voucherBusiness.update(id, voucherDto );
             return ResponseHttp.responseHttpAction(
@@ -92,7 +92,7 @@ public class VoucherController {
 
     // 5. Delete Voucher By ID (GraphQL)
     @MutationMapping
-    public Map<String, Object> deleteAttendance(@Argument Long id) {
+    public Map<String, Object> deleteVoucher(@Argument Long id) {
         try {
             voucherBusiness.delete(id);
             return ResponseHttp.responseHttpAction(

@@ -41,6 +41,12 @@
       ],
       "@services/*": [
         "./src/app/Services/*"
+      ],
+      "@graphql/*": [
+        "./src/app/Graphql/*"
+      ],
+      "@lib/*": [
+        "./src/app/Lib/*"
       ]
     }
   },
