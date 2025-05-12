@@ -1,16 +1,12 @@
 package com.ayrton.Business;
 
 import com.ayrton.Dto.ChallengeDto;
-import com.ayrton.Dto.PaymentDto;
 import com.ayrton.Entity.ChallengeEntity;
-import com.ayrton.Entity.ChallengeEntity;
-import com.ayrton.Entity.PaymentEntity;
 import com.ayrton.Services.ChallengeService;
 import com.ayrton.Utilities.Exception.CustomException;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 

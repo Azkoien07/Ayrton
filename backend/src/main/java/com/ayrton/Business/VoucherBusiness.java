@@ -46,8 +46,8 @@ public class VoucherBusiness {
     // Add
     public VoucherDto add(VoucherDto voucherDto) {
         try {
-            VoucherEntity voucherEnity = modelMapper.map(voucherDto, VoucherEntity.class);
-            return modelMapper.map(voucherService.create(voucherEnity), VoucherDto.class);
+            VoucherEntity voucherEntity = modelMapper.map(voucherDto, VoucherEntity.class);
+            return modelMapper.map(voucherService.create(voucherEntity), VoucherDto.class);
         } catch (Exception e) {
             throw new CustomException("Error adding Voucher: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }

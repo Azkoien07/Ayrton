@@ -1,6 +1,5 @@
 package com.ayrton.Business;
 
-import com.ayrton.Dto.PaymentDto;
 import com.ayrton.Dto.RankingDto;
 import com.ayrton.Entity.RankingEntity;
 import com.ayrton.Services.RankingService;
@@ -10,8 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import java.awt.print.Pageable;
-import java.util.List;
 
 @Component
 public class RankingBusiness {
