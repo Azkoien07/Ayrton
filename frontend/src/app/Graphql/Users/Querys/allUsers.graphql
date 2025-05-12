@@ -1,0 +1,16 @@
+query GetUsers($page: Int!, $size: Int!) {
+  allUsers(page: $page, size: $size) {
+    code
+    data {
+      id
+      name
+      email
+      username
+    }
+    date
+    totalPages
+    totalItems
+    currentPage
+    message
+  }
+}

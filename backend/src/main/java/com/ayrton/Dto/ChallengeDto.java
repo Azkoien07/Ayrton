@@ -25,7 +25,7 @@ public class ChallengeDto {
     private ChallengeEntity.Category category;
 
     @NotNull(message = "El estado del desafío no puede ser nulo.")
-    private String state;
+    private Boolean state;
 
     @Enumerated(EnumType.STRING)
     @NotNull(message = "La dificultad del desafio no puede ser nula")

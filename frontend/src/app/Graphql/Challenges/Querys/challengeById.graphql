@@ -1,0 +1,15 @@
+query GetChallengeById($id: ID!) {
+  challengeById(id: $id) {
+    data {
+      id
+      name
+      description
+      category
+      state
+      dificulty
+    }
+    date
+    code
+    message
+  }
+}

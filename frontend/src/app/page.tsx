@@ -54,7 +54,6 @@ const LandingPage = () => {
         >
           {isDarkMode ? '🌙' : '🌞'}
         </button>
-
         <Hero />
         <Features />
         <Bento />

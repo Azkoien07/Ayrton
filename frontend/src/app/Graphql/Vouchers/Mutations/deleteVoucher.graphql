@@ -1,0 +1,8 @@
+mutation DeleteVoucher($id: ID!) {
+  deleteVoucher(id: $id) {
+    code
+    message
+    date
+    data
+  }
+}

@@ -1,0 +1,8 @@
+mutation AddTask($input: TaskInput!) {
+  addTask(input: $input) {
+    code
+    message
+    date
+    data
+  }
+}

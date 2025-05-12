@@ -1,0 +1,49 @@
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    password: String!
+    username: String!
+}
+
+type UserPage {
+    code: String
+    data: [User]
+    date: String
+    totalPages: Int
+    totalItems: Int
+    currentPage: Int
+    message: String
+}
+
+type UserPageId {
+    data: User
+    date: String
+    code: String
+    message: String
+}
+
+input UserInput {
+    name: String!
+    email: String!
+    password: String!
+    username: String!
+}
+
+input UserUpdateInput {
+    name: String!
+    email: String!
+    password: String!
+    username: String!
+}
+
+extend type Query {
+    allUsers(page: Int!, size: Int!): UserPage
+    userById(id: ID!): UserPageId
+}
+
+extend type Mutation {
+    addUser(input: UserInput): Response
+    updateUser(id: ID!, input: UserUpdateInput): Response
+    deleteUser(id: ID!): Response
+}

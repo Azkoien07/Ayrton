@@ -1,0 +1,8 @@
+mutation UpdatePlan($id: ID!, $input: PlanUpdateInput!) {
+  updatePlan(id: $id, input: $input) {
+    code
+    message
+    date
+    data
+  }
+}

@@ -45,7 +45,7 @@ public class RoleService implements Idao<RoleEntity,Long> {
     @Transactional
     @Override
     public RoleEntity create(RoleEntity entity) {
-        if (entity.getId() == null || !roleRepository.existsById(entity.getId())) {
+        if (entity.getId() != null && roleRepository.existsById(entity.getId())) {
             throw new IllegalArgumentException("El rol con ID " + entity.getId() + " ya existe.");
         }
         return roleRepository.save(entity);
@@ -55,7 +55,7 @@ public class RoleService implements Idao<RoleEntity,Long> {
     @Transactional
     @Override
     public RoleEntity update(RoleEntity entity) {
-        if (entity.getId() != null && roleRepository.existsById(entity.getId())) {
+        if (entity.getId() == null || !roleRepository.existsById(entity.getId())) {
             throw new IllegalArgumentException("No se puede actualizar un rol que no existe o sin ID.");
         }
         return roleRepository.save(entity);

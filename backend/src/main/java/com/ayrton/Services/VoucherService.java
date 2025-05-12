@@ -43,7 +43,7 @@ public class VoucherService implements Idao<VoucherEntity,Long> {
     @Transactional
     @Override
     public VoucherEntity create(VoucherEntity entity) {
-        if (entity.getId() == null || !voucherRepository.existsById(entity.getId())) {
+        if (entity.getId() != null && voucherRepository.existsById(entity.getId())) {
             throw new IllegalArgumentException("El voucher con ID " + entity.getId() + " ya existe.");
         }
         return voucherRepository.save(entity);
@@ -53,7 +53,7 @@ public class VoucherService implements Idao<VoucherEntity,Long> {
     @Transactional
     @Override
     public VoucherEntity update(VoucherEntity entity) {
-        if (entity.getId() != null && voucherRepository.existsById(entity.getId())) {
+        if (entity.getId() == null || !voucherRepository.existsById(entity.getId())) {
             throw new IllegalArgumentException("No se puede actualizar un voucher que no existe o sin ID.");
         }
         return voucherRepository.save(entity);

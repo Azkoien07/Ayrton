@@ -1,0 +1,8 @@
+mutation AddRanking($input: RankingInput!) {
+  addRanking(input: $input) {
+    code
+    message
+    date
+    data
+  }
+}

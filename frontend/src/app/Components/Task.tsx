@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useQuery, gql } from '@apollo/client';
-import GET_PAYMENT_BY_ID from '@graphql/Querys/paymentById.graphql';
+import GET_PAYMENT_BY_ID from '@graphql/Payments/Querys/paymentById.graphql';
 
 const Task = () => {
     const [paymentId, setPaymentId] = useState('');

@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,7 +31,14 @@ public class TaskDto {
     private TaskEntity.TypeTask TypeTask;
 
     @NotNull(message = "El estado de la tarea no puede ser nulo.")
-    private String state;
+    private Boolean state;
+
+    private LocalDateTime fCreation;
+
+    @NotNull(message = "La fecha de expiración no puede ser nula.")
+    private LocalDateTime fExpiration;
+
+    private LocalDateTime reminder;
 
     // Relations
     @NotNull(message = "El usuario asociado a la tarea no puede ser nulo.")

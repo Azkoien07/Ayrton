@@ -1,0 +1,8 @@
+mutation AddPayment($input: PaymentInput!) {
+  addPayment(input: $input) {
+    code
+    message
+    date
+    data
+  }
+}

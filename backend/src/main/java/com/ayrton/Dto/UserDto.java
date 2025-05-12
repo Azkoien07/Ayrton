@@ -11,11 +11,16 @@ import lombok.NoArgsConstructor;
 public class UserDto {
     private Long id;
 
-    @NotNull(message = "El nombre de usuario no puede ser nulo.")
-    private String username;
+    @NotNull(message = "El nombre no puede ser nulo")
+    private String name;
 
     @NotNull(message = "El correo electrónico no puede ser nulo.")
     private String email;
+    @NotNull(message = "La contrasña del usuario no puede ser nula")
+    private String password;
+
+    @NotNull(message = "El nombre de usuario no puede ser nulo.")
+    private String username;
 
     // Relations
     @NotNull(message = "La tarea asociada al usuario no puede ser nula.")

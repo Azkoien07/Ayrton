@@ -1,0 +1,16 @@
+query GetVoucherById($id: ID!) {
+  voucherById(id: $id) {
+    data {
+      id
+      code
+      payment {
+        id
+        purchaseAmount
+        paymentMethod
+      }
+    }
+    date
+    code
+    message
+  }
+}

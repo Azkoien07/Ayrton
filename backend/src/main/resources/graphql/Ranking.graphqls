@@ -1,0 +1,43 @@
+type Ranking {
+    id: ID!
+    level: Int!
+    position: Int!
+}
+
+type RankingPage {
+    code: String
+    data: [Ranking]
+    date: String
+    totalPages: Int
+    totalItems: Int
+    currentPage: Int
+    message: String
+}
+
+type RankingPageId {
+    data: Ranking
+    date: String
+    code: String
+    message: String
+}
+
+input RankingInput {
+    level: Int!
+    position: Int!
+}
+
+input RankingUpdateInput {
+    level: Int!
+    position: Int!
+}
+
+extend type Query {
+    allRankings(page: Int!, size: Int!): RankingPage
+    rankingById(id: ID!): RankingPageId
+}
+
+extend type Mutation {
+    addRanking(input: RankingInput): Response
+    updateRanking(id: ID!, input: RankingUpdateInput): Response
+    deleteRanking(id: ID!): Response
+}

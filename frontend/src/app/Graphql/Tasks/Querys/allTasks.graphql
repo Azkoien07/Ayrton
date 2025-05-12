@@ -1,0 +1,20 @@
+query GetTasks($page: Int!, $size: Int!) {
+  allTasks(page: $page, size: $size) {
+    code
+    data {
+      id
+      name
+      description
+      priority
+      typeTask
+      state
+      fCreation
+      fExpiration
+      reminder
+    }
+    totalPages
+    totalItems
+    currentPage
+    message
+  }
+}

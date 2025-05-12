@@ -1,0 +1,8 @@
+mutation UpdateTask($id: ID!, $input: TaskUpdateInput!) {
+  updateTask(id: $id, input: $input) {
+    code
+    message
+    date
+    data
+  }
+}

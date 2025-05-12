@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { cn } from '@lib/utils';
+import { cn } from '@/app/Utilities/utils';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
 
 const Dashboard = ({ role }: DashboardProps) => {

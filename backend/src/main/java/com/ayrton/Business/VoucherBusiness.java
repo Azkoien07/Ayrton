@@ -29,7 +29,7 @@ public class VoucherBusiness {
             Page<VoucherEntity> voucherEntityPage = voucherService.findAll(pageRequest);
             return voucherEntityPage.map(entity -> modelMapper.map(entity, VoucherDto.class));
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Vouchers: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -39,7 +39,7 @@ public class VoucherBusiness {
             VoucherEntity voucher = voucherService.getById(id);
             return modelMapper.map(voucher, VoucherDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Voucher: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -49,7 +49,7 @@ public class VoucherBusiness {
             VoucherEntity voucherEnity = modelMapper.map(voucherDto, VoucherEntity.class);
             return modelMapper.map(voucherService.create(voucherEnity), VoucherDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error adding Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error adding Voucher: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -60,7 +60,7 @@ public class VoucherBusiness {
             VoucherEntity voucherEntity = modelMapper.map(voucherDto, VoucherEntity.class);
             voucherService.update(voucherEntity);
         } catch (Exception e) {
-            throw new CustomException("Error updating Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error updating Voucher: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -69,7 +69,7 @@ public class VoucherBusiness {
         try{
             voucherService.delete(id);
         } catch (Exception e) {
-            throw new CustomException("Error deleting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error deleting Voucher: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

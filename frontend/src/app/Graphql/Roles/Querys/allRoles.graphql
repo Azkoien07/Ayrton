@@ -1,0 +1,14 @@
+query GetRoles($page: Int!, $size: Int!) {
+  allRoles(page: $page, size: $size) {
+    code
+    data {
+      id
+      name
+      accessLevel
+    }
+    totalPages
+    totalItems
+    currentPage
+    message
+  }
+}

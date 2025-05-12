@@ -31,7 +31,7 @@ public class RankingBusiness {
             Page<RankingEntity> rankingEntityPage = rankingService.findAll(pageRequest);
             return rankingEntityPage.map(entity -> modelMapper.map(entity, RankingDto.class));
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Rankings: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -41,7 +41,7 @@ public class RankingBusiness {
             RankingEntity ranking = rankingService.getById(id);
             return modelMapper.map(ranking, RankingDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Ranking: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -51,7 +51,7 @@ public class RankingBusiness {
             RankingEntity rankingEntity = modelMapper.map(rankingDto, RankingEntity.class);
             return modelMapper.map(rankingService.create(rankingEntity), RankingDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error adding Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error adding Ranking: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -62,7 +62,7 @@ public class RankingBusiness {
             RankingEntity rankingEntity = modelMapper.map(rankingDto, RankingEntity.class);
             rankingService.update(rankingEntity);
         } catch (Exception e) {
-            throw new CustomException("Error updating Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error updating Ranking: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -71,7 +71,7 @@ public class RankingBusiness {
         try {
             rankingService.delete(id);
         } catch (Exception e) {
-            throw new CustomException("Error deleting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error deleting Ranking: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

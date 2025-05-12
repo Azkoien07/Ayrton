@@ -42,7 +42,7 @@ public class ChallengeBusiness {
             ChallengeEntity payment = challengeService.getById(id);
             return modelMapper.map(payment, ChallengeDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Challenge: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -52,7 +52,7 @@ public class ChallengeBusiness {
             ChallengeEntity challengeEntity = modelMapper.map(challengeDto, ChallengeEntity.class);
             return modelMapper.map(challengeService.create(challengeEntity), ChallengeDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error adding Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error adding Challenge: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -63,7 +63,7 @@ public class ChallengeBusiness {
             ChallengeEntity challengeEntity = modelMapper.map(challengeDto, ChallengeEntity.class);
             challengeService.update(challengeEntity);
         } catch (Exception e) {
-            throw new CustomException("Error updating Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error updating Challenge: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -72,7 +72,7 @@ public class ChallengeBusiness {
         try{
             challengeService.getById(id);
         } catch (Exception e) {
-            throw new CustomException("Error deleting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error deleting Challenge: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

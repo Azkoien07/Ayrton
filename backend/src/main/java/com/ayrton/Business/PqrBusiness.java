@@ -27,7 +27,7 @@ public class PqrBusiness {
             Page<PqrEntity> pqrEntityPage = pqrService.findAll(pageRequest);
             return pqrEntityPage.map(entity -> modelMapper.map(entity, PqrDto.class));
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Pqrs: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -37,7 +37,7 @@ public class PqrBusiness {
             PqrEntity pqr = pqrService.getById(id);
             return modelMapper.map(pqr, PqrDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Pqr: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -47,7 +47,7 @@ public class PqrBusiness {
             PqrEntity pqrEntity = modelMapper.map(pqrDto, PqrEntity.class);
             return modelMapper.map(pqrService.create(pqrEntity), PqrDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error adding Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error adding Pqr: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -58,7 +58,7 @@ public class PqrBusiness {
             PqrEntity pqrEntity = modelMapper.map(pqrDto, PqrEntity.class);
             pqrService.update(pqrEntity);
         } catch (Exception e) {
-            throw new CustomException("Error updating Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error updating Pqr: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -67,7 +67,7 @@ public class PqrBusiness {
         try {
             pqrService.delete(id);
         } catch (Exception e) {
-            throw new CustomException("Error deleting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error deleting Pqr: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

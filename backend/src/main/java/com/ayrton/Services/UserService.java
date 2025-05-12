@@ -44,8 +44,8 @@ public class UserService implements Idao<UserEntity,Long> {
     @Transactional
     @Override
     public UserEntity create(UserEntity entity) {
-        if (entity.getId() == null || !userRepository.existsById(entity.getId())) {
-            throw new IllegalArgumentException("El usuario con ID " + entity.getId() + " ya existe.");
+        if (entity.getId() != null && userRepository.existsById(entity.getId())) {
+            throw new IllegalArgumentException("El user con ID " + entity.getId() + " ya existe.");
         }
         return userRepository.save(entity);
     }
@@ -54,12 +54,10 @@ public class UserService implements Idao<UserEntity,Long> {
     @Transactional
     @Override
     public UserEntity update(UserEntity entity) {
-        // Aseguramos que tenga ID (para evitar crear en update)
-        if (entity.getId() != null && userRepository.existsById(entity.getId())) {
-            return userRepository.save(entity);
-        } else {
+        if (entity.getId() == null || !userRepository.existsById(entity.getId())) {
             throw new IllegalArgumentException("No se puede actualizar un usuario que no existe o sin ID.");
         }
+        return userRepository.save(entity);
     }
 
     // Delete

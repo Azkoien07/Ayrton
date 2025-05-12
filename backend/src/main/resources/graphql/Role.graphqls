@@ -1,0 +1,43 @@
+type Role {
+    id: ID!
+    name: String!
+    accessLevel: Int!
+}
+
+type RolePage {
+    code: String
+    data: [Role]
+    date: String
+    totalPages: Int
+    totalItems: Int
+    currentPage: Int
+    message: String
+}
+
+type RolePageId {
+    data: Role
+    date: String
+    code: String
+    message: String
+}
+
+input RoleInput {
+    name: String!
+    accessLevel: Int!
+}
+
+input RoleUpdateInput {
+    name: String!
+    accessLevel: Int!
+}
+
+extend type Query {
+    allRoles(page: Int!, size: Int!): RolePage
+    roleById(id: ID!): RolePageId
+}
+
+extend type Mutation {
+    addRole(input: RoleInput): Response
+    updateRole(id: ID!, input: RoleUpdateInput): Response
+    deleteRole(id: ID!): Response
+}

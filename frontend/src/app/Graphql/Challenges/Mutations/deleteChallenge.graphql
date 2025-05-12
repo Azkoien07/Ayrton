@@ -1,0 +1,8 @@
+mutation DeleteChallenge($id: ID!) {
+  deleteChallenge(id: $id) {
+    code
+    message
+    date
+    data
+  }
+}

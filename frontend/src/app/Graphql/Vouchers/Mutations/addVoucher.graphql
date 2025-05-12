@@ -1,0 +1,8 @@
+mutation AddVoucher($input: VoucherInput!) {
+  addVoucher(input: $input) {
+    code
+    message
+    date
+    data
+  }
+}

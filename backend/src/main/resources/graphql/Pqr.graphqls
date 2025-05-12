@@ -1,0 +1,61 @@
+type Pqr {
+    id: ID!
+    typePqr: TypePqr!
+    title: String!
+    description: String!
+    argument: String!
+    answer: String!
+    state: Boolean!
+}
+
+enum TypePqr {
+    Peticion
+    Queja
+    Reclamo
+}
+
+type PqrPage {
+    code: String
+    data: [Pqr]
+    date: String
+    totalPages: Int
+    totalItems: Int
+    currentPage: Int
+    message: String
+}
+
+type PqrPageId {
+    data: Pqr
+    date: String
+    code: String
+    message: String
+}
+
+input PqrInput {
+    typePqr: TypePqr!
+    title: String!
+    description: String!
+    argument: String!
+    answer: String!
+    state: Boolean!
+}
+
+input PqrUpdateInput {
+    typePqr: TypePqr!
+    title: String!
+    description: String!
+    argument: String!
+    answer: String!
+    state: Boolean!
+}
+
+extend type Query {
+    allPqrs(page: Int!, size: Int!): PqrPage
+    pqrById(id: ID!): PqrPageId
+}
+
+extend type Mutation {
+    addPqr(input: PqrInput): Response
+    updatePqr(id: ID!, input: PqrUpdateInput): Response
+    deletePqr(id: ID!): Response
+}

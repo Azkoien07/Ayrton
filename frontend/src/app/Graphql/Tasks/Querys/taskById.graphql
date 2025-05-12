@@ -1,0 +1,18 @@
+query GetTaskById($id: ID!) {
+  taskById(id: $id) {
+    data {
+      id
+      name
+      description
+      priority
+      typeTask
+      state
+      fCreation
+      fExpiration
+      reminder
+    }
+    date
+    code
+    message
+  }
+}

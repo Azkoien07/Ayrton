@@ -1,0 +1,8 @@
+mutation UpdatePqr($id: ID!, $input: PqrUpdateInput!) {
+  updatePqr(id: $id, input: $input) {
+    code
+    message
+    date
+    data
+  }
+}

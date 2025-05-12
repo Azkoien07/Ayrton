@@ -1,5 +1,8 @@
 package com.ayrton.Dto;
 
+import com.ayrton.Entity.PqrEntity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,8 +14,9 @@ import lombok.NoArgsConstructor;
 public class PqrDto {
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @NotNull(message = "El tipo de PQR no puede ser nulo.")
-    private String typePqr;
+    private PqrEntity.TypePqr typePqr;
 
     @NotNull(message = "El título de la PQR no puede ser nulo.")
     private String title;
@@ -27,7 +31,7 @@ public class PqrDto {
     private String answer;
 
     @NotNull(message = "El estado de la PQR no puede ser nulo.")
-    private String state;
+    private Boolean state;
 
     // Relations
     @NotNull(message = "El usuario asociado a la PQR no puede ser nulo.")

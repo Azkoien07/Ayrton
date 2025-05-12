@@ -28,7 +28,7 @@ public class PaymentBusiness {
             Page<PaymentEntity> paymentEntityPage = paymentServices.findAll(pageRequest);
             return paymentEntityPage.map(entity -> modelMapper.map(entity, PaymentDto.class));
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Payments: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -38,7 +38,7 @@ public class PaymentBusiness {
             PaymentEntity payment = paymentServices.getById(id);
             return modelMapper.map(payment, PaymentDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Payment: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -48,7 +48,7 @@ public class PaymentBusiness {
             PaymentEntity paymentEntity = modelMapper.map(paymentDto, PaymentEntity.class);
             return modelMapper.map(paymentServices.create(paymentEntity), PaymentDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error adding Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error adding Payment: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -59,7 +59,7 @@ public class PaymentBusiness {
             PaymentEntity paymentEntity = modelMapper.map(paymentDto, PaymentEntity.class);
             paymentServices.update(paymentEntity);
         } catch (Exception e) {
-            throw new CustomException("Error updating Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error updating Payment: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -68,7 +68,7 @@ public class PaymentBusiness {
         try {
             paymentServices.delete(id);
         } catch (Exception e) {
-            throw new CustomException("Error deleting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error deleting Payment: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

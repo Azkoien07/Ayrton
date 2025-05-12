@@ -1,0 +1,12 @@
+query GetRoleById($id: ID!) {
+  roleById(id: $id) {
+    data {
+      id
+      name
+      accessLevel
+    }
+    date
+    code
+    message
+  }
+}

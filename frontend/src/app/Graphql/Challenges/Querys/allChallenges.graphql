@@ -1,0 +1,17 @@
+query GetChallenges($page: Int!, $size: Int!) {
+  allChallenges(page: $page, size: $size) {
+    code
+    data {
+      id
+      name
+      description
+      category
+      state
+      dificulty
+    }
+    totalPages
+    totalItems
+    currentPage
+    message
+  }
+}

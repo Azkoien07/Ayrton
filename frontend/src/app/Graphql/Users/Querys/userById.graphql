@@ -1,0 +1,13 @@
+query GetUserById($id: ID!) {
+  userById(id: $id) {
+    data {
+      id
+      name
+      email
+      username
+    }
+    date
+    code
+    message
+  }
+}

@@ -1,0 +1,18 @@
+query GetVouchers($page: Int!, $size: Int!) {
+  allVouchers(page: $page, size: $size) {
+    code
+    data {
+      id
+      code
+      payment {
+        id
+        purchaseAmount
+        paymentMethod
+      }
+    }
+    totalPages
+    totalItems
+    currentPage
+    message
+  }
+}

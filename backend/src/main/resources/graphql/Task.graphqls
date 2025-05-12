@@ -1,0 +1,72 @@
+type Task {
+    id: ID!
+    name: String!
+    description: String!
+    priority: Priority!
+    typeTask: TypeTask!
+    state: Boolean!
+    fCreation: String!
+    fExpiration: String!
+    reminder: String
+}
+enum Priority {
+    Baja
+    Media
+    Alta
+}
+
+enum TypeTask {
+    Personal,
+    Laboral,
+    Educativa
+}
+
+type TaskPage {
+    code: String
+    data: [Task]
+    date: String
+    totalPages: Int
+    totalItems: Int
+    currentPage: Int
+    message: String
+}
+
+type TaskPageId {
+    data: Task
+    date: String
+    code: String
+    message: String
+}
+
+input TaskInput {
+    name: String!
+    description: String!
+    priority: Priority!
+    typeTask: TypeTask!
+    state: Boolean!
+    fCreation: String!
+    fExpiration: String!
+    reminder: String
+}
+
+input TaskUpdateInput {
+    name: String!
+    description: String!
+    priority: Priority!
+    typeTask: TypeTask!
+    state: Boolean!
+    fCreation: String!
+    fExpiration: String!
+    reminder: String
+}
+
+extend type Query {
+    allTasks(page: Int!, size: Int!): TaskPage
+    taskById(id: ID!): TaskPageId
+}
+
+extend type Mutation {
+    addTask(input: TaskInput): Response
+    updateTask(id: ID!, input: TaskUpdateInput): Response
+    deleteTask(id: ID!): Response
+}

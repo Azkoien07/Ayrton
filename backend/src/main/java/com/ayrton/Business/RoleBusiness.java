@@ -26,7 +26,7 @@ public class RoleBusiness {
             Page<RoleEntity> roleEntityPage = roleService.findAll(pageRequest);
             return roleEntityPage.map(entity -> modelMapper.map(entity, RoleDto.class));
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Roles: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -36,7 +36,7 @@ public class RoleBusiness {
             RoleEntity role = roleService.getById(id);
             return modelMapper.map(role, RoleDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Role: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -46,7 +46,7 @@ public class RoleBusiness {
             RoleEntity roleEntity = modelMapper.map(roleDto, RoleEntity.class);
             return modelMapper.map(roleService.create(roleEntity), RoleDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error adding Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error adding Role: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -57,7 +57,7 @@ public class RoleBusiness {
             RoleEntity roleEntity = modelMapper.map(roleDto, RoleEntity.class);
             roleService.update(roleEntity);
         } catch (Exception e) {
-            throw new CustomException("Error updating Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error updating Role: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -66,7 +66,7 @@ public class RoleBusiness {
         try{
             roleService.delete(id);
         } catch (Exception e) {
-            throw new CustomException("Error deleting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error deleting Role: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

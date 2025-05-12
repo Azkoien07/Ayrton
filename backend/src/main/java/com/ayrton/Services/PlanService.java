@@ -37,7 +37,7 @@ public class PlanService implements Idao<PlanEntity,Long> {
     @Transactional
     @Override
     public PlanEntity create(PlanEntity entity) {
-        if (entity.getId() == null || !planRepository.existsById(entity.getId())) {
+        if (entity.getId() != null && planRepository.existsById(entity.getId())) {
             throw new IllegalArgumentException("El plan con ID " + entity.getId() + " ya existe.");
         }
         return planRepository.save(entity);
@@ -46,7 +46,7 @@ public class PlanService implements Idao<PlanEntity,Long> {
     @Transactional
     @Override
     public PlanEntity update(PlanEntity entity) {
-        if (entity.getId() != null && planRepository.existsById(entity.getId())) {
+        if (entity.getId() == null || !planRepository.existsById(entity.getId())) {
             throw new IllegalArgumentException("No se puede actualizar un plan que no existe o sin ID.");
         }
         return planRepository.save(entity);

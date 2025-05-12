@@ -42,8 +42,8 @@ public class TaskService implements Idao<TaskEntity,Long> {
     @Transactional
     @Override
     public TaskEntity create(TaskEntity entity) {
-        if (entity.getId() == null || !taskRepository.existsById(entity.getId())) {
-            throw new IllegalArgumentException("La tarea con ID " + entity.getId() + " ya existe.");
+        if (entity.getId() != null && taskRepository.existsById(entity.getId())) {
+            throw new IllegalArgumentException("La task con ID " + entity.getId() + " ya existe.");
         }
         return taskRepository.save(entity);
     }
@@ -52,7 +52,7 @@ public class TaskService implements Idao<TaskEntity,Long> {
     @Transactional
     @Override
     public TaskEntity update(TaskEntity entity) {
-        if (entity.getId() != null && taskRepository.existsById(entity.getId())) {
+        if (entity.getId() == null || !taskRepository.existsById(entity.getId())) {
             throw new IllegalArgumentException("No se puede actualizar una tarea que no existe o sin ID.");
         }
         return taskRepository.save(entity);

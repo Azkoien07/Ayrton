@@ -27,7 +27,7 @@ public class UserBusiness {
             Page<UserEntity> userEntityPage = userService.findAll(pageRequest);
             return userEntityPage.map(entity -> modelMapper.map(entity, UserDto.class));
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Users: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -37,7 +37,7 @@ public class UserBusiness {
             UserEntity user = userService.getById(id);
             return modelMapper.map(user, UserDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting User: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -47,7 +47,7 @@ public class UserBusiness {
             UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
             return modelMapper.map(userService.create(userEntity), UserDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error adding Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error adding User: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -58,7 +58,7 @@ public class UserBusiness {
             UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
             userService.update(userEntity);
         } catch (Exception e) {
-            throw new CustomException("Error updating Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error updating User: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -67,7 +67,7 @@ public class UserBusiness {
         try{
             userService.delete(id);
         } catch (Exception e) {
-            throw new CustomException("Error deleting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error deleting User: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

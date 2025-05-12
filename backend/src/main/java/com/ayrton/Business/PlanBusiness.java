@@ -28,7 +28,7 @@ public class PlanBusiness {
             Page<PlanEntity> planEntityPage = planService.findAll(pageRequest);
             return planEntityPage.map(entity -> modelMapper.map(entity, PlanDto.class));
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Plans: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -38,7 +38,7 @@ public class PlanBusiness {
             PlanEntity plan = planService.getById(id);
             return modelMapper.map(plan, PlanDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Plan: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -48,7 +48,7 @@ public class PlanBusiness {
             PlanEntity planEntity = modelMapper.map(planDto, PlanEntity.class);
             return modelMapper.map(planService.create(planEntity), PlanDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error adding Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error adding Plan: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -59,7 +59,7 @@ public class PlanBusiness {
             PlanEntity planEntity = modelMapper.map(planDto, PlanEntity.class);
             planService.update(planEntity);
         } catch (Exception e) {
-            throw new CustomException("Error updating Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error updating Plan: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -68,7 +68,7 @@ public class PlanBusiness {
         try{
             planService.getById(id);
         } catch (Exception e) {
-            throw new CustomException("Error deleting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error deleting Plan: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

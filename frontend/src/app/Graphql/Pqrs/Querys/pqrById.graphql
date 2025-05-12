@@ -1,0 +1,16 @@
+query GetPqrById($id: ID!) {
+  pqrById(id: $id) {
+    data {
+      id
+      typePqr
+      title
+      description
+      argument
+      answer
+      state
+    }
+    date
+    code
+    message
+  }
+}

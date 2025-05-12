@@ -18,7 +18,6 @@ public class PaymentDto {
     private double purchaseAmount;
 
     @NotNull(message = "El método de pago no puede ser nulo.")
-
     @Enumerated(EnumType.STRING)
     private PaymentEntity.PaymentMethod paymentMethod;
 

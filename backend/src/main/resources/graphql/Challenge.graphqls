@@ -1,0 +1,64 @@
+type Challenge {
+    id: ID!
+    name: String!
+    description: String!
+    category: Category!
+    state: Boolean!
+    dificulty: Dificulty!
+}
+
+enum Category {
+    Desarrollo,
+    Productividad,
+    Eficiencia
+}
+
+enum Dificulty {
+    Baja,
+    Intermedia,
+    Alta
+}
+
+type ChallengePage {
+    code: String
+    data: [Challenge]
+    date: String
+    totalPages: Int
+    totalItems: Int
+    currentPage: Int
+    message: String
+}
+
+type ChallengePageId {
+    data: Challenge
+    date: String
+    code: String
+    message: String
+}
+
+input ChallengeInput {
+    name: String!
+    description: String!
+    category: Category!
+    state: Boolean!
+    dificulty: Dificulty!
+}
+
+input ChallengeUpdateInput {
+    name: String!
+    description: String!
+    category: Category!
+    state: Boolean!
+    dificulty: Dificulty!
+}
+
+extend type Query {
+    allChallenges(page: Int!, size: Int!): ChallengePage
+    challengeById(id: ID!): ChallengePageId
+}
+
+extend type Mutation {
+    addChallenge(input: ChallengeInput): Response
+    updateChallenge(id: ID!, input: ChallengeUpdateInput): Response
+    deleteChallenge(id: ID!): Response
+}

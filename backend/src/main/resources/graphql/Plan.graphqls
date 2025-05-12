@@ -1,0 +1,52 @@
+type Plan {
+    id: ID!
+    name: String!
+    description: String!
+    price: Float!
+    state: Boolean!
+    duration: Int!
+}
+
+type PlanPage {
+    code: String
+    data: [Plan]
+    date: String
+    totalPages: Int
+    totalItems: Int
+    currentPage: Int
+    message: String
+}
+
+type PlanPageId {
+    data: Plan
+    date: String
+    code: String
+    message: String
+}
+
+input PlanInput {
+    name: String!
+    description: String!
+    price: Float!
+    state: Boolean!
+    duration: Int!
+}
+
+input PlanUpdateInput {
+    name: String!
+    description: String!
+    price: Float!
+    state: Boolean!
+    duration: Int!
+}
+
+extend type Query {
+    allPlans(page: Int!, size: Int!): PlanPage
+    planById(id: ID!): PlanPageId
+}
+
+extend type Mutation {
+    addPlan(input: PlanInput): Response
+    updatePlan(id: ID!, input: PlanUpdateInput): Response
+    deletePlan(id: ID!): Response
+}

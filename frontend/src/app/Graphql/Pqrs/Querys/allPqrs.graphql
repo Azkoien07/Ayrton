@@ -1,0 +1,18 @@
+query GetPqrs($page: Int!, $size: Int!) {
+  allPqrs(page: $page, size: $size) {
+    code
+    data {
+      id
+      typePqr
+      title
+      description
+      argument
+      answer
+      state
+    }
+    totalPages
+    totalItems
+    currentPage
+    message
+  }
+}

@@ -28,7 +28,7 @@ public class TaskBusiness {
             Page<TaskEntity> taskEntityPage = taskService.findAll(pageRequest);
             return taskEntityPage.map(entity -> modelMapper.map(entity, TaskDto.class));
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Tasks: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -38,7 +38,7 @@ public class TaskBusiness {
             TaskEntity task = taskService.getById(id);
             return modelMapper.map(task, TaskDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error getting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error getting Task: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -48,7 +48,7 @@ public class TaskBusiness {
             TaskEntity taskEntity = modelMapper.map(taskDto, TaskEntity.class);
             return modelMapper.map(taskService.create(taskEntity), TaskDto.class);
         } catch (Exception e) {
-            throw new CustomException("Error adding Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error adding Task: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -59,7 +59,7 @@ public class TaskBusiness {
             TaskEntity taskEntity = modelMapper.map(taskDto, TaskEntity.class);
             taskService.update(taskEntity);
         } catch (Exception e) {
-            throw new CustomException("Error updating Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error updating Task: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -68,7 +68,7 @@ public class TaskBusiness {
         try{
             taskService.delete(id);
         } catch (Exception e) {
-            throw new CustomException("Error deleting Administrative: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw new CustomException("Error deleting Task: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

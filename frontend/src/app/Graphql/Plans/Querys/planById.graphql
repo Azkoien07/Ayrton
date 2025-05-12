@@ -1,0 +1,15 @@
+query GetPlanById($id: ID!) {
+  planById(id: $id) {
+    data {
+      id
+      name
+      description
+      price
+      state
+      duration
+    }
+    date
+    code
+    message
+  }
+}
