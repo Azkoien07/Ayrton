@@ -1,8 +1,0 @@
-mutation UpdateVoucher($id: ID!, $input: VoucherUpdateInput!) {
-  updateVoucher(id: $id, input: $input) {
-    code
-    message
-    date
-    data
-  }
-}

@@ -1,8 +1,0 @@
-mutation DeletePlan($id: ID!) {
-  deletePlan(id: $id) {
-    code
-    message
-    date
-    data
-  }
-}

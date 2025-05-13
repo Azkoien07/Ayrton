@@ -1,8 +1,0 @@
-mutation AddRole($input: RoleInput!) {
-  addRole(input: $input) {
-    code
-    message
-    date
-    data
-  }
-}

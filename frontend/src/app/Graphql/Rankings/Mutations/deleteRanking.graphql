@@ -1,8 +1,0 @@
-mutation DeleteRanking($id: ID!) {
-  deleteRanking(id: $id) {
-    code
-    message
-    date
-    data
-  }
-}

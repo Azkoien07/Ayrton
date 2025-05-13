@@ -1,8 +1,0 @@
-mutation AddChallenge($input: ChallengeInput!) {
-  addChallenge(input: $input) {
-    code
-    message
-    date
-    data
-  }
-}

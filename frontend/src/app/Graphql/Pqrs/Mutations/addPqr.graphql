@@ -1,8 +1,0 @@
-mutation AddPqr($input: PqrInput!) {
-  addPqr(input: $input) {
-    code
-    message
-    date
-    data
-  }
-}

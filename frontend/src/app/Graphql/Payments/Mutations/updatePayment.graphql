@@ -1,8 +1,0 @@
-mutation UpdatePayment($id: ID!, $input: PaymentUpdateInput!) {
-  updatePayment(id: $id, input: $input) {
-    code
-    message
-    date
-    data
-  }
-}

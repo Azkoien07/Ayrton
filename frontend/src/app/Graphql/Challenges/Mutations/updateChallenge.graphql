@@ -1,8 +1,0 @@
-mutation UpdateChallenge($id: ID!, $input: ChallengeUpdateInput!) {
-  updateChallenge(id: $id, input: $input) {
-    code
-    message
-    date
-    data
-  }
-}

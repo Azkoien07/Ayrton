@@ -1,8 +1,0 @@
-mutation DeletePayment($id: ID!) {
-  deletePayment(id: $id) {
-    code
-    message
-    date
-    data
-  }
-}

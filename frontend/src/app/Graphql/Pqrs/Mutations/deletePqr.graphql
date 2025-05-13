@@ -1,8 +1,0 @@
-mutation DeletePqr($id: ID!) {
-  deletePqr(id: $id) {
-    code
-    message
-    date
-    data
-  }
-}

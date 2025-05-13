@@ -1,8 +1,0 @@
-mutation AddUser($input: UserInput!) {
-  addUser(input: $input) {
-    code
-    message
-    date
-    data
-  }
-}

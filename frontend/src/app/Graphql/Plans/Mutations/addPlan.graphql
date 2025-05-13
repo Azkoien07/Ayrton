@@ -1,8 +1,0 @@
-mutation AddPlan($input: PlanInput!) {
-  addPlan(input: $input) {
-    code
-    message
-    date
-    data
-  }
-}

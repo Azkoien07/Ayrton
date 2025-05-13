@@ -1,8 +1,0 @@
-mutation UpdateRanking($id: ID!, $input: RankingUpdateInput!) {
-  updateRanking(id: $id, input: $input) {
-    code
-    message
-    date
-    data
-  }
-}
