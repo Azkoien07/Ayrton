@@ -11,7 +11,7 @@ public class ResponseHttp {
     public static final String CODE_BAD = "400";
     public static final String NO_CONTENT = "204";
 
-    //findAll
+    // FindAll
     public static Map<String, Object> responseHttpFindAll(Object data, String code, String msm, int size, int page, int items) {
         Map<String, Object> response = new HashMap<>();
         response.put("date", new Date());
@@ -35,7 +35,7 @@ public class ResponseHttp {
         return response;
     }
 
-    //findById
+    // FindById
     public static Map<String, Object> responseHttpFindId(Object data, String code, String msm) {
 
         Map<String, Object> response = new HashMap<>();
@@ -47,7 +47,7 @@ public class ResponseHttp {
         return response;
     }
 
-    //Post, Put and Delete
+    // Post, Put and Delete
     public static Map<String, Object> responseHttpAction(Long data, String code, String msm) {
 
         Map<String, Object> response = new HashMap<>();
@@ -58,7 +58,7 @@ public class ResponseHttp {
         return response;
     }
 
-    //Error
+    // Error
     public static Map<String, Object> responseHttpError(String message, HttpStatus codeMessage) {
         Map<String, Object> response = new HashMap<>();
 
