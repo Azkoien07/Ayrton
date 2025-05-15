@@ -4,16 +4,6 @@ type Voucher {
     payment: Payment!
 }
 
-input VoucherInput {
-    code: String!
-    paymentId: ID!
-}
-
-input VoucherUpdateInput {
-    code: String!
-    paymentId: ID!
-}
-
 type VoucherPage {
     code: String
     data: [Voucher]
@@ -29,6 +19,16 @@ type VoucherPageId {
     date: String
     code: String
     message: String
+}
+
+input VoucherInput {
+    code: String!
+    paymentId: ID!
+}
+
+input VoucherUpdateInput {
+    code: String!
+    paymentId: ID!
 }
 
 extend type Query {

@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const GET_ALL_RANKINGS = gql`
   query GetAllRankings($page: Int!, $size: Int!) {

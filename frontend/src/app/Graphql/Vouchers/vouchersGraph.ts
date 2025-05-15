@@ -1,4 +1,5 @@
-import { gql } from "@apollo/client";
+// voucherQueries.ts
+import { gql } from '@apollo/client';
 
 export const GET_ALL_VOUCHERS = gql`
   query GetAllVouchers($page: Int!, $size: Int!) {
@@ -85,15 +86,6 @@ export const DELETE_VOUCHER = gql`
       code
       message
       id
-      data {
-        id
-        code
-        payment {
-          id
-          purchaseAmount
-          paymentMethod
-        }
-      }
     }
   }
 `;
