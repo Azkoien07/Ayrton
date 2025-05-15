@@ -42,6 +42,7 @@ export const GET_VOUCHER_BY_ID = gql`
   }
 `;
 
+// Queries 
 export const ADD_VOUCHER = gql`
   mutation AddVoucher($input: VoucherInput!) {
     addVoucher(input: $input) {

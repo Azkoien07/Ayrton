@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+// Queries 
 export const GET_ALL_PLANS = gql`
   query GetAllPlans($page: Int!, $size: Int!) {
     allPlans(page: $page, size: $size) {

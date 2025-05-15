@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+// Queries 
 export const GET_ALL_RANKINGS = gql`
   query GetAllRankings($page: Int!, $size: Int!) {
     allRankings(page: $page, size: $size) {

@@ -1,3 +1,4 @@
+// rankingService.ts
 import { ApolloClient, NormalizedCache } from '@apollo/client';
 import { PaginationParams } from '@Types/pagination';
 import {

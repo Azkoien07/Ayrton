@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+// Queries 
 export const GET_ALL_TASKS = gql`
   query GetAllTasks($page: Int!, $size: Int!) {
     allTasks(page: $page, size: $size) {

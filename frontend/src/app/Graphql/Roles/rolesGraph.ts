@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+// Queries 
 export const GET_ALL_ROLES = gql`
   query GetAllRoles($page: Int!, $size: Int!) {
     allRoles(page: $page, size: $size) {

@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+// Queries 
 export const GET_ALL_PAYMENTS = gql`
   query GetAllPayments($page: Int!, $size: Int!) {
     allPayments(page: $page, size: $size) {

@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+// Queries 
 export const GET_ALL_PQRS = gql`
   query GetAllPqrs($page: Int!, $size: Int!) {
     allPqrs(page: $page, size: $size) {

@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+// Queries 
 export const GET_ALL_USERS = gql`
   query GetAllUsers($page: Int!, $size: Int!) {
     allUsers(page: $page, size: $size) {
