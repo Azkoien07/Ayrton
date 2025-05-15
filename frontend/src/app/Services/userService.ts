@@ -1,6 +1,7 @@
 // userService.ts
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { PaginationParams } from '@Types/pagination';
+import { UserInput, UserUpdateInput } from '@/generated/graphql';
 import {
     GET_ALL_USERS,
     GET_USER_BY_ID,
@@ -8,16 +9,6 @@ import {
     UPDATE_USER,
     DELETE_USER
 } from '@graphql/Users/usersGraph';
-
-
-interface UserInput {
-    name: string;
-    email: string;
-    password: string;
-    username: string;
-}
-
-interface UserUpdateInput extends Partial<UserInput> { }
 
 export class UserService {
     constructor(private client: ApolloClient<NormalizedCacheObject>) { }

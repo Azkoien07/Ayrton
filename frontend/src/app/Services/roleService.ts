@@ -1,5 +1,6 @@
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { PaginationParams } from '@Types/pagination';
+import { RoleInput, RoleUpdateInput } from '@/generated/graphql';
 import {
     GET_ALL_ROLES,
     GET_ROLE_BY_ID,
@@ -7,13 +8,6 @@ import {
     UPDATE_ROLE,
     DELETE_ROLE
 } from '@graphql/Roles/rolesGraph';
-
-interface RoleInput {
-    name: string;
-    accessLevel: string;
-}
-
-export interface RoleUpdateInput extends RoleInput { }
 
 export class RoleService {
     constructor(private client: ApolloClient<NormalizedCacheObject>) { }

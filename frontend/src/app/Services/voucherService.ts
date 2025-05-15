@@ -8,21 +8,12 @@ import {
     UPDATE_VOUCHER,
     DELETE_VOUCHER
 } from '@graphql/Vouchers/vouchersGraph';
+import { VoucherInput, VoucherUpdateInput } from '@/generated/graphql';
 
 export enum PaymentMethod {
     TarjetaCredito = "TarjetaCredito",
     TarjetaDebito = "TarjetaDebito",
     Paypal = "Paypal"
-}
-
-interface VoucherInput {
-    code: string;
-    paymentId: string;
-}
-
-export interface VoucherUpdateInput {
-    code: string;
-    paymentId: string;
 }
 
 export class VoucherService {

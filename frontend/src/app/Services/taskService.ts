@@ -1,6 +1,7 @@
 // taskService.ts
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { PaginationParams } from '@Types/pagination';
+import { TaskInput, TaskUpdateInput } from '@/generated/graphql';
 import {
     GET_ALL_TASKS,
     GET_TASK_BY_ID,
@@ -8,19 +9,6 @@ import {
     UPDATE_TASK,
     DELETE_TASK
 } from '@graphql/Tasks/tasksGraph';
-
-export interface TaskInput {
-    name: string;
-    description: string;
-    priority: string;
-    typeTask: string;
-    state: string;
-    fCreation: string;
-    fExpiration: string;
-    reminder: boolean;
-}
-
-export interface TaskUpdateInput extends TaskInput { }
 
 export class TaskService {
     constructor(private client: ApolloClient<NormalizedCacheObject>) { }
