@@ -7,4 +7,7 @@ dist/
 build/
 .DS_Store
 *.log
+
+# Ignorar configuración de IDEs
+.idea/
 .vscode/
