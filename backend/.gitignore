@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Ignorar configuración sensible
+src/main/resources/application.properties
