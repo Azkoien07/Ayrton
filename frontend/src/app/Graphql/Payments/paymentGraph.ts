@@ -40,11 +40,7 @@ export const ADD_PAYMENT = gql`
       code
       message
       id
-      data {
-        id
-        purchaseAmount
-        paymentMethod
-      }
+      data
     }
   }
 `;

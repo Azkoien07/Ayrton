@@ -21,6 +21,8 @@ public class VoucherBusiness {
         this.voucherService = voucherServices;
     }
 
+    // Validation Object
+
 
     // Find All
     public Page<VoucherDto> findAll(int page, int size) {

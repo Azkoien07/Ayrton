@@ -1,5 +1,5 @@
 module.exports = {
-  darkMode: 'class', // Asegura que la clase 'dark' se usa para activar el modo oscuro
+  darkMode: 'class',
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -13,32 +13,32 @@ module.exports = {
       },
       colors: {
         light: {
-          background: '#F4F4F4',    // Gris suave para fondo
-          card: '#FFFFFF',          // Blanco para tarjetas
-          text: '#2B2D42',          // Gris oscuro para texto
-          textSecondary: '#4E5D6D',
-          border: '#E0E0E0',        // Gris claro para bordes
-          primary: '#1A5A4D',       // Verde oscuro
-          secondary: '#A0A0A0',
-          accent: '#4C8A8B',        // Verde menta
-          accentSoft: '#E5F7F6',    // Verde suave
-          success: '#4CAF50',       // Verde brillante
-          warning: '#FFEB3B',
-          error: '#F44336',
+          background: '#F9FAFB',        // Blanco humo muy claro con un toque cálido
+          card: '#FFFFFF',              // Blanco puro para tarjetas
+          text: '#374151',              // Gris oscuro neutro para texto
+          textSecondary: '#6B7280',     // Gris medio para secundarios
+          border: '#D1D5DB',            // Gris claro para bordes
+          primary: '#3A5A8F',           // Azul apagado, menos brillante, más serio
+          secondary: '#5879B5',         // Azul medio para acentos
+          accent: '#8CA1C7',            // Azul pastel grisáceo
+          accentSoft: '#E5E9F3',        // Azul muy pálido para fondos
+          success: '#22C55E',           // Verde claro y fresco
+          warning: '#FBBF24',           // Amarillo dorado suave
+          error: '#EF4444',             // Rojo estándar pero sin saturar
         },
         dark: {
-          background: '#1C1C1C',    // Fondo oscuro
-          card: '#2C2C2C',          // Gris oscuro para tarjetas
-          text: '#EAEAEA',          // Texto claro
-          textSecondary: '#B0B0B0', // Gris claro para texto secundario
-          border: '#3A3A3A',        // Gris oscuro para bordes
-          primary: '#4C8A8B',       // Verde menta en modo oscuro
-          secondary: '#A0A0A0',
-          accent: '#1A5A4D',        // Verde oscuro
-          accentSoft: '#E5F7F6',
-          success: '#4CAF50',
-          warning: '#FFEB3B',
-          error: '#F44336',
+          background: '#12141A',        // Gris oscuro con un toque azulado
+          card: '#1F2233',              // Gris oscuro azulado para tarjetas
+          text: '#E5E7EB',              // Gris claro para texto
+          textSecondary: '#9CA3AF',     // Gris medio para secundarios
+          border: '#374151',            // Gris oscuro para bordes
+          primary: '#5879B5',           // Azul medio para modo oscuro
+          secondary: '#8CA1C7',         // Azul pastel para acentos
+          accent: '#3A5A8F',            // Azul apagado para detalles
+          accentSoft: '#2E3A5C',        // Azul oscuro suave
+          success: '#22C55E',
+          warning: '#FBBF24',
+          error: '#EF4444',
         }
       }
     }

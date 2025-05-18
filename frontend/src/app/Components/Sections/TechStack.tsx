@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { FaReact } from "react-icons/fa";
-import { SiTypescript, SiTailwindcss, SiJenkins, SiNextdotjs, SiGraphql } from "react-icons/si";
-import { FaJava } from "react-icons/fa";
+import { FaReact, FaJava } from "react-icons/fa";
+import { SiTypescript, SiTailwindcss, SiNextdotjs, SiGraphql } from "react-icons/si";
 
 interface TechStackItem {
     title: string;
@@ -122,14 +121,14 @@ const TechStack: React.FC = () => {
 
     return (
         <div className="dark:bg-dark-background bg-light-background dark:text-dark-text text-light-text w-full min-h-screen flex flex-col items-center justify-center p-4">
-            <h1 className={`text-4xl font-bold text-center mb-16 transition-all duration-1000 ${visible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}>
+            <h1 className={`text-5xl font-bold text-center mb-16 transition-all duration-1000 ${visible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}>
                 Integraciones y <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">Tecnologías</span>
             </h1>
 
             <div className="relative w-full max-w-5xl">
                 {/* Powered By Badge */}
                 <div className={`absolute left-1/2 top-0 transform -translate-x-1/2 dark:bg-dark-card bg-light-card dark:border-dark-border border-light-border rounded-full px-6 py-3 z-10 shadow-lg transition-all duration-1000 ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
-                    <div className="text-lg font-medium flex items-center gap-2 dark:text-dark-text text-light-text">
+                    <div className="text-2xl font-medium flex items-center gap-2 dark:text-dark-text text-light-text">
                         <svg className="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             <path d="M12 4v1M17.66 6.344l-.828.828M20.005 12.004h-1M17.66 17.664l-.828-.828M12 20.01V19M6.34 17.664l.835-.836M3.995 12.004h1.01M6 6l.835.836" />
@@ -144,7 +143,6 @@ const TechStack: React.FC = () => {
 
                         {/* Línea horizontal */}
                         <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 opacity-50"></div>
-
                         {technologies.map((tech, index) => (
                             <div key={index} className="relative flex flex-col items-center">
                                 {/* Línea vertical */}
@@ -158,7 +156,6 @@ const TechStack: React.FC = () => {
                                 />
                             </div>
                         ))}
-
                     </div>
                 </div>
             </div>
@@ -166,5 +163,4 @@ const TechStack: React.FC = () => {
         </div>
     );
 };
-
 export default TechStack;

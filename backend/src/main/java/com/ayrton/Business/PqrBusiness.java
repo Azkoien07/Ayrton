@@ -20,6 +20,8 @@ public class PqrBusiness {
         this.pqrService = pqrService;
     }
 
+    // Validation Object
+
     // Find All
     public Page<PqrDto> findAll(int page, int size ) {
         try {

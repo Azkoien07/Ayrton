@@ -20,6 +20,7 @@ public class ChallengeBusiness {
         this.challengeService = challengeService;
     }
 
+    // Validation Object
 
     // Find All
     public Page<ChallengeDto> findAll(int page, int size) {

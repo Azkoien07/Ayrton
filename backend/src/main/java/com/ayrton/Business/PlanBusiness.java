@@ -20,6 +20,7 @@ public class PlanBusiness {
         this.planService = planService;
     }
 
+    // Validation Object
 
     // Find All
     public Page<PlanDto> findAll(int page, int size) {

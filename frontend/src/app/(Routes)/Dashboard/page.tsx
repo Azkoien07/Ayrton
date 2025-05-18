@@ -1,70 +1,76 @@
 'use client';
+
 import { useState } from 'react';
-import { cn } from '@/app/Utilities/utils';
+import { cn } from '@utilities/utils';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
+import Sidebar from '@components/Sidebar';
+import DynamicIslkand from '@components/DynamicIsland';
+import Task from '@/app/Components/Task';
 
 const Dashboard = ({ role }: DashboardProps) => {
-    const validRole = roleOptions[role as keyof typeof roleOptions] ? role : 'learner';
+    const validRole = roleOptions[role as keyof typeof roleOptions] ? role : 'admin';
 
     const [selected, setSelected] = useState(roleOptions[validRole as keyof typeof roleOptions][0]);
+
+    // Estado que controla si el sidebar está expandido
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    const sections = roleOptions[validRole as keyof typeof roleOptions];
 
     return (
         <div className="flex h-screen dark:bg-dark-background bg-light-background transition-colors duration-300">
-            {/* Sidebar */}
-            <aside className={cn(
-                "flex flex-col transition-all duration-300",
-                sidebarOpen ? "w-64" : "w-16",
-                "dark:bg-dark-card bg-light-card dark:border-r dark:border-dark-border border-r border-light-border shadow-lg"
-            )}>
-                <div className="flex items-center justify-between p-4">
-                    <span className="font-palmer text-xl dark:text-dark-text text-light-text truncate">{sidebarOpen ? 'Aquiles' : 'A'}</span>
-                    <button
-                        className="md:hidden p-1 rounded hover:bg-light-accent dark:hover:bg-dark-accent transition"
-                        onClick={() => setSidebarOpen(!sidebarOpen)}
-                    >
-                        <svg className="w-6 h-6 text-light-text dark:text-dark-text" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            {sidebarOpen ? (
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            ) : (
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                            )}
-                        </svg>
-                    </button>
-                </div>
-                <nav className="flex-1 mt-4 space-y-2">
-                    {roleOptions[validRole as keyof typeof roleOptions].map(option => (
+            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+            {/* Pasamos el estado y setState al sidebar */}
+            <main
+                className={cn(
+                    'flex-1 flex flex-col p-6 overflow-auto transition-all duration-300',
+                    sidebarOpen ? 'ml-[220px]' : 'ml-[72px]'
+                )}
+                style={{
+                    minWidth: `calc(100% - ${sidebarOpen ? 220 : 72}px)`,
+                }}
+            >
+                <header className="mb-6">
+                    <h1 className="text-3xl font-bold dark:text-dark-text text-light-text transition">
+                        Panel de{' '}
+                        <span className="text-light-primary dark:text-dark-primary capitalize">{validRole}</span>
+                    </h1>
+                    <p className="text-lg dark:text-dark-textSecondary text-light-textSecondary">
+                        Sección: <strong>{selected}</strong>
+                    </p>
+                </header>
+
+                <Task />
+                <nav className="flex gap-4 mb-8">
+                    {sections.map((section) => (
                         <button
-                            key={option}
+                            key={section}
+                            onClick={() => setSelected(section)}
                             className={cn(
-                                'w-full text-left px-4 py-2 rounded transition font-medium',
-                                selected === option
-                                    ? 'bg-light-accent dark:bg-dark-primary text-light-background dark:text-dark-text'
-                                    : 'hover:bg-light-accentSoft dark:hover:bg-dark-border dark:text-dark-text text-light-text'
+                                'px-5 py-2 rounded-md font-semibold transition-colors',
+                                selected === section
+                                    ? 'bg-light-primary text-white dark:bg-dark-primary dark:text-dark-text shadow-md'
+                                    : 'bg-light-card text-light-text hover:bg-light-primary hover:text-white dark:bg-dark-card dark:text-dark-textSecondary dark:hover:bg-dark-primary dark:hover:text-dark-text'
                             )}
-                            onClick={() => setSelected(option)}
                         >
-                            {sidebarOpen ? option : option[0]}
+                            {section}
                         </button>
                     ))}
                 </nav>
-            </aside>
-
-            {/* Main content */}
-            <main className="flex-1 flex flex-col p-6 overflow-auto">
-                <h1 className="text-3xl font-bold mb-4 dark:text-dark-text text-light-text transition">
-                    Panel de <span className="text-light-primary dark:text-dark-primary capitalize">{validRole}</span>
-                </h1>
-                <p className="text-lg dark:text-dark-textSecondary text-light-textSecondary">
-                    Sección: <strong>{selected}</strong>
-                </p>
-
-                <div className="mt-6 p-6 rounded-lg dark:bg-dark-card bg-light-card dark:border dark:border-dark-border border border-light-border shadow">
-                    <p className="dark:text-dark-text text-light-text text-center">Aquí irá el contenido de <strong>{selected}</strong>.</p>
-                </div>
+                <section
+                    className="flex-grow rounded-lg p-6 shadow border
+          dark:bg-dark-card bg-light-card
+          dark:border-dark-border border-light-border
+          text-center dark:text-dark-text text-light-text"
+                >
+                    <p>
+                        Aquí irá el contenido de <strong>{selected}</strong>.
+                    </p>
+                    <DynamicIslkand />
+                </section>
             </main>
         </div>
     );
-}
+};
 
 export default Dashboard;

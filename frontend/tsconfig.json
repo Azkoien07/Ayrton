@@ -47,7 +47,13 @@
       ],
       "@lib/*": [
         "./src/app/Lib/*"
-      ]
+      ],
+      "@utilities/*": [
+        "./src/app/Utilities/*"
+      ],
+      "@public/*": [
+        "./public/*"
+      ],
     }
   },
   "include": [

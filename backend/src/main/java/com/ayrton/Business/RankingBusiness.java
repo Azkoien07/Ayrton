@@ -20,6 +20,7 @@ public class RankingBusiness {
         this.rankingService = rankingService;
     }
 
+    // Validation Object
 
     // Find All
     public Page<RankingDto> findAll(int page, int size) {

@@ -20,6 +20,8 @@ public class RoleBusiness {
         this.roleService = roleService;
     }
 
+    // Validation Object
+
     // Find All
     public Page<RoleDto> findAll(int page, int size) {
         try {

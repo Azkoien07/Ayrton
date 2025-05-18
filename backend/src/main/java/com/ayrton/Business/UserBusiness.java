@@ -20,6 +20,8 @@ public class UserBusiness {
         this.userService = userService;
     }
 
+    // Validation Object
+
     // Find All
     public Page<UserDto> findAll(int page, int size) {
         try {

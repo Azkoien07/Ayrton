@@ -1,12 +1,9 @@
 'use client';
-import { ApolloProvider } from '@apollo/client';
-import client from '@/app/Lib/apollo-client';
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/app/Components/Sections/Navbar';
 import Hero from '@/app/Components/Sections/Hero';
 import Features from '@/app/Components/Sections/Features';
 import Bento from '@/app/Components/Sections/Bento';
-import Stats from '@/app/Components/Sections/Stats';
 import TechStack from '@/app/Components/Sections/TechStack';
 import Plans from '@/app/Components/Sections/Plans';
 import Testimonials from '@/app/Components/Sections/Testimonials';
@@ -14,11 +11,11 @@ import FAQ from '@/app/Components/Sections/FAQ';
 import Footer from '@/app/Components/Sections/Footer';
 import Separator from '@/app/Components/Sections/Separator';
 
+
 const LandingPage = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
-    // Verifica el tema almacenado en localStorage
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
       setIsDarkMode(true);
@@ -42,34 +39,33 @@ const LandingPage = () => {
   };
 
   return (
-    <ApolloProvider client={client}>
-      <div className="bg-light-background text-light-text font-sans dark:bg-dark-background dark:text-dark-text transition-colors duration-500">
-        <Navbar />
+    <div className="bg-light-background text-light-text font-sans dark:bg-dark-background dark:text-dark-text transition-colors duration-500">
+      <Navbar />
 
-        {/* Botón para cambiar de tema */}
-        <button
-          onClick={toggleTheme}
-          className="absolute top-4 right-4 bg-light-card dark:bg-dark-card p-3 rounded-full shadow-lg transition-all hover:scale-105 z-50"
-          aria-label="Toggle theme"
-        >
-          {isDarkMode ? '🌙' : '🌞'}
-        </button>
-        <Hero />
-        <Features />
-        <Bento />
-        <Stats />
-        <Separator />
-        <TechStack />
-        <Separator />
-        <Testimonials />
-        <Separator />
-        <Plans />
-        <Separator />
-        <FAQ />
-        <Separator />
-        <Footer />
-      </div>
-    </ApolloProvider>
+      {/* Botón para cambiar de tema */}
+      <button
+        onClick={toggleTheme}
+        className="absolute top-4 right-4 bg-light-card dark:bg-dark-card p-3 rounded-full shadow-lg transition-all hover:scale-105 z-50"
+        aria-label="Toggle theme"
+      >
+        {isDarkMode ? '🌙' : '🌞'}
+      </button>
+      <Hero />
+      <Separator />
+      <Features />
+      <Separator />
+      <Bento />
+      <Separator />
+      <TechStack />
+      <Separator />
+      <Testimonials />
+      <Separator />
+      <Plans />
+      <Separator />
+      <FAQ />
+      <Separator />
+      <Footer />
+    </div>
   );
 };
 

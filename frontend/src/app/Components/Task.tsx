@@ -1,7 +1,9 @@
 'use client';
 import { useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
-import GET_PAYMENT_BY_ID from '@graphql/Payments/Querys/paymentById.graphql';
+import { useQuery } from '@apollo/client';
+import { GET_PAYMENT_BY_ID } from '@graphql/Payments/paymentGraph';
+import { useErrorToast } from '@utilities/useErrorToast';
+import { toast } from 'sonner';
 
 const Task = () => {
     const [paymentId, setPaymentId] = useState('');
@@ -11,14 +13,20 @@ const Task = () => {
         skip: !paymentId, // No hacer la consulta hasta que el ID sea proporcionado
     });
 
+    // 👉 Hook para mostrar errores con Sonner
+    useErrorToast({ error });
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        const id = (e.target as any).paymentId.value;
+        const id = (e.target as any).paymentId.value.trim();
+
+        if (!/^\d+$/.test(id)) {
+            toast.error('Please enter a valid numeric ID');
+            return;
+        }
+
         setPaymentId(id);
     };
-
-    if (loading) return <div>Loading payment...</div>;
-    if (error) return <div>Error: {error.message}</div>;
 
     return (
         <div>
@@ -34,7 +42,13 @@ const Task = () => {
                 <button type="submit">Search Payment</button>
             </form>
 
-            {data?.paymentById?.data ? (
+            {loading && <div>Loading payment...</div>}
+
+            {!loading && !data?.paymentById?.data && paymentId && (
+                <div>No payment found for this ID.</div>
+            )}
+
+            {data?.paymentById?.data && (
                 <div>
                     <h3>Payment Information</h3>
                     <p><strong>Payment ID:</strong> {data.paymentById.data.id}</p>
@@ -44,8 +58,6 @@ const Task = () => {
                     <p><strong>Code:</strong> {data.paymentById.code}</p>
                     <p><strong>Message:</strong> {data.paymentById.message}</p>
                 </div>
-            ) : (
-                <div>No payment found for this ID.</div>
             )}
         </div>
     );
