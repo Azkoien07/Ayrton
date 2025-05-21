@@ -36,8 +36,8 @@ public class PlanBusiness {
     // Find By Id
     public PlanDto findById(Long id) {
         try {
-            PlanEntity plan = planService.getById(id);
-            return modelMapper.map(plan, PlanDto.class);
+            PlanEntity planEntity = planService.getById(id);
+            return modelMapper.map(planEntity, PlanDto.class);
         } catch (Exception e) {
             throw new CustomException("Error getting Plan: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -67,7 +67,7 @@ public class PlanBusiness {
     // Delete
     public void delete(Long id) {
         try{
-            planService.getById(id);
+            planService.delete(id);
         } catch (Exception e) {
             throw new CustomException("Error deleting Plan: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }

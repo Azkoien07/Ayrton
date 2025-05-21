@@ -36,8 +36,8 @@ public class UserBusiness {
     // Find By Id
     public UserDto findById(Long id) {
         try {
-            UserEntity user = userService.getById(id);
-            return modelMapper.map(user, UserDto.class);
+            UserEntity userEntity = userService.getById(id);
+            return modelMapper.map(userEntity, UserDto.class);
         } catch (Exception e) {
             throw new CustomException("Error getting User: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }

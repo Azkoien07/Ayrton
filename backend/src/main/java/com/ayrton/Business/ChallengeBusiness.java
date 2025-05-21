@@ -36,8 +36,8 @@ public class ChallengeBusiness {
     // Find By Id
     public ChallengeDto findById(Long id) {
         try {
-            ChallengeEntity payment = challengeService.getById(id);
-            return modelMapper.map(payment, ChallengeDto.class);
+            ChallengeEntity challengeEntity = challengeService.getById(id);
+            return modelMapper.map(challengeEntity, ChallengeDto.class);
         } catch (Exception e) {
             throw new CustomException("Error getting Challenge: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -67,7 +67,7 @@ public class ChallengeBusiness {
     // Delete
     public void delete(Long id) {
         try{
-            challengeService.getById(id);
+            challengeService.delete(id);
         } catch (Exception e) {
             throw new CustomException("Error deleting Challenge: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }

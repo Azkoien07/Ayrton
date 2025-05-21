@@ -36,8 +36,8 @@ public class RoleBusiness {
     // Find By Id
     public RoleDto findById(Long id) {
         try {
-            RoleEntity role = roleService.getById(id);
-            return modelMapper.map(role, RoleDto.class);
+            RoleEntity roleEntity = roleService.getById(id);
+            return modelMapper.map(roleEntity, RoleDto.class);
         } catch (Exception e) {
             throw new CustomException("Error getting Role: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }

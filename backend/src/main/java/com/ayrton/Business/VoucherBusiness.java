@@ -38,8 +38,8 @@ public class VoucherBusiness {
     // Find By Id
     public VoucherDto findById(Long id) {
         try {
-            VoucherEntity voucher = voucherService.getById(id);
-            return modelMapper.map(voucher, VoucherDto.class);
+            VoucherEntity voucherEntity = voucherService.getById(id);
+            return modelMapper.map(voucherEntity, VoucherDto.class);
         } catch (Exception e) {
             throw new CustomException("Error getting Voucher: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }

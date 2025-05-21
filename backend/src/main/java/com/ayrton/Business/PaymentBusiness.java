@@ -36,8 +36,8 @@ public class PaymentBusiness {
     // Find By Id
     public PaymentDto findById(Long id) {
         try {
-            PaymentEntity payment = paymentServices.getById(id);
-            return modelMapper.map(payment, PaymentDto.class);
+            PaymentEntity paymentEntity = paymentServices.getById(id);
+            return modelMapper.map(paymentEntity, PaymentDto.class);
         } catch (Exception e) {
             throw new CustomException("Error getting Payment: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }

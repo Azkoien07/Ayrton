@@ -37,8 +37,8 @@ public class TaskBusiness {
     // Find By Id
     public TaskDto findById(Long id) {
         try {
-            TaskEntity task = taskService.getById(id);
-            return modelMapper.map(task, TaskDto.class);
+            TaskEntity taskEntity = taskService.getById(id);
+            return modelMapper.map(taskEntity, TaskDto.class);
         } catch (Exception e) {
             throw new CustomException("Error getting Task: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }

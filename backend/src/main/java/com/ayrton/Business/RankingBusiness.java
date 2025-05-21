@@ -36,8 +36,8 @@ public class RankingBusiness {
     // Find By Id
     public RankingDto findById(Long id) {
         try {
-            RankingEntity ranking = rankingService.getById(id);
-            return modelMapper.map(ranking, RankingDto.class);
+            RankingEntity rankingEntity = rankingService.getById(id);
+            return modelMapper.map(rankingEntity, RankingDto.class);
         } catch (Exception e) {
             throw new CustomException("Error getting Ranking: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }

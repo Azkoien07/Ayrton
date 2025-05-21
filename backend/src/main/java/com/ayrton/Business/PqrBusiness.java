@@ -36,8 +36,8 @@ public class PqrBusiness {
     // Find By Id
     public PqrDto findById(Long id) {
         try {
-            PqrEntity pqr = pqrService.getById(id);
-            return modelMapper.map(pqr, PqrDto.class);
+            PqrEntity pqrEntity = pqrService.getById(id);
+            return modelMapper.map(pqrEntity, PqrDto.class);
         } catch (Exception e) {
             throw new CustomException("Error getting Pqr: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
