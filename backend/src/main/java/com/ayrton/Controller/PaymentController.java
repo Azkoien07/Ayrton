@@ -42,9 +42,30 @@ public class PaymentController {
 
     // 2. FindById Payment (GraphQL)
     @QueryMapping
-    public Map<String, Object> paymentById(@Argument Long id) {
+    public Map<String, Object> paymentById(@Argument String id) {
         try {
-            PaymentDto paymentDto = paymentBusiness.findById(id);
+            // Validate that the id is not null or empty
+            if (id == null || id.trim().isEmpty()) {
+                return ResponseHttp.responseHttpError(
+                        "ID cannot be null or empty", HttpStatus.BAD_REQUEST
+                );
+            }
+            // try to convert the string to Long
+            Long paymentId;
+            try {
+                paymentId = Long.parseLong(id.trim());
+            } catch (NumberFormatException e) {
+                return ResponseHttp.responseHttpError(
+                        "Invalid ID format. ID must be a valid number", HttpStatus.BAD_REQUEST
+                );
+            }
+            // Validate that the ID is positive
+            if (paymentId <= 0) {
+                return ResponseHttp.responseHttpError(
+                        "ID must be a positive number", HttpStatus.BAD_REQUEST
+                );
+            }
+            PaymentDto paymentDto = paymentBusiness.findById(paymentId);
             return ResponseHttp.responseHttpFindId(
                     paymentDto,
                     ResponseHttp.CODE_OK,
