@@ -33,7 +33,7 @@ public class RoleBusiness {
         }
     }
 
-    // Find By Id
+    // Find ById
     public RoleDto findById(Long id) {
         try {
             RoleEntity roleEntity = roleService.getById(id);

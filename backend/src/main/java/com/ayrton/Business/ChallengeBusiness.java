@@ -33,7 +33,7 @@ public class ChallengeBusiness {
         }
     }
 
-    // Find By Id
+    // Find ById
     public ChallengeDto findById(Long id) {
         try {
             ChallengeEntity challengeEntity = challengeService.getById(id);

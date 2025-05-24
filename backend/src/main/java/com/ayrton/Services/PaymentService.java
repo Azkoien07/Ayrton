@@ -3,7 +3,6 @@ package com.ayrton.Services;
 import com.ayrton.Entity.PaymentEntity;
 import com.ayrton.Repository.PaymentRepository;
 import com.ayrton.Services.Dao.Idao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,14 @@ import java.util.Optional;
 
 @Service
 public class PaymentService implements Idao<PaymentEntity, Long> {
-    @Autowired
-    private PaymentRepository paymentRepository;
+
+    private final PaymentRepository paymentRepository;
+
+    public PaymentService(PaymentRepository paymentRepository) {
+        this.paymentRepository = paymentRepository;
+    }
+
+    // Methods
 
     // FindAll
     @Override

@@ -34,7 +34,7 @@ public class TaskBusiness {
         }
     }
 
-    // Find By Id
+    // Find ById
     public TaskDto findById(Long id) {
         try {
             TaskEntity taskEntity = taskService.getById(id);

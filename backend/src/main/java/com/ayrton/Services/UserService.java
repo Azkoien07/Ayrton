@@ -1,11 +1,8 @@
 package com.ayrton.Services;
 
 import com.ayrton.Entity.UserEntity;
-import com.ayrton.Entity.UserEntity;
 import com.ayrton.Repository.UserRepository;
 import com.ayrton.Services.Dao.Idao;
-import com.ayrton.Entity.UserEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,10 +13,14 @@ import java.util.Optional;
 
 @Service
 public class UserService implements Idao<UserEntity,Long> {
-    @Autowired
-    private UserRepository userRepository;
 
-    // Métodos
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    // Methods
 
     // FindAll
     @Override

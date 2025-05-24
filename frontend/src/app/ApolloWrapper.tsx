@@ -2,7 +2,7 @@
 
 import { ApolloProvider } from '@apollo/client';
 import { Toaster } from 'sonner';
-import client from './Lib/apollo-client';
+import client from '@lib/apollo-client';
 import { ReactNode } from 'react';
 
 export function ApolloWrapper({ children }: { children: ReactNode }) {

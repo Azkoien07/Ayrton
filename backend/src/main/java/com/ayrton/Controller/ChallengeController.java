@@ -19,7 +19,7 @@ public class ChallengeController {
         this.challengeBusiness = challengeBusiness;
     }
 
-    // 1. FindAll Challenge (GraphQL)
+    // 1. FindAll Challenges (GraphQL)
     @QueryMapping
     public Map<String, Object> allChallenges(@Argument int page, @Argument int size) {
         try {

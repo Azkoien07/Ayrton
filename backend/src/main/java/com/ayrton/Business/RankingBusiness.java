@@ -33,7 +33,7 @@ public class RankingBusiness {
         }
     }
 
-    // Find By Id
+    // Find ById
     public RankingDto findById(Long id) {
         try {
             RankingEntity rankingEntity = rankingService.getById(id);

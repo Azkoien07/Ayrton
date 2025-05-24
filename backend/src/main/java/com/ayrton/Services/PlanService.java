@@ -3,7 +3,6 @@ package com.ayrton.Services;
 import com.ayrton.Entity.PlanEntity;
 import com.ayrton.Repository.PlanRepository;
 import com.ayrton.Services.Dao.Idao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -14,10 +13,15 @@ import java.util.Optional;
 
 @Service
 public class PlanService implements Idao<PlanEntity,Long> {
-    @Autowired
-    private PlanRepository planRepository;
 
-    // Métodos
+    private final PlanRepository planRepository;
+
+    public PlanService(PlanRepository planRepository) {
+        this.planRepository = planRepository;
+    }
+
+    // Methods
+
     @Override
     public Page<PlanEntity> findAll(PageRequest pageable) {
         return planRepository.findAll(pageable);

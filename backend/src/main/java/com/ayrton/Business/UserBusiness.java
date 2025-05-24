@@ -33,7 +33,7 @@ public class UserBusiness {
         }
     }
 
-    // Find By Id
+    // Find ById
     public UserDto findById(Long id) {
         try {
             UserEntity userEntity = userService.getById(id);

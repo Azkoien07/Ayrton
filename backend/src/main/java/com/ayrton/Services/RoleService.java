@@ -1,11 +1,8 @@
 package com.ayrton.Services;
 
 import com.ayrton.Entity.RoleEntity;
-import com.ayrton.Entity.RoleEntity;
-import com.ayrton.Entity.RoleEntity;
 import com.ayrton.Repository.RoleRepository;
 import com.ayrton.Services.Dao.Idao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -17,10 +14,14 @@ import java.util.Optional;
 
 @Service
 public class RoleService implements Idao<RoleEntity,Long> {
-    @Autowired
-    private RoleRepository roleRepository;
 
-    // Metodos
+    private final RoleRepository roleRepository;
+
+    public RoleService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
+
+    // Methods
 
     // FindAll
     @Override

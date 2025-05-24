@@ -33,7 +33,7 @@ public class PaymentBusiness {
         }
     }
 
-    // Find By Id
+    // Find ById
     public PaymentDto findById(Long id) {
         try {
             PaymentEntity paymentEntity = paymentServices.getById(id);

@@ -35,7 +35,7 @@ public class VoucherBusiness {
         }
     }
 
-    // Find By Id
+    // Find ById
     public VoucherDto findById(Long id) {
         try {
             VoucherEntity voucherEntity = voucherService.getById(id);

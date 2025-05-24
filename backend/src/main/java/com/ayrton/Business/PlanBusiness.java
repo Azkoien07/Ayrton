@@ -33,7 +33,7 @@ public class PlanBusiness {
         }
     }
 
-    // Find By Id
+    // Find ById
     public PlanDto findById(Long id) {
         try {
             PlanEntity planEntity = planService.getById(id);

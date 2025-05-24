@@ -3,7 +3,6 @@ package com.ayrton.Services;
 import com.ayrton.Entity.ChallengeEntity;
 import com.ayrton.Repository.ChallengeRepository;
 import com.ayrton.Services.Dao.Idao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -15,10 +14,13 @@ import java.util.Optional;
 @Service
 public class ChallengeService implements Idao<ChallengeEntity, Long> {
 
-    @Autowired
-    private ChallengeRepository challengeRepository;
+    private final ChallengeRepository challengeRepository;
 
-    // Métodos
+    public ChallengeService(ChallengeRepository challengeRepository) {
+        this.challengeRepository = challengeRepository;
+    }
+
+    // Methods
 
     // FindAll
     @Override

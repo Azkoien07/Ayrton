@@ -33,7 +33,7 @@ public class PqrBusiness {
         }
     }
 
-    // Find By Id
+    // Find ById
     public PqrDto findById(Long id) {
         try {
             PqrEntity pqrEntity = pqrService.getById(id);
