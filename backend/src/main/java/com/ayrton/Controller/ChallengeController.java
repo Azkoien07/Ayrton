@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 
 import java.util.Map;
+
 @Controller
 public class ChallengeController {
     private final ChallengeBusiness challengeBusiness;

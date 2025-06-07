@@ -11,10 +11,7 @@ const Dashboard = ({ role }: DashboardProps) => {
     const validRole = roleOptions[role as keyof typeof roleOptions] ? role : 'admin';
 
     const [selected, setSelected] = useState(roleOptions[validRole as keyof typeof roleOptions][0]);
-
-    // Estado que controla si el sidebar está expandido
     const [sidebarOpen, setSidebarOpen] = useState(false);
-
     const sections = roleOptions[validRole as keyof typeof roleOptions];
 
     return (
