@@ -1,6 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { FaReact, FaJava } from "react-icons/fa";
-import { SiTypescript, SiTailwindcss, SiNextdotjs, SiGraphql } from "react-icons/si";
+
+
+const ReactIcon = () => (
+  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white font-bold text-sm">
+    R
+  </div>
+);
+
+const TypeScriptIcon = () => (
+  <div className="w-8 h-8 rounded bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-white font-bold text-sm">
+    TS
+  </div>
+);
+
+const TailwindIcon = () => (
+  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm">
+    TW
+  </div>
+);
+
+const JavaIcon = () => (
+  <div className="w-8 h-8 rounded bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white font-bold text-sm">
+    J
+  </div>
+);
+
+const NextIcon = () => (
+  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-800 to-black flex items-center justify-center text-white font-bold text-sm">
+    N
+  </div>
+);
+
+const GraphQLIcon = () => (
+  <div className="w-8 h-8 rounded bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+    GQL
+  </div>
+);
 
 interface TechStackItem {
     title: string;
@@ -8,6 +43,7 @@ interface TechStackItem {
     icon: React.ReactNode;
     color: string;
     delay: number;
+    gradient: string;
 }
 
 const TechnologyCard: React.FC<TechStackItem> = ({
@@ -15,7 +51,8 @@ const TechnologyCard: React.FC<TechStackItem> = ({
     description,
     icon,
     color,
-    delay
+    delay,
+    gradient
 }) => {
     const [isHovered, setIsHovered] = useState<boolean>(false);
     const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -28,33 +65,75 @@ const TechnologyCard: React.FC<TechStackItem> = ({
         return () => clearTimeout(timer);
     }, [delay]);
 
-    const hoverStyles = isHovered ? {
-        border: `2px solid ${color}`,
-        boxShadow: `0 4px 8px rgba(0, 0, 0, 0.1)`,
-        transform: 'scale(1.05)'
-    } : {};
-
     return (
         <div
-            className={`dark:bg-dark-card bg-light-card border border-light-border dark:border-dark-border rounded-lg p-6 transition-all duration-500 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            className={`group relative overflow-hidden backdrop-blur-sm bg-white/10 dark:bg-gray-900/20 border border-white/20 dark:border-gray-700/30 rounded-2xl p-6 transition-all duration-700 ease-out cursor-pointer ${
+                isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'
+            } ${
+                isHovered ? 'transform -translate-y-2 scale-[1.02]' : ''
+            }`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            style={hoverStyles}
+            style={{
+                boxShadow: isHovered 
+                    ? `0 25px 50px -12px ${color}20, 0 0 0 1px ${color}30`
+                    : '0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+            }}
         >
-            <div className="flex items-start justify-between mb-4">
-                <div className={`text-4xl transition-transform duration-300 ${isHovered ? 'scale-110' : ''}`}>
-                    {icon}
-                </div>
-                <div className="dark:text-dark-textSecondary text-light-textSecondary cursor-pointer transition-all duration-300 dark:hover:text-white hover:text-light-primary">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M7 17L17 7M17 7H7M17 7V17" />
-                    </svg>
-                </div>
+            {/* Background gradient overlay */}
+            <div 
+                className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 ${gradient}`}
+            />
+            
+            {/* Animated border */}
+            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div 
+                    className="absolute inset-0 rounded-2xl animate-pulse"
+                    style={{
+                        background: `linear-gradient(45deg, transparent, ${color}30, transparent)`,
+                        backgroundSize: '200% 200%',
+                        animation: isHovered ? 'shimmer 2s ease-in-out infinite' : 'none'
+                    }}
+                />
             </div>
-            <h2 className="text-xl font-bold mb-2 transition-colors duration-300 dark:text-dark-text text-light-text">{title}</h2>
-            <p className="dark:text-dark-textSecondary text-light-textSecondary text-sm">
-                {description}
-            </p>
+
+            {/* Content */}
+            <div className="relative z-10">
+                <div className="flex items-start justify-between mb-6">
+                    <div className={`transform transition-all duration-500 ${isHovered ? 'scale-110 rotate-6' : ''}`}>
+                        {icon}
+                    </div>
+                    <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400 group-hover:text-white">
+                            <path d="M7 17L17 7M17 7H7M17 7V17" />
+                        </svg>
+                    </div>
+                </div>
+                
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 transition-all duration-300">
+                    {title}
+                </h3>
+                
+                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed group-hover:text-gray-200 transition-colors duration-300">
+                    {description}
+                </p>
+            </div>
+
+            {/* Floating particles effect */}
+            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                {[...Array(3)].map((_, i) => (
+                    <div
+                        key={i}
+                        className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+                        style={{
+                            left: `${20 + i * 30}%`,
+                            top: `${30 + i * 20}%`,
+                            animationDelay: `${i * 0.5}s`,
+                            animationDuration: '2s'
+                        }}
+                    />
+                ))}
+            </div>
         </div>
     );
 };
@@ -63,104 +142,124 @@ const TechStack: React.FC = () => {
     const [visible, setVisible] = useState<boolean>(false);
 
     useEffect(() => {
-        setVisible(true);
+        const timer = setTimeout(() => {
+            setVisible(true);
+        }, 300);
+        return () => clearTimeout(timer);
     }, []);
 
-    // Technology data
     const technologies = [
         {
             title: "React",
-            description: "Biblioteca de JavaScript para construir interfaces de usuario reactivas y declarativas en aplicaciones web.",
+            description: "Biblioteca de JavaScript para construir interfaces de usuario reactivas y declarativas con componentes reutilizables.",
             color: "#61DBFB",
+            gradient: "bg-gradient-to-br from-cyan-400 to-blue-500",
             delay: 200,
-            icon: <FaReact size={32} color="#61DBFB" />,
+            icon: <ReactIcon />,
         },
         {
             title: "TypeScript",
-            description: "Superconjunto de JavaScript que añade tipado estático opcional y otras características modernas al lenguaje.",
+            description: "Superconjunto tipado de JavaScript que mejora la productividad y reduce errores en el desarrollo.",
             color: "#3178C6",
+            gradient: "bg-gradient-to-br from-blue-600 to-blue-700",
             delay: 400,
-            icon: <SiTypescript size={32} color="#3178C6" />,
+            icon: <TypeScriptIcon />,
         },
         {
             title: "Tailwind CSS",
-            description: "Framework de CSS utilitario que permite diseñar interfaces rápidamente con clases predefinidas.",
+            description: "Framework CSS utilitario que acelera el desarrollo con clases predefinidas y diseño responsive.",
             color: "#38BDF8",
-            delay: 1000,
-            icon: <SiTailwindcss size={32} color="#38BDF8" />,
+            gradient: "bg-gradient-to-br from-cyan-400 to-teal-500",
+            delay: 600,
+            icon: <TailwindIcon />,
         },
         {
             title: "Java",
-            description: "Lenguaje de programación orientado a objetos, ampliamente utilizado para desarrollar aplicaciones empresariales, móviles y sistemas backend robustos.",
+            description: "Lenguaje robusto y versátil para aplicaciones empresariales, móviles y sistemas backend escalables.",
             color: "#F89820",
+            gradient: "bg-gradient-to-br from-orange-500 to-red-600",
             delay: 800,
-            icon: (
-                <FaJava
-                    size={32}
-                    color="#F89820"
-                    style={{ filter: 'drop-shadow(0 0 2px #5382A1)' }} // Sombra azul vibrante
-                />
-            ),
+            icon: <JavaIcon />,
         },
         {
             title: "Next.js",
-            description: "Framework basado en React para crear aplicaciones web modernas con renderizado del lado del servidor y generación de sitios estáticos.",
+            description: "Framework React para aplicaciones web modernas con SSR, SSG y optimizaciones automáticas.",
             color: "#000000",
-            delay: 600,
-            icon: <SiNextdotjs size={32} color="black" />,
+            gradient: "bg-gradient-to-br from-gray-800 to-black",
+            delay: 1000,
+            icon: <NextIcon />,
         },
         {
             title: "GraphQL",
-            description: "Lenguaje de consulta para APIs que permite obtener exactamente los datos necesarios de manera eficiente y flexible, utilizando un único endpoint.",
+            description: "Lenguaje de consulta flexible que optimiza la comunicación entre cliente y servidor con precisión.",
             color: "#E10098",
+            gradient: "bg-gradient-to-br from-pink-500 to-purple-600",
             delay: 1200,
-            icon: <SiGraphql size={32} color="#E10098" />,
+            icon: <GraphQLIcon />,
         },
     ];
 
-
     return (
-        <div className="dark:bg-dark-background bg-light-background dark:text-dark-text text-light-text w-full min-h-screen flex flex-col items-center justify-center p-4">
-            <h1 className={`text-5xl font-bold text-center mb-16 transition-all duration-1000 ${visible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}>
-                Integraciones y <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">Tecnologías</span>
-            </h1>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900 relative overflow-hidden">
+            {/* Animated background elements */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style={{animationDelay: '2s'}}></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gradient-to-r from-teal-400 to-green-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" style={{animationDelay: '4s'}}></div>
+            </div>
 
-            <div className="relative w-full max-w-5xl">
+            <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-8">
+                {/* Header */}
+                <div className={`text-center mb-16 transition-all duration-1000 ${visible ? 'opacity-100 transform translate-y-0' : 'opacity-0 transform -translate-y-10'}`}>
+                    <h1 className="text-6xl md:text-7xl font-bold mb-6 text-gray-900 dark:text-white">
+                        Integraciones y{" "}
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 animate-pulse">
+                            Tecnologías
+                        </span>
+                    </h1>
+                    <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                        Construyendo el futuro con las mejores herramientas y tecnologías modernas
+                    </p>
+                </div>
+
                 {/* Powered By Badge */}
-                <div className={`absolute left-1/2 top-0 transform -translate-x-1/2 dark:bg-dark-card bg-light-card dark:border-dark-border border-light-border rounded-full px-6 py-3 z-10 shadow-lg transition-all duration-1000 ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
-                    <div className="text-2xl font-medium flex items-center gap-2 dark:text-dark-text text-light-text">
-                        <svg className="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path d="M12 4v1M17.66 6.344l-.828.828M20.005 12.004h-1M17.66 17.664l-.828-.828M12 20.01V19M6.34 17.664l.835-.836M3.995 12.004h1.01M6 6l.835.836" />
-                        </svg>
-                        Powered By
+                <div className={`mb-16 transition-all duration-1000 ${visible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
+                    <div className="backdrop-blur-sm bg-white/20 dark:bg-gray-900/20 border border-white/30 dark:border-gray-700/30 rounded-full px-8 py-4 shadow-2xl">
+                        <div className="text-lg font-semibold flex items-center gap-3 text-gray-900 dark:text-white">
+                            <div className="w-6 h-6 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full flex items-center justify-center animate-spin" style={{animationDuration: '3s'}}>
+                                <div className="w-2 h-2 bg-white rounded-full"></div>
+                            </div>
+                            Powered By
+                        </div>
                     </div>
                 </div>
 
-                {/* Conectores dinámicos */}
-                <div className={`relative mt-24 transition-all duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center relative">
-
-                        {/* Línea horizontal */}
-                        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 opacity-50"></div>
+                {/* Tech Grid */}
+                <div className="w-full max-w-7xl">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {technologies.map((tech, index) => (
-                            <div key={index} className="relative flex flex-col items-center">
-                                {/* Línea vertical */}
-                                <div className="w-0.5 h-8 bg-gradient-to-b from-blue-400 to-transparent mb-2"></div>
-                                <TechnologyCard
-                                    title={tech.title}
-                                    description={tech.description}
-                                    icon={tech.icon}
-                                    color={tech.color}
-                                    delay={tech.delay}
-                                />
-                            </div>
+                            <TechnologyCard
+                                key={index}
+                                title={tech.title}
+                                description={tech.description}
+                                icon={tech.icon}
+                                color={tech.color}
+                                gradient={tech.gradient}
+                                delay={tech.delay}
+                            />
                         ))}
                     </div>
                 </div>
             </div>
 
+            <style jsx>{`
+                @keyframes shimmer {
+                    0% { background-position: -200% 0; }
+                    100% { background-position: 200% 0; }
+                }
+            `}</style>
         </div>
     );
 };
+
 export default TechStack;

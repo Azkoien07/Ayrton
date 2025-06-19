@@ -10,10 +10,10 @@ const Task = () => {
 
     const { data, loading, error } = useQuery(GET_PAYMENT_BY_ID, {
         variables: { id: paymentId },
-        skip: !paymentId, // No hacer la consulta hasta que el ID sea proporcionado
+        skip: !paymentId, 
     });
 
-    // 👉 Hook para mostrar errores con Sonner
+   
     useErrorToast({ error });
 
     const handleSubmit = (e: React.FormEvent) => {
