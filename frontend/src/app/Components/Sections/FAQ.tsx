@@ -33,7 +33,6 @@ const FAQ = () => {
                             },
                         });
 
-                        // Usamos el componente AnimatedDiv propio que renderiza children
                         const AnimatedDiv = animated('div');
 
                         return (

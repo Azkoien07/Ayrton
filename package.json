@@ -18,6 +18,11 @@
     "backend"
   ],
   "dependencies": {
-    "clsx": "^2.1.1"
+    "@apollo/client": "^3.13.8",
+    "clsx": "^2.1.1",
+    "graphql": "^16.11.0",
+    "lucide-react": "^0.513.0",
+    "motion": "^12.18.1",
+    "tailwind-merge": "^3.3.1"
   }
 }
