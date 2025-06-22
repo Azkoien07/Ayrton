@@ -40,7 +40,6 @@ export const ADD_PAYMENT = gql`
       code
       message
       id
-      data
     }
   }
 `;
@@ -51,11 +50,6 @@ export const UPDATE_PAYMENT = gql`
       code
       message
       id
-      data {
-        id
-        purchaseAmount
-        paymentMethod
-      }
     }
   }
 `;
@@ -66,11 +60,6 @@ export const DELETE_PAYMENT = gql`
       code
       message
       id
-      data {
-        id
-        purchaseAmount
-        paymentMethod
-      }
     }
   }
 `;

@@ -1,76 +1,76 @@
-// planService.ts
 import { ApolloClient, NormalizedCache } from "@apollo/client";
 import { PaginationParams } from '@Types/pagination';
-import { PlanInput, PlanUpdateInput } from "@/generated/graphql";
+import { GET_ALL_PLANS, GET_PLAN_BY_ID, ADD_PLAN, UPDATE_PLAN, DELETE_PLAN } from '@graphql/Plans/plansGraph';
 import {
-    GET_ALL_PLANS,
-    GET_PLAN_BY_ID,
-    ADD_PLAN,
-    UPDATE_PLAN,
-    DELETE_PLAN
-} from '@graphql/Plans/plansGraph';
-import {
-    GetPlansQuery,
+    GetAllPlansQuery,
+    GetAllPlansQueryVariables,
     GetPlanByIdQuery,
+    GetPlanByIdQueryVariables,
     AddPlanMutation,
+    AddPlanMutationVariables,
     UpdatePlanMutation,
-    DeletePlanMutation
-} from '@/generated/graphql'
+    UpdatePlanMutationVariables,
+    DeletePlanMutation,
+    DeletePlanMutationVariables,
+    PlanInput,
+    PlanUpdateInput
+} from '@/generated/graphql';
 
-export class PlanService {
-    constructor(private client: ApolloClient<NormalizedCache>) { }
 
-    async getAllPlans({ page, size }: PaginationParams) {
-        const { data } = await this.client.query<GetPlansQuery>({
-            query: GET_ALL_PLANS,
-            variables: { page, size },
-            fetchPolicy: "network-only"
-        });
-        return data.allPlans;
+
+export const getAllPlans = async (client: ApolloClient<NormalizedCache>, { page, size }: PaginationParams) => {
+    const { data } = await client.query<GetAllPlansQuery, GetAllPlansQueryVariables>({
+        query: GET_ALL_PLANS,
+        variables: { page, size },
+        fetchPolicy: "network-only"
+    });
+    return data.allPlans;
+};
+
+export const getPlanById = async (client: ApolloClient<NormalizedCache>, id: string) => {
+    const { data } = await client.query<GetPlanByIdQuery, GetPlanByIdQueryVariables>({
+        query: GET_PLAN_BY_ID,
+        variables: { id },
+        fetchPolicy: "network-only"
+    });
+    return data.planById;
+};
+
+export const addPlan = async (client: ApolloClient<NormalizedCache>, input: PlanInput) => {
+    const { data } = await client.mutate<AddPlanMutation, AddPlanMutationVariables>({
+        mutation: ADD_PLAN,
+        variables: { input }
+    });
+
+    if (!data?.addPlan) {
+        throw new Error("Failed to add plan");
     }
 
-    async getPlanById(id: string) {
-        const { data } = await this.client.query<GetPlanByIdQuery>({
-            query: GET_PLAN_BY_ID,
-            variables: { id },
-            fetchPolicy: "network-only"
-        });
-        return data.planById;
+    return data.addPlan;
+};
+
+export const updatePlan = async (client: ApolloClient<NormalizedCache>, id: string, input: PlanUpdateInput) => {
+    const { data } = await client.mutate<UpdatePlanMutation, UpdatePlanMutationVariables>({
+        mutation: UPDATE_PLAN,
+        variables: { id, input }
+    });
+
+    if (!data?.updatePlan) {
+        throw new Error("Failed to update plan");
     }
 
-    async addPlan(input: PlanInput) {
-        const { data } = await this.client.mutate<AddPlanMutation>({
-            mutation: ADD_PLAN,
-            variables: { input }
-        });
+    return data.updatePlan;
+};
 
-        if (!data || !data.addPlan) {
-            throw new Error("Failed to add plan");
-        }
-        return data.addPlan;
+export const deletePlan = async (client: ApolloClient<NormalizedCache>, id: string) => {
+    const { data } = await client.mutate<DeletePlanMutation, DeletePlanMutationVariables>({
+        mutation: DELETE_PLAN,
+        variables: { id }
+    });
+
+    if (!data?.deletePlan) {
+        throw new Error("Failed to delete plan");
     }
 
-    async updatePlan(id: string, input: PlanUpdateInput) {
-        const { data } = await this.client.mutate<UpdatePlanMutation>({
-            mutation: UPDATE_PLAN,
-            variables: { id, input }
-        });
-
-        if (!data || !data.updatePlan) {
-            throw new Error("Failed to update plan");
-        }
-        return data.updatePlan;
-    }
-
-    async deletePlan(id: string) {
-        const { data } = await this.client.mutate<DeletePlanMutation>({
-            mutation: DELETE_PLAN,
-            variables: { id }
-        });
-
-        if (!data || !data.deletePlan) {
-            throw new Error("Failed to delete plan");
-        }
-        return data.deletePlan;
-    }
-}
+    return data.deletePlan;
+};

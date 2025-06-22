@@ -44,13 +44,6 @@ export const ADD_USER = gql`
       code
       message
       id
-      data {
-        id
-        name
-        email
-        password
-        username
-      }
     }
   }
 `;
@@ -61,13 +54,6 @@ export const UPDATE_USER = gql`
       code
       message
       id
-      data {
-        id
-        name
-        email
-        password
-        username
-      }
     }
   }
 `;
@@ -78,13 +64,6 @@ export const DELETE_USER = gql`
       code
       message
       id
-      data {
-        id
-        name
-        email
-        password
-        username
-      }
     }
   }
 `;

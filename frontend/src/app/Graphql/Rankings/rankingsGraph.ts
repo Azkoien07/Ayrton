@@ -40,11 +40,6 @@ export const ADD_RANKING = gql`
       code
       message
       id
-      data {
-        id
-        level
-        position
-      }
     }
   }
 `;
@@ -55,11 +50,6 @@ export const UPDATE_RANKING = gql`
       code
       message
       id
-      data {
-        id
-        level
-        position
-      }
     }
   }
 `;
@@ -70,11 +60,6 @@ export const DELETE_RANKING = gql`
       code
       message
       id
-      data {
-        id
-        level
-        position
-      }
     }
   }
 `;

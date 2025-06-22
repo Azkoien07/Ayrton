@@ -42,44 +42,28 @@ export const GET_VOUCHER_BY_ID = gql`
   }
 `;
 
-// Queries 
+// Mutations 
 export const ADD_VOUCHER = gql`
   mutation AddVoucher($input: VoucherInput!) {
     addVoucher(input: $input) {
+      id
       code
       message
-      id
-      data {
-        id
-        code
-        payment {
-          id
-          purchaseAmount
-          paymentMethod
-        }
-      }
     }
   }
 `;
 
+
 export const UPDATE_VOUCHER = gql`
   mutation UpdateVoucher($id: ID!, $input: VoucherUpdateInput!) {
     updateVoucher(id: $id, input: $input) {
+      id
       code
       message
-      id
-      data {
-        id
-        code
-        payment {
-          id
-          purchaseAmount
-          paymentMethod
-        }
-      }
     }
   }
 `;
+
 
 export const DELETE_VOUCHER = gql`
   mutation DeleteVoucher($id: ID!) {

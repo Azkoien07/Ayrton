@@ -1,75 +1,75 @@
-// challengeService.ts
 import { ApolloClient, NormalizedCache } from "@apollo/client";
 import { PaginationParams } from '@Types/pagination';
-import { ChallengeInput, ChallengeUpdateInput } from "@/generated/graphql";
+import { GET_ALL_CHALLENGES, GET_CHALLENGE_BY_ID, ADD_CHALLENGE, UPDATE_CHALLENGE, DELETE_CHALLENGE } from '@graphql/Challenges/challengeGraph';
 import {
-    GET_ALL_CHALLENGES,
-    GET_CHALLENGE_BY_ID,
-    ADD_CHALLENGE,
-    UPDATE_CHALLENGE,
-    DELETE_CHALLENGE
-} from '@graphql/Challenges/challengeGraph';
-import {
-    GetChallengesQuery,
+    ChallengeInput,
+    ChallengeUpdateInput,
+    GetAllChallengesQuery,
+    GetAllChallengesQueryVariables,
     GetChallengeByIdQuery,
+    GetChallengeByIdQueryVariables,
     AddChallengeMutation,
+    AddChallengeMutationVariables,
     UpdateChallengeMutation,
-    DeleteChallengeMutation
-} from '@/generated/graphql';
-export class ChallengeService {
-    constructor(private client: ApolloClient<NormalizedCache>) { }
+    UpdateChallengeMutationVariables,
+    DeleteChallengeMutation,
+    DeleteChallengeMutationVariables
+} from "@/generated/graphql";
 
-    async getAllChallenges({ page, size }: PaginationParams) {
-        const { data } = await this.client.query<GetChallengesQuery>({
-            query: GET_ALL_CHALLENGES,
-            variables: { page, size },
-            fetchPolicy: "network-only"
-        });
-        return data.allChallenges;
+
+export const getAllChallenges = async (client: ApolloClient<NormalizedCache>, { page, size }: PaginationParams) => {
+    const { data } = await client.query<GetAllChallengesQuery, GetAllChallengesQueryVariables>({
+        query: GET_ALL_CHALLENGES,
+        variables: { page, size },
+        fetchPolicy: "network-only"
+    });
+    return data.allChallenges;
+};
+
+export const getChallengeById = async (client: ApolloClient<NormalizedCache>, id: string) => {
+    const { data } = await client.query<GetChallengeByIdQuery, GetChallengeByIdQueryVariables>({
+        query: GET_CHALLENGE_BY_ID,
+        variables: { id },
+        fetchPolicy: "network-only"
+    });
+    return data.challengeById;
+};
+
+export const addChallenge = async (client: ApolloClient<NormalizedCache>, input: ChallengeInput) => {
+    const { data } = await client.mutate<AddChallengeMutation, AddChallengeMutationVariables>({
+        mutation: ADD_CHALLENGE,
+        variables: { input }
+    });
+
+    if (!data?.addChallenge) {
+        throw new Error("Failed to add challenge");
     }
 
-    async getChallengeById(id: string) {
-        const { data } = await this.client.query<GetChallengeByIdQuery>({
-            query: GET_CHALLENGE_BY_ID,
-            variables: { id },
-            fetchPolicy: "network-only"
-        });
-        return data.challengeById;
+    return data.addChallenge;
+};
+
+export const updateChallenge = async (client: ApolloClient<NormalizedCache>, id: string, input: ChallengeUpdateInput) => {
+    const { data } = await client.mutate<UpdateChallengeMutation, UpdateChallengeMutationVariables>({
+        mutation: UPDATE_CHALLENGE,
+        variables: { id, input }
+    });
+
+    if (!data?.updateChallenge) {
+        throw new Error("Failed to update challenge");
     }
 
-    async addChallenge(input: ChallengeInput) {
-        const { data } = await this.client.mutate<AddChallengeMutation>({
-            mutation: ADD_CHALLENGE,
-            variables: { input }
-        });
+    return data.updateChallenge;
+};
 
-        if (!data || !data.addChallenge) {
-            throw new Error("Failed to add challenge");
-        }
-        return data.addChallenge;
+export const deleteChallenge = async (client: ApolloClient<NormalizedCache>, id: string) => {
+    const { data } = await client.mutate<DeleteChallengeMutation, DeleteChallengeMutationVariables>({
+        mutation: DELETE_CHALLENGE,
+        variables: { id }
+    });
+
+    if (!data?.deleteChallenge) {
+        throw new Error("Failed to delete challenge");
     }
 
-    async updateChallenge(id: string, input: ChallengeUpdateInput) {
-        const { data } = await this.client.mutate<UpdateChallengeMutation>({
-            mutation: UPDATE_CHALLENGE,
-            variables: { id, input }
-        });
-
-        if (!data || !data.updateChallenge) {
-            throw new Error("Failed to update challenge");
-        }
-        return data.updateChallenge;
-    }
-
-    async deleteChallenge(id: string) {
-        const { data } = await this.client.mutate<DeleteChallengeMutation>({
-            mutation: DELETE_CHALLENGE,
-            variables: { id }
-        });
-
-        if (!data || !data.deleteChallenge) {
-            throw new Error("Failed to delete challenge");
-        }
-        return data.deleteChallenge;
-    }
-}
+    return data.deleteChallenge;
+};

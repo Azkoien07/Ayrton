@@ -48,15 +48,6 @@ export const ADD_PQR = gql`
       code
       message
       id
-      data {
-        id
-        typePqr
-        title
-        description
-        argument
-        answer
-        state
-      }
     }
   }
 `;
@@ -67,15 +58,6 @@ export const UPDATE_PQR = gql`
       code
       message
       id
-      data {
-        id
-        typePqr
-        title
-        description
-        argument
-        answer
-        state
-      }
     }
   }
 `;
@@ -86,15 +68,6 @@ export const DELETE_PQR = gql`
       code
       message
       id
-      data {
-        id
-        typePqr
-        title
-        description
-        argument
-        answer
-        state
-      }
     }
   }
 `;

@@ -1,15 +1,15 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import Navbar from '@/app/Components/Sections/Navbar';
-import Hero from '@/app/Components/Sections/Hero';
-import Features from '@/app/Components/Sections/Features';
-import Bento from '@/app/Components/Sections/Bento';
-import TechStack from '@/app/Components/Sections/TechStack';
-import Plans from '@/app/Components/Sections/Plans';
-import Testimonials from '@/app/Components/Sections/Testimonials';
-import FAQ from '@/app/Components/Sections/FAQ';
-import Footer from '@/app/Components/Sections/Footer';
-import Separator from '@/app/Components/Sections/Separator';
+import Navbar from '@components/Sections/Navbar';
+import Hero from '@components/Sections/Hero';
+import Features from '@components/Sections/Features';
+import Bento from '@components/Sections/Bento';
+import TechStack from '@components/Sections/TechStack';
+import Plans from '@components/Sections/Plans';
+import Testimonials from '@components/Sections/Testimonials';
+import FAQ from '@components/Sections/FAQ';
+import Footer from '@components/Sections/Footer';
+import Separator from '@components/Sections/Separator';
 
 const LandingPage = () => {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
@@ -18,14 +18,14 @@ const LandingPage = () => {
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
-    
+
     setIsLoaded(true);
   }, []);
 
@@ -61,7 +61,7 @@ const LandingPage = () => {
       </div>
 
       {/* Patrón de puntos sutil */}
-      <div 
+      <div
         className="fixed inset-0 opacity-30 dark:opacity-20 pointer-events-none"
         style={{
           backgroundImage: `radial-gradient(circle, currentColor 1px, transparent 1px)`,
@@ -79,26 +79,24 @@ const LandingPage = () => {
         aria-label="Toggle theme"
       >
         <div className="relative w-6 h-6 flex items-center justify-center">
-          <span 
-            className={`absolute text-xl transition-all duration-500 ${
-              isDarkMode 
-                ? 'opacity-100 rotate-0 scale-100' 
-                : 'opacity-0 rotate-180 scale-50'
-            }`}
+          <span
+            className={`absolute text-xl transition-all duration-500 ${isDarkMode
+              ? 'opacity-100 rotate-0 scale-100'
+              : 'opacity-0 rotate-180 scale-50'
+              }`}
           >
             🌙
           </span>
-          <span 
-            className={`absolute text-xl transition-all duration-500 ${
-              !isDarkMode 
-                ? 'opacity-100 rotate-0 scale-100' 
-                : 'opacity-0 -rotate-180 scale-50'
-            }`}
+          <span
+            className={`absolute text-xl transition-all duration-500 ${!isDarkMode
+              ? 'opacity-100 rotate-0 scale-100'
+              : 'opacity-0 -rotate-180 scale-50'
+              }`}
           >
             🌞
           </span>
         </div>
-        
+
         {/* Tooltip */}
         <div className="absolute right-full mr-3 top-1/2 transform -translate-y-1/2 bg-light-card dark:bg-dark-card px-3 py-1 rounded-lg shadow-lg border border-light-border dark:border-dark-border text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
           {isDarkMode ? 'Modo claro' : 'Modo oscuro'}
@@ -110,29 +108,29 @@ const LandingPage = () => {
       {/* Contenido principal */}
       <main className="relative z-10">
         <Hero />
-        
+
         <div className="space-y-8">
           <Separator />
           <Features />
-          
+
           <Separator />
           <Bento />
-          
+
           <Separator />
           <TechStack />
-          
+
           <Separator />
           <Testimonials />
-          
+
           <Separator />
           <Plans />
-          
+
           <Separator />
           <FAQ />
-          
+
           <Separator />
         </div>
-        
+
         <Footer />
       </main>
 

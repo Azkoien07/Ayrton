@@ -1,76 +1,76 @@
-// voucherService.ts
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { PaginationParams } from '@Types/pagination';
-import { VoucherInput, VoucherUpdateInput } from '@/generated/graphql';
+import { GET_ALL_VOUCHERS, GET_VOUCHER_BY_ID, ADD_VOUCHER, UPDATE_VOUCHER, DELETE_VOUCHER } from '@graphql/Vouchers/vouchersGraph';
 import {
-    GET_ALL_VOUCHERS,
-    GET_VOUCHER_BY_ID,
-    ADD_VOUCHER,
-    UPDATE_VOUCHER,
-    DELETE_VOUCHER
-} from '@graphql/Vouchers/vouchersGraph';
-import {
-    GetVouchersQuery,
+    VoucherInput,
+    VoucherUpdateInput,
+    GetAllVouchersQuery,
+    GetAllVouchersQueryVariables,
     GetVoucherByIdQuery,
+    GetVoucherByIdQueryVariables,
     AddVoucherMutation,
+    AddVoucherMutationVariables,
     UpdateVoucherMutation,
-    DeleteVoucherMutation
+    UpdateVoucherMutationVariables,
+    DeleteVoucherMutation,
+    DeleteVoucherMutationVariables
 } from '@/generated/graphql';
 
-export class VoucherService {
-    constructor(private client: ApolloClient<NormalizedCacheObject>) { }
+export const getAllVouchers = async (client: ApolloClient<NormalizedCacheObject>, { page, size }: PaginationParams) => {
+    const { data } = await client.query<GetAllVouchersQuery, GetAllVouchersQueryVariables>({
+        query: GET_ALL_VOUCHERS,
+        variables: { page, size },
+        fetchPolicy: 'network-only'
+    });
 
-    async getAllVouchers({ page, size }: PaginationParams) {
-        const { data } = await this.client.query<GetVouchersQuery>({
-            query: GET_ALL_VOUCHERS,
-            variables: { page, size },
-            fetchPolicy: "network-only"
-        });
-        return data.allVouchers;
+    return data.allVouchers;
+};
+
+export const getVoucherById = async (client: ApolloClient<NormalizedCacheObject>, id: string) => {
+    const { data } = await client.query<GetVoucherByIdQuery, GetVoucherByIdQueryVariables>({
+        query: GET_VOUCHER_BY_ID,
+        variables: { id },
+        fetchPolicy: 'network-only'
+    });
+
+    return data.voucherById;
+};
+
+export const addVoucher = async (client: ApolloClient<NormalizedCacheObject>, input: VoucherInput) => {
+    const { data } = await client.mutate<AddVoucherMutation, AddVoucherMutationVariables>({
+        mutation: ADD_VOUCHER,
+        variables: { input }
+    });
+
+    if (!data?.addVoucher) {
+        throw new Error('Failed to add voucher');
     }
 
-    async getVoucherById(id: string) {
-        const { data } = await this.client.query<GetVoucherByIdQuery>({
-            query: GET_VOUCHER_BY_ID,
-            variables: { id },
-            fetchPolicy: "network-only"
-        });
-        return data.voucherById;
+    return data.addVoucher;
+};
+
+export const updateVoucher = async (client: ApolloClient<NormalizedCacheObject>, id: string, input: VoucherUpdateInput) => {
+    const { data } = await client.mutate<UpdateVoucherMutation, UpdateVoucherMutationVariables>({
+        mutation: UPDATE_VOUCHER,
+        variables: { id, input }
+    });
+
+    if (!data?.updateVoucher) {
+        throw new Error('Failed to update voucher');
     }
 
-    async addVoucher(input: VoucherInput) {
-        const { data } = await this.client.mutate<AddVoucherMutation>({
-            mutation: ADD_VOUCHER,
-            variables: { input }
-        });
+    return data.updateVoucher;
+};
 
-        if (!data || !data.addVoucher) {
-            throw new Error("Failed to add voucher");
-        }
-        return data.addVoucher;
+export const deleteVoucher = async (client: ApolloClient<NormalizedCacheObject>, id: string) => {
+    const { data } = await client.mutate<DeleteVoucherMutation, DeleteVoucherMutationVariables>({
+        mutation: DELETE_VOUCHER,
+        variables: { id }
+    });
+
+    if (!data?.deleteVoucher) {
+        throw new Error('Failed to delete voucher');
     }
 
-    async updateVoucher(id: string, input: VoucherUpdateInput) {
-        const { data } = await this.client.mutate<UpdateVoucherMutation>({
-            mutation: UPDATE_VOUCHER,
-            variables: { id, input }
-        });
-
-        if (!data || !data.updateVoucher) {
-            throw new Error("Failed to update voucher");
-        }
-        return data.updateVoucher;
-    }
-
-    async deleteVoucher(id: string) {
-        const { data } = await this.client.mutate<DeleteVoucherMutation>({
-            mutation: DELETE_VOUCHER,
-            variables: { id }
-        });
-
-        if (!data || !data.deleteVoucher) {
-            throw new Error("Failed to delete voucher");
-        }
-        return data.deleteVoucher;
-    }
-}
+    return data.deleteVoucher;
+};

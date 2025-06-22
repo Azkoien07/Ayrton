@@ -4,7 +4,9 @@ const client = new ApolloClient({
     link: new HttpLink({
         uri: 'http://localhost:8081/graphql',
     }),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+        addTypename: false
+    }),
 });
 
 export default client;

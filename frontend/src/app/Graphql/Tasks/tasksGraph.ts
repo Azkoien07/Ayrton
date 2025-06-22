@@ -52,17 +52,6 @@ export const ADD_TASK = gql`
       code
       message
       id
-      data {
-        id
-        name
-        description
-        priority
-        typeTask
-        state
-        fCreation
-        fExpiration
-        reminder
-      }
     }
   }
 `;
@@ -73,17 +62,6 @@ export const UPDATE_TASK = gql`
       code
       message
       id
-      data {
-        id
-        name
-        description
-        priority
-        typeTask
-        state
-        fCreation
-        fExpiration
-        reminder
-      }
     }
   }
 `;
@@ -94,17 +72,6 @@ export const DELETE_TASK = gql`
       code
       message
       id
-      data {
-        id
-        name
-        description
-        priority
-        typeTask
-        state
-        fCreation
-        fExpiration
-        reminder
-      }
     }
   }
 `;

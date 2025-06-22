@@ -46,14 +46,6 @@ export const ADD_PLAN = gql`
       code
       message
       id
-      data {
-        id
-        name
-        description
-        price
-        state
-        duration
-      }
     }
   }
 `;
@@ -64,14 +56,6 @@ export const UPDATE_PLAN = gql`
       code
       message
       id
-      data {
-        id
-        name
-        description
-        price
-        state
-        duration
-      }
     }
   }
 `;
@@ -82,14 +66,6 @@ export const DELETE_PLAN = gql`
       code
       message
       id
-      data {
-        id
-        name
-        description
-        price
-        state
-        duration
-      }
     }
   }
 `;
