@@ -26,7 +26,7 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-8 py-4">
                 {/* Logo con efecto hover mejorado */}
                 <Link href="/" className="group">
-                    <span className="text-3xl lg:text-4xl font-palmer font-bold bg-gradient-to-r from-light-primary via-light-secondary to-light-accent dark:from-dark-primary dark:via-dark-secondary dark:to-dark-accent bg-clip-text text-transparent cursor-pointer select-none transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-sm">
+                    <span className="bebas-title text-2xl tracking-wide bg-gradient-to-r from-light-primary via-light-secondary to-light-accent dark:from-dark-primary dark:via-dark-secondary dark:to-dark-accent bg-clip-text text-transparent cursor-pointer select-none transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-sm">
                         Ayrton
                     </span>
                 </Link>

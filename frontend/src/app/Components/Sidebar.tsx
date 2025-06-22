@@ -19,32 +19,50 @@ const navItems = [
 ];
 
 interface SidebarProps {
-    sidebarOpen: boolean;
-    setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    sidebarOpen?: boolean; // Cambiado a opcional con valor por defecto true
+    setSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>; // Cambiado a opcional
     onProfileClick?: () => void; 
 }
 
-export default function Sidebar({ sidebarOpen, setSidebarOpen, onProfileClick }: SidebarProps) {
+export default function Sidebar({ 
+    sidebarOpen: propSidebarOpen, 
+    setSidebarOpen: propSetSidebarOpen, 
+    onProfileClick 
+}: SidebarProps) {
+    // Estado interno por defecto abierto
+    const [internalSidebarOpen, setInternalSidebarOpen] = React.useState(true);
+    
+    // Usar props si están disponibles, sino usar estado interno
+    const sidebarOpen = propSidebarOpen !== undefined ? propSidebarOpen : internalSidebarOpen;
+    const setSidebarOpen = propSetSidebarOpen || setInternalSidebarOpen;
+
+    const [isManualToggle, setIsManualToggle] = React.useState(false);
+    
+    const toggleSideBarCollapseHandler = (event: React.MouseEvent) => {
+        event.stopPropagation();
+        setIsManualToggle(true);
+        setSidebarOpen((prev) => !prev);
+        // Mantener el estado manual por más tiempo para evitar hover accidental
+        setTimeout(() => setIsManualToggle(false), 3000);
+    }
+
     const [active, setActive] = React.useState("/dashboard");
     const [hoveredItem, setHoveredItem] = React.useState<string | null>(null);
-
 
     const handleProfileClick = () => {
         if (onProfileClick) {
             onProfileClick();
         } else {
-         
             window.location.href = '/profile';
-         
         }
     };
 
     return (
         <motion.aside
-            onHoverStart={() => setSidebarOpen(true)}
-            onHoverEnd={() => setSidebarOpen(false)}
+            onHoverStart={() => !isManualToggle && setSidebarOpen(true)}
+            onHoverEnd={() => !isManualToggle && setSidebarOpen(false)}
             animate={{ 
-                width: sidebarOpen ? 240 : 72,
+                width: sidebarOpen ? 250 : 90,
                 boxShadow: sidebarOpen 
                     ? "0 25px 50px -12px rgba(0, 0, 0, 0.25)" 
                     : "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
@@ -61,23 +79,44 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, onProfileClick }:
                 backdrop-blur-xl bg-opacity-95 dark:bg-opacity-95
                 flex flex-col overflow-hidden"
         >
-            {/* Header with Logo */}
+            {/* Header with Logo and Toggle Button */}
             <motion.div 
-                className="flex items-center justify-center h-20 border-b border-light-border dark:border-dark-border relative"
+                className="flex items-center justify-between h-20 border-b border-light-border dark:border-dark-border px-4 relative"
                 whileHover={{ scale: 1.02 }}
             >
-            
-                
-                {sidebarOpen && (
+                {/* Logo o contenido del header */}
+                <div className="flex items-center">
+                    {sidebarOpen && (
+                        <motion.h1
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            className="text-xl font-bold text-light-text dark:text-dark-text"
+                        >
+                            Mi App
+                        </motion.h1>
+                    )}
+                </div>
+
+                {/* Botón de toggle siempre visible */}
+                <motion.button
+                    className="w-8 h-8 bg-light-accentSoft dark:bg-dark-accentSoft 
+                               border border-light-border dark:border-dark-border
+                               rounded-lg flex items-center justify-center shadow-sm
+                               hover:bg-light-accent dark:hover:bg-dark-accent 
+                               hover:text-white transition-all duration-200"
+                    onClick={toggleSideBarCollapseHandler}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    title={sidebarOpen ? "Cerrar sidebar" : "Abrir sidebar"}
+                >
                     <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        className="absolute right-4  text-light-textSecondary dark:text-dark-textSecondary"
+                        animate={{ rotate: sidebarOpen ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
                     >
-                        <FiChevronRight className="w-4 h-4" />
+                        <FiChevronRight className="w-4 h-4 text-light-textSecondary dark:text-dark-textSecondary" />
                     </motion.div>
-                )}
+                </motion.button>
             </motion.div>
 
             {/* Navigation */}
@@ -179,7 +218,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, onProfileClick }:
                 })}
             </nav>
 
-            {/* User Profile Section - MODIFICADO */}
+            {/* User Profile Section */}
             <motion.div 
                 className="px-4 py-6 border-t border-light-border dark:border-dark-border mt-auto"
             >
@@ -195,7 +234,6 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, onProfileClick }:
                     }}
                     whileTap={{ scale: 0.98 }}
                 >
-                
                     <div className="relative">
                         <motion.img
                             src="https://i.pravatar.cc/40"
@@ -206,7 +244,6 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen, onProfileClick }:
                         />
                         <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-light-success rounded-full border-2 border-white dark:border-dark-card" />
                         
-                     
                         {!sidebarOpen && (
                             <motion.div
                                 initial={{ opacity: 0, scale: 0 }}
