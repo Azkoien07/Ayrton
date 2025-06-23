@@ -60,9 +60,9 @@ public class ChallengeController {
     @MutationMapping
     public Map<String, Object> addChallenge(@Argument("input") ChallengeDto challengeDto) {
         try {
-            ChallengeDto challengeDto1 = challengeBusiness.add(challengeDto);
+            ChallengeDto newChallenge = challengeBusiness.add(challengeDto);
             return ResponseHttp.responseHttpAction(
-                    challengeDto1.getId(),
+                    newChallenge.getId(),
                     ResponseHttp.CODE_OK,
                     "Add ok"
             );
