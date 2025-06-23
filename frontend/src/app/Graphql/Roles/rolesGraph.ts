@@ -40,11 +40,6 @@ export const ADD_ROLE = gql`
       code
       message
       id
-      data {
-        id
-        name
-        accessLevel
-      }
     }
   }
 `;
@@ -55,11 +50,6 @@ export const UPDATE_ROLE = gql`
       code
       message
       id
-      data {
-        id
-        name
-        accessLevel
-      }
     }
   }
 `;
@@ -70,11 +60,6 @@ export const DELETE_ROLE = gql`
       code
       message
       id
-      data {
-        id
-        name
-        accessLevel
-      }
     }
   }
 `;

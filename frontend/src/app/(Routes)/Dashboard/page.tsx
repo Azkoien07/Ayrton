@@ -12,7 +12,6 @@ const Dashboard = ({ role }: DashboardProps) => {
     const validRole = roleOptions[role as keyof typeof roleOptions] ? role : 'admin';
     const [selected, setSelected] = useState(roleOptions[validRole as keyof typeof roleOptions][0]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
-
     const sections = roleOptions[validRole as keyof typeof roleOptions];
 
  

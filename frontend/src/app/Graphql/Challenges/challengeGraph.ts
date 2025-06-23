@@ -46,14 +46,6 @@ export const ADD_CHALLENGE = gql`
       code
       message
       id
-      data {
-        id
-        name
-        description
-        category
-        state
-        dificulty
-      }
     }
   }
 `;
@@ -64,14 +56,6 @@ export const UPDATE_CHALLENGE = gql`
       code
       message
       id
-      data {
-        id
-        name
-        description
-        category
-        state
-        dificulty
-      }
     }
   }
 `;
@@ -82,14 +66,6 @@ export const DELETE_CHALLENGE = gql`
       code
       message
       id
-      data {
-        id
-        name
-        description
-        category
-        state
-        dificulty
-      }
     }
   }
 `;

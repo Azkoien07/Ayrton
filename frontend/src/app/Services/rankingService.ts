@@ -1,76 +1,77 @@
-// rankingService.ts
 import { ApolloClient, NormalizedCache } from '@apollo/client';
 import { PaginationParams } from '@Types/pagination';
-import { RankingInput, RankingUpdateInput } from '@/generated/graphql';
+import { GET_ALL_RANKINGS, GET_RANKING_BY_ID, ADD_RANKING, UPDATE_RANKING, DELETE_RANKING } from '@graphql/Rankings/rankingsGraph';
 import {
-    GET_ALL_RANKINGS,
-    GET_RANKING_BY_ID,
-    ADD_RANKING,
-    UPDATE_RANKING,
-    DELETE_RANKING
-} from '@graphql/Rankings/rankingsGraph';
-import {
-    GetRankingsQuery,
+    RankingInput,
+    RankingUpdateInput,
+    GetAllRankingsQuery,
+    GetAllRankingsQueryVariables,
     GetRankingByIdQuery,
+    GetRankingByIdQueryVariables,
     AddRankingMutation,
+    AddRankingMutationVariables,
     UpdateRankingMutation,
-    DeleteRankingMutation
+    UpdateRankingMutationVariables,
+    DeleteRankingMutation,
+    DeleteRankingMutationVariables
 } from '@/generated/graphql';
 
-export class RankingService {
-    constructor(private client: ApolloClient<NormalizedCache>) { }
 
-    async getAllRankings({ page, size }: PaginationParams) {
-        const { data } = await this.client.query<GetRankingsQuery>({
-            query: GET_ALL_RANKINGS,
-            variables: { page, size },
-            fetchPolicy: "network-only"
-        });
-        return data.allRankings;
+export const getAllRankings = async (client: ApolloClient<NormalizedCache>, { page, size }: PaginationParams) => {
+    const { data } = await client.query<GetAllRankingsQuery, GetAllRankingsQueryVariables>({
+        query: GET_ALL_RANKINGS,
+        variables: { page, size },
+        fetchPolicy: 'network-only'
+    });
+
+    return data.allRankings;
+};
+
+export const getRankingById = async (client: ApolloClient<NormalizedCache>, id: string) => {
+    const { data } = await client.query<GetRankingByIdQuery, GetRankingByIdQueryVariables>({
+        query: GET_RANKING_BY_ID,
+        variables: { id },
+        fetchPolicy: 'network-only'
+    });
+
+    return data.rankingById;
+};
+
+export const addRanking = async (client: ApolloClient<NormalizedCache>, input: RankingInput) => {
+    const { data } = await client.mutate<AddRankingMutation, AddRankingMutationVariables>({
+        mutation: ADD_RANKING,
+        variables: { input }
+    });
+
+    if (!data?.addRanking) {
+        throw new Error('Failed to add ranking');
     }
 
-    async getRankingById(id: string) {
-        const { data } = await this.client.query<GetRankingByIdQuery>({
-            query: GET_RANKING_BY_ID,
-            variables: { id },
-            fetchPolicy: "network-only"
-        });
-        return data.rankingById;
+    return data.addRanking;
+};
+
+export const updateRanking = async (client: ApolloClient<NormalizedCache>, id: string, input: RankingUpdateInput) => {
+    const { data } = await client.mutate<UpdateRankingMutation, UpdateRankingMutationVariables>({
+        mutation: UPDATE_RANKING,
+        variables: { id, input }
+    });
+
+    if (!data?.updateRanking) {
+        throw new Error('Failed to update ranking');
     }
 
-    async addRanking(input: RankingInput) {
-        const { data } = await this.client.mutate<AddRankingMutation>({
-            mutation: ADD_RANKING,
-            variables: { input }
-        });
+    return data.updateRanking;
+};
 
-        if (!data || !data.addRanking) {
-            throw new Error("Failed to add ranking");
-        }
-        return data.addRanking;
+export const deleteRanking = async (client: ApolloClient<NormalizedCache>, id: string) => {
+    const { data } = await client.mutate<DeleteRankingMutation, DeleteRankingMutationVariables>({
+        mutation: DELETE_RANKING,
+        variables: { id }
+    });
+
+    if (!data?.deleteRanking) {
+        throw new Error('Failed to delete ranking');
     }
 
-    async updateRanking(id: string, input: RankingUpdateInput) {
-        const { data } = await this.client.mutate<UpdateRankingMutation>({
-            mutation: UPDATE_RANKING,
-            variables: { id, input }
-        });
-
-        if (!data || !data.updateRanking) {
-            throw new Error("Failed to update ranking");
-        }
-        return data.updateRanking;
-    }
-
-    async deleteRanking(id: string) {
-        const { data } = await this.client.mutate<DeleteRankingMutation>({
-            mutation: DELETE_RANKING,
-            variables: { id }
-        });
-
-        if (!data || !data.deleteRanking) {
-            throw new Error("Failed to delete ranking");
-        }
-        return data.deleteRanking;
-    }
-}
+    return data.deleteRanking;
+};
