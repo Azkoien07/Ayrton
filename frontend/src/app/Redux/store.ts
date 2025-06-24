@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
 import challengeReducer from '@slice/challengeSlice'
 import paymentReducer from '@slice/paymenSlice'
 import planReducer from '@slice/planSlice'

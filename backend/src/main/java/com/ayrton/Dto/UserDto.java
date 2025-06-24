@@ -16,6 +16,7 @@ public class UserDto {
 
     @NotNull(message = "El correo electrónico no puede ser nulo.")
     private String email;
+
     @NotNull(message = "La contrasña del usuario no puede ser nula")
     private String password;
 
@@ -23,18 +24,14 @@ public class UserDto {
     private String username;
 
     // Relations
-    @NotNull(message = "La tarea asociada al usuario no puede ser nula.")
     private TaskDto task;
 
-    @NotNull(message = "El rol asociado al usuario no puede ser nulo.")
-    private RoleDto role;
+    private Long roleId;
 
-    @NotNull(message = "El pago asociado al usuario no puede ser nulo.")
     private PaymentDto payment;
 
-    @NotNull(message = "La PQR asociada al usuario no puede ser nula.")
     private PqrDto pqr;
 
-    @NotNull(message = "El plan asociado al usuario no puede ser nulo.")
-    private PlanDto plan;
+    private Long planId;
+
 }

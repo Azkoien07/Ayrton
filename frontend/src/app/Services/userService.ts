@@ -17,7 +17,6 @@ import {
 } from '@/generated/graphql';
 
 
-
 export const getAllUsers = async (client: ApolloClient<NormalizedCacheObject>, { page, size }: PaginationParams) => {
     const { data } = await client.query<GetAllUsersQuery, GetAllUsersQueryVariables>({
         query: GET_ALL_USERS,

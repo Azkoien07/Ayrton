@@ -3,7 +3,7 @@ type User {
     name: String!
     email: String!
     password: String!
-    username: String!
+    username: String
 }
 
 type UserPage {
@@ -28,6 +28,8 @@ input UserInput {
     email: String!
     password: String!
     username: String!
+    planId: ID!
+    roleId: ID!
 }
 
 input UserUpdateInput {

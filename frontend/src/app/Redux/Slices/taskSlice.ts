@@ -28,7 +28,6 @@ const transformGraphQLToTaskItem = (graphqlData: GraphQLTaskType): TaskItem => {
         fCreation: graphqlData.fCreation,
         fExpiration: graphqlData.fExpiration,
         reminder: graphqlData.reminder
-
     };
 };
 
