@@ -55,7 +55,7 @@ const Navbar = () => {
 
                 {/* Botón CTA mejorado */}
                 <Link
-                    href="/Login"
+                    href="/Auth/login"
                     className="hidden md:inline-flex items-center bg-gradient-to-r from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary text-white py-3 px-8 rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 hover:from-light-secondary hover:to-light-accent dark:hover:from-dark-secondary dark:hover:to-dark-accent transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-light-accent/30 dark:focus:ring-dark-accent/30 group relative overflow-hidden"
                 >
                     <span className="relative z-10 flex items-center gap-2">
@@ -114,7 +114,7 @@ const Navbar = () => {
                     
                     {/* Botón CTA móvil */}
                     <Link
-                        href="/Login"
+                        href="/Auth/login"
                         onClick={() => setMenuOpen(false)}
                         className="flex items-center justify-center bg-gradient-to-r from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary text-white py-3 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-light-accent/30 dark:focus:ring-dark-accent/30 group"
                     >

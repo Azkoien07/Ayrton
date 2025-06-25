@@ -11,6 +11,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [isFlipped, setIsFlipped] = useState(false);
     const [theme, setTheme] = useState<"light" | "dark">("light");
+    const [selectedRole, setSelectedRole] = useState<"admin" | "user">("user"); 
     const [registerForm, setRegisterForm] = useState({
         name: "",
         email: "",
@@ -75,6 +76,12 @@ export default function LoginPage() {
         setTimeout(() => {
             setLoading(false);
             toast.success("¡Inicio de sesión exitoso!");
+            localStorage.setItem("userRole", selectedRole);
+            if (selectedRole === "admin") {
+                window.location.href = "//User-management/";
+            } else {
+                window.location.href = "/User-management/User_Basic";
+            }
         }, 1500);
     };
 

@@ -13,14 +13,14 @@ import {
 } from "react-icons/fi";
 
 const navItems = [
-    { name: "Dashboard", icon: <FiHome />, href: "/dashboard", color: "from-light-primary to-light-secondary" },
-    { name: "Transactions", icon: <FiCreditCard />, href: "/transactions", color: "from-light-warning to-orange-500" },
-    { name: "Settings", icon: <FiSettings />, href: "/settings", color: "from-slate-500 to-slate-600" },
+    { name: "Dashboard", icon: <FiHome />, href: "/User-management/Admin", color: "from-light-primary to-light-secondary" },
+    { name: "Transactions", icon: <FiCreditCard />, href: "/Transactions", color: "from-light-warning to-orange-500" },
+    { name: "Settings", icon: <FiSettings />, href: "/User-management/Settings", color: "from-slate-500 to-slate-600" },
 ];
 
 interface SidebarProps {
-    sidebarOpen?: boolean; // Cambiado a opcional con valor por defecto true
-    setSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>; // Cambiado a opcional
+    sidebarOpen?: boolean; 
+    setSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>; 
     onProfileClick?: () => void; 
 }
 
@@ -29,10 +29,9 @@ export default function Sidebar({
     setSidebarOpen: propSetSidebarOpen, 
     onProfileClick 
 }: SidebarProps) {
-    // Estado interno por defecto abierto
+  
     const [internalSidebarOpen, setInternalSidebarOpen] = React.useState(true);
-    
-    // Usar props si están disponibles, sino usar estado interno
+
     const sidebarOpen = propSidebarOpen !== undefined ? propSidebarOpen : internalSidebarOpen;
     const setSidebarOpen = propSetSidebarOpen || setInternalSidebarOpen;
 
@@ -42,7 +41,7 @@ export default function Sidebar({
         event.stopPropagation();
         setIsManualToggle(true);
         setSidebarOpen((prev) => !prev);
-        // Mantener el estado manual por más tiempo para evitar hover accidental
+     
         setTimeout(() => setIsManualToggle(false), 3000);
     }
 
