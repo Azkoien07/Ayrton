@@ -532,6 +532,7 @@ export type RankingUpdateInput = {
 
 export type Response = {
   code?: Maybe<Scalars['String']['output']>;
+  data?: Maybe<Scalars['ID']['output']>;
   id?: Maybe<Scalars['ID']['output']>;
   message?: Maybe<Scalars['String']['output']>;
 };
@@ -637,13 +638,15 @@ export type User = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   password: Scalars['String']['output'];
-  username: Scalars['String']['output'];
+  username?: Maybe<Scalars['String']['output']>;
 };
 
 export type UserInput = {
   email: Scalars['String']['input'];
   name: Scalars['String']['input'];
   password: Scalars['String']['input'];
+  planId: Scalars['ID']['input'];
+  roleId: Scalars['ID']['input'];
   username: Scalars['String']['input'];
 };
 
@@ -969,14 +972,14 @@ export type GetAllUsersQueryVariables = Exact<{
 }>;
 
 
-export type GetAllUsersQuery = { allUsers?: { code?: string | null, date?: string | null, message?: string | null, currentPage?: number | null, totalPages?: number | null, totalItems?: number | null, data?: Array<{ id: string, name: string, email: string, password: string, username: string } | null> | null } | null };
+export type GetAllUsersQuery = { allUsers?: { code?: string | null, date?: string | null, message?: string | null, currentPage?: number | null, totalPages?: number | null, totalItems?: number | null, data?: Array<{ id: string, name: string, email: string, password: string, username?: string | null } | null> | null } | null };
 
 export type GetUserByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetUserByIdQuery = { userById?: { code?: string | null, date?: string | null, message?: string | null, data?: { id: string, name: string, email: string, password: string, username: string } | null } | null };
+export type GetUserByIdQuery = { userById?: { code?: string | null, date?: string | null, message?: string | null, data?: { id: string, name: string, email: string, password: string, username?: string | null } | null } | null };
 
 export type AddUserMutationVariables = Exact<{
   input: UserInput;

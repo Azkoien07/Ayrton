@@ -2,6 +2,7 @@ type Response {
     id : ID
     message : String
     code : String
+    data: ID
 }
 type Query{
 

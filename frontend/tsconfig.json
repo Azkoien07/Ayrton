@@ -54,6 +54,9 @@
       "@public/*": [
         "./public/*"
       ],
+      "@slice/*": [
+        "./src/app/Redux/Slices/*"
+      ]
     }
   },
   "include": [
