@@ -3,17 +3,17 @@ import { useState } from 'react';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
 import Sidebar from '@components/Sidebar';
 import { motion } from 'framer-motion';
-import Barrita from '@/app/Components/barrita';
+import Barrita from '@components/barrita';
 import { cn } from '@utilities/utils';
-import { Plan, plans } from '@/app/Types/Plan';
-import PayModal from '@/app/Components/Modals/paymodal';
+import { Plan, plans } from '@Types/Plan';
+import PayModal from '@components/Modals/paymodal';
 
 
 const SubscriptionPlansPage = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
     const [showModal, setShowModal] = useState(false);
-    
+
     const formatPrice = (price: number, currency: string) => {
         return new Intl.NumberFormat('es-CO', {
             style: 'currency',
@@ -36,7 +36,7 @@ const SubscriptionPlansPage = () => {
     const proceedToPayment = () => {
 
         console.log('Procediendo al pago del plan:', selectedPlan?.name);
-    
+
         alert(`Redirigiendo al pago del ${selectedPlan?.name}`);
         closeModal();
     };
@@ -44,7 +44,7 @@ const SubscriptionPlansPage = () => {
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
             <Sidebar setSidebarOpen={setSidebarOpen} />
-            
+
             <main
                 className={cn(
                     'flex-1 flex flex-col transition-all duration-500 ease-in-out',
@@ -54,7 +54,7 @@ const SubscriptionPlansPage = () => {
                 <header className='sticky top-0 z-40 backdrop-blur-md bg-light-card/80 dark:bg-dark-card/80 border-b border-light-border dark:border-dark-border'>
                 </header>
                 <Barrita />
-                
+
                 <div className="flex-1 overflow-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -85,7 +85,7 @@ const SubscriptionPlansPage = () => {
                                     transition={{ duration: 0.4, delay: index * 0.1 }}
                                     className={cn(
                                         'relative rounded-xl border transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]',
-                                        plan.popular 
+                                        plan.popular
                                             ? 'border-light-primary dark:border-dark-primary bg-gradient-to-b from-light-card to-light-primary/5 dark:from-dark-card dark:to-dark-primary/5 shadow-lg'
                                             : 'border-light-border dark:border-dark-border bg-light-card dark:bg-dark-card'
                                     )}
@@ -97,7 +97,7 @@ const SubscriptionPlansPage = () => {
                                             </span>
                                         </div>
                                     )}
-                                    
+
                                     <div className="p-8">
                                         {/* Plan Header */}
                                         <div className="text-center mb-8">
@@ -149,7 +149,7 @@ const SubscriptionPlansPage = () => {
                                 </motion.div>
                             ))}
                         </div>
-                        
+
                         <div className="mt-16 text-center">
                             <div className="flex justify-center space-x-6 text-sm">
                                 <span className="flex items-center text-light-textSecondary dark:text-dark-textSecondary">

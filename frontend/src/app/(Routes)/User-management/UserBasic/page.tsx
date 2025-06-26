@@ -1,12 +1,9 @@
 'use client';
 
-import { useState, useEffect, Key, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@utilities/utils';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
 import Sidebar from '@components/Sidebar';
-
-import Task from '@/app/Components/Task';
-import UserContentAdmin from '@/app/Components/content/UserContentAdmin';
 import Barrita from '@/app/Components/barrita';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Plus, FileText, Calendar, User, Settings, CalendarDays, X, Save, Edit3, Eye } from 'lucide-react';
@@ -19,7 +16,7 @@ const Dashboard = ({ role }: DashboardProps) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(new Date());
-    
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newPageTitle, setNewPageTitle] = useState('');
     const [newPageDescription, setNewPageDescription] = useState('');
@@ -43,7 +40,7 @@ const Dashboard = ({ role }: DashboardProps) => {
     const [editTitle, setEditTitle] = useState('');
     const [editDescription, setEditDescription] = useState('');
     const [editContent, setEditContent] = useState('');
-    
+
     const [userPages, setUserPages] = useState([
         {
             id: 1,
@@ -101,7 +98,7 @@ const Dashboard = ({ role }: DashboardProps) => {
     const getTimeBasedGreeting = () => {
         const now = new Date();
         const hour = now.getHours();
-        
+
         if (hour >= 5 && hour < 12) {
             return {
                 greeting: 'Buenos días',
@@ -126,9 +123,9 @@ const Dashboard = ({ role }: DashboardProps) => {
         };
 
         updateGreeting();
-        
+
         const interval = setInterval(updateGreeting, 60000);
-        
+
         return () => clearInterval(interval);
     }, []);
 
@@ -187,8 +184,8 @@ const Dashboard = ({ role }: DashboardProps) => {
             alert('No hay página seleccionada para editar.');
             return;
         }
-        const updatedPages = userPages.map(page => 
-            page.id === currentPage.id 
+        const updatedPages = userPages.map(page =>
+            page.id === currentPage.id
                 ? {
                     ...page,
                     title: editTitle.trim(),
@@ -197,10 +194,10 @@ const Dashboard = ({ role }: DashboardProps) => {
                 }
                 : page
         );
-        
+
         setUserPages(updatedPages);
         setIsEditing(false);
-        
+
 
         const updatedCurrentPage = updatedPages.find(page => page.id === currentPage.id);
         setCurrentPage(updatedCurrentPage ?? null);
@@ -224,7 +221,7 @@ const Dashboard = ({ role }: DashboardProps) => {
             content: newPageContent.trim() || "Contenido de la página...",
             createdAt: new Date()
         };
-        
+
         setUserPages([...userPages, newPage]);
         closeModal();
     };
@@ -241,7 +238,7 @@ const Dashboard = ({ role }: DashboardProps) => {
         const startIndex = currentSlide * 4;
         return userPages.slice(startIndex, startIndex + 4);
     };
-    
+
     function isToday(date: Date) {
         const today = new Date();
         return (
@@ -258,24 +255,24 @@ const Dashboard = ({ role }: DashboardProps) => {
         const lastDayOfMonth = new Date(year, month + 1, 0);
         const daysInMonth = lastDayOfMonth.getDate();
         const days: { date: Date; isCurrentMonth: boolean }[] = [];
-   
+
         const startDay = firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
         for (let i = startDay; i > 0; i--) {
             const prevDate = new Date(year, month, 1 - i);
             days.push({ date: prevDate, isCurrentMonth: false });
         }
-    
- 
+
+
         for (let i = 1; i <= daysInMonth; i++) {
             days.push({ date: new Date(year, month, i), isCurrentMonth: true });
         }
-    
+
         const endDay = lastDayOfMonth.getDay() === 0 ? 6 : lastDayOfMonth.getDay() - 1;
         for (let i = 1; days.length % 7 !== 0; i++) {
             const nextDate = new Date(year, month + 1, i);
             days.push({ date: nextDate, isCurrentMonth: false });
         }
-    
+
         return days;
     }
 
@@ -283,7 +280,7 @@ const Dashboard = ({ role }: DashboardProps) => {
         setCurrentDate(prevDate => {
             const year = prevDate.getFullYear();
             const month = prevDate.getMonth();
-      
+
             return new Date(year, month + offset, 1);
         });
     }
@@ -298,15 +295,15 @@ const Dashboard = ({ role }: DashboardProps) => {
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
             <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-            
+
             <main
                 className={cn(
                     'flex-1 flex flex-col transition-all duration-500 ease-in-out',
                     sidebarOpen ? 'ml-[240px]' : 'ml-[72px]'
                 )}
             >
-            <header className='sticky top-0 z-40 backdrop-blur-md bg-light-card/80 dark:bg-dark-card/80 border-b border-light-border dark:border-dark-border'>
-            </header>
+                <header className='sticky top-0 z-40 backdrop-blur-md bg-light-card/80 dark:bg-dark-card/80 border-b border-light-border dark:border-dark-border'>
+                </header>
                 <Barrita></Barrita>
                 {/*first content */}
                 <div className="flex-1 overflow-auto">
@@ -374,9 +371,9 @@ const Dashboard = ({ role }: DashboardProps) => {
                                                     <div className="relative overflow-hidden rounded-lg bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border hover:border-light-primary dark:hover:border-dark-primary transition-all duration-300 hover:shadow-lg">
                                                         {/* Thumbnail/Preview */}
                                                         <div className="aspect-video bg-gradient-to-br from-light-primary/10 to-light-primary/5 dark:from-dark-primary/10 dark:to-dark-primary/5 flex items-center justify-center relative overflow-hidden">
-                                                            <IconComponent 
-                                                                size={32} 
-                                                                className="text-light-primary dark:text-dark-primary opacity-60" 
+                                                            <IconComponent
+                                                                size={32}
+                                                                className="text-light-primary dark:text-dark-primary opacity-60"
                                                             />
                                                             {/* Overlay de hover */}
                                                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
@@ -451,14 +448,14 @@ const Dashboard = ({ role }: DashboardProps) => {
                                     >
                                         <ChevronLeft size={20} className="text-light-text dark:text-dark-text" />
                                     </button>
-                                    
+
                                     <div className="flex items-center space-x-3">
                                         <CalendarDays size={20} className="text-light-primary dark:text-dark-primary" />
                                         <h3 className="text-lg font-semibold text-light-text dark:text-dark-text">
                                             {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
                                         </h3>
                                     </div>
-                                    
+
                                     <button
                                         onClick={() => navigateMonth(1)}
                                         className="p-2 rounded-full hover:bg-light-cardHover dark:hover:bg-dark-cardHover transition-colors"
@@ -511,11 +508,11 @@ const Dashboard = ({ role }: DashboardProps) => {
                                             </div>
                                         </div>
                                         <span className="text-light-textSecondary dark:text-dark-textSecondary">
-                                            {selectedDate.toLocaleDateString('es-ES', { 
-                                                weekday: 'long', 
-                                                year: 'numeric', 
-                                                month: 'long', 
-                                                day: 'numeric' 
+                                            {selectedDate.toLocaleDateString('es-ES', {
+                                                weekday: 'long',
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric'
                                             })}
                                         </span>
                                     </div>
@@ -612,10 +609,10 @@ const Dashboard = ({ role }: DashboardProps) => {
                             <div className="flex items-center space-x-6 text-sm text-light-textSecondary dark:text-dark-textSecondary">
                                 <div className="flex items-center space-x-2">
                                     <Calendar size={16} />
-                                    <span>Creado: {currentPage.createdAt.toLocaleDateString('es-ES', { 
-                                        year: 'numeric', 
-                                        month: 'long', 
-                                        day: 'numeric' 
+                                    <span>Creado: {currentPage.createdAt.toLocaleDateString('es-ES', {
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
                                     })}</span>
                                 </div>
                                 <div className="flex items-center space-x-2">
@@ -725,8 +722,8 @@ const Dashboard = ({ role }: DashboardProps) => {
                                                         : "bg-light-background dark:bg-dark-background border-light-border dark:border-dark-border hover:border-light-primary dark:hover:border-dark-primary"
                                                 )}
                                             >
-                                                <IconComponent 
-                                                    size={18} 
+                                                <IconComponent
+                                                    size={18}
                                                     className={cn(
                                                         newPageType === type.value
                                                             ? "text-light-primary dark:text-dark-primary"

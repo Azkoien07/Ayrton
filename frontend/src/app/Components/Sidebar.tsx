@@ -3,15 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
     FiHome,
     FiSettings,
-    FiHelpCircle,
     FiCreditCard,
-    FiPieChart,
-    FiLayers,
     FiLogOut,
     FiChevronRight,
-    FiUser, 
-    FiUsers, 
-    FiClipboard, 
+    FiUser,
+    FiUsers,
+    FiClipboard,
 } from "react-icons/fi";
 
 const adminNavItems = [
@@ -30,19 +27,19 @@ const userNavItems = [
 ];
 
 interface SidebarProps {
-    sidebarOpen?: boolean; 
-    setSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>; 
-    onProfileClick?: () => void; 
-    userRole?: string; 
+    sidebarOpen?: boolean;
+    setSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+    onProfileClick?: () => void;
+    userRole?: string;
 }
 
-export default function Sidebar({ 
-    sidebarOpen: propSidebarOpen, 
-    setSidebarOpen: propSetSidebarOpen, 
+export default function Sidebar({
+    sidebarOpen: propSidebarOpen,
+    setSidebarOpen: propSetSidebarOpen,
     onProfileClick,
-    userRole: propUserRole 
+    userRole: propUserRole
 }: SidebarProps) {
-  
+
     const [internalSidebarOpen, setInternalSidebarOpen] = useState(true);
     const [currentUserRole, setCurrentUserRole] = useState<string | null>(propUserRole || null);
 
@@ -59,12 +56,12 @@ export default function Sidebar({
     const setSidebarOpen = propSetSidebarOpen || setInternalSidebarOpen;
 
     const [isManualToggle, setIsManualToggle] = useState(false);
-    
+
     const toggleSideBarCollapseHandler = (event: React.MouseEvent) => {
         event.stopPropagation();
         setIsManualToggle(true);
         setSidebarOpen((prev) => !prev);
-     
+
         setTimeout(() => setIsManualToggle(false), 3000);
     }
 
@@ -85,15 +82,15 @@ export default function Sidebar({
         <motion.aside
             onHoverStart={() => !isManualToggle && setSidebarOpen(true)}
             onHoverEnd={() => !isManualToggle && setSidebarOpen(false)}
-            animate={{ 
+            animate={{
                 width: sidebarOpen ? 250 : 90,
-                boxShadow: sidebarOpen 
-                    ? "0 25px 50px -12px rgba(0, 0, 0, 0.25)" 
+                boxShadow: sidebarOpen
+                    ? "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
                     : "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
             }}
-            transition={{ 
-                type: "spring", 
-                stiffness: 400, 
+            transition={{
+                type: "spring",
+                stiffness: 400,
                 damping: 40,
                 mass: 0.8
             }}
@@ -104,7 +101,7 @@ export default function Sidebar({
                 flex flex-col overflow-hidden"
         >
             {/* Header with Logo and Toggle Button */}
-            <motion.div 
+            <motion.div
                 className="flex items-center justify-between h-20 border-b border-light-border dark:border-dark-border px-4 relative"
                 whileHover={{ scale: 1.02 }}
             >
@@ -117,7 +114,7 @@ export default function Sidebar({
                             exit={{ opacity: 0, x: -20 }}
                             className="text-xl font-bold text-light-text dark:text-dark-text"
                         >
-                            Mi App
+                            Ayrton
                         </motion.h1>
                     )}
                 </div>
@@ -148,7 +145,7 @@ export default function Sidebar({
                 {displayedNavItems.map(({ name, icon, href, color }, index) => {
                     const isActive = active === href;
                     const isHovered = hoveredItem === href;
-                    
+
                     return (
                         <motion.div
                             key={href}
@@ -169,7 +166,7 @@ export default function Sidebar({
                                         : "text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text hover:bg-light-accentSoft dark:hover:bg-dark-accentSoft"
                                     }
                                 `}
-                                whileHover={{ 
+                                whileHover={{
                                     scale: 1.02,
                                     x: 4
                                 }}
@@ -187,13 +184,13 @@ export default function Sidebar({
                                 )}
 
                                 {/* Icon with enhanced styling */}
-                                <motion.div 
+                                <motion.div
                                     className={`
                                         relative z-10 text-xl p-1 rounded-lg
-                                        ${isActive 
-                                            ? "text-white" 
-                                            : isHovered 
-                                                ? "text-light-primary dark:text-dark-primary" 
+                                        ${isActive
+                                            ? "text-white"
+                                            : isHovered
+                                                ? "text-light-primary dark:text-dark-primary"
                                                 : ""
                                         }
                                     `}
@@ -243,7 +240,7 @@ export default function Sidebar({
             </nav>
 
             {/* User Profile Section */}
-            <motion.div 
+            <motion.div
                 className="px-4 py-6 border-t border-light-border dark:border-dark-border mt-auto"
             >
                 <motion.button
@@ -252,7 +249,7 @@ export default function Sidebar({
                         hover:bg-light-accentSoft dark:hover:bg-dark-accentSoft 
                         focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent
                         transition-all duration-200 group"
-                    whileHover={{ 
+                    whileHover={{
                         scale: 1.02,
                         backgroundColor: "rgba(var(--light-accentSoft), 0.5)"
                     }}
@@ -267,7 +264,7 @@ export default function Sidebar({
                             whileHover={{ scale: 1.1 }}
                         />
                         <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-light-success rounded-full border-2 border-white dark:border-dark-card" />
-                        
+
                         {!sidebarOpen && (
                             <motion.div
                                 initial={{ opacity: 0, scale: 0 }}
@@ -298,7 +295,7 @@ export default function Sidebar({
                             </motion.div>
                         )}
                     </AnimatePresence>
-                
+
                     <AnimatePresence>
                         {sidebarOpen && (
                             <motion.div
@@ -339,7 +336,7 @@ export default function Sidebar({
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.8 }}
-                            whileHover={{ 
+                            whileHover={{
                                 scale: 1.05,
                                 color: "rgb(239, 68, 68)"
                             }}

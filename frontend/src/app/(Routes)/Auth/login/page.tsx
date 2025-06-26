@@ -1,10 +1,8 @@
 "use client";
+
 import React from "react";
-import { ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
 import { useState, useEffect, useRef } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "sonner";
 import { login } from "@services/authService";
 
 export default function LoginPage() {
@@ -12,7 +10,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isFlipped, setIsFlipped] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [selectedRole, setSelectedRole] = useState<"admin" | "user">("user");
   const [registerForm, setRegisterForm] = useState({
     name: "",
     email: "",
@@ -47,9 +44,8 @@ export default function LoginPage() {
           : `${Math.random() * 20 + 40}%`;
 
       particle.style.backgroundColor = `hsl(${hue}, ${sat}, ${light})`;
-      particle.style.animation = `float ${
-        Math.random() * 10 + 10
-      }s linear infinite`;
+      particle.style.animation = `float ${Math.random() * 10 + 10
+        }s linear infinite`;
       particle.style.animationDelay = `${Math.random() * 5}s`;
 
       container.appendChild(particle);
@@ -81,15 +77,15 @@ export default function LoginPage() {
     try {
       const data = await login(email, password);
 
-      localStorage.setItem("token", data.token); 
-      localStorage.setItem("userRole", data.role); // Guardar el rol del usuario
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userRole", data.role);
 
       toast.success("¡Inicio de sesión exitoso!");
 
       if (data.role === "admin") {
         window.location.href = "/User-management/Admin"; // Redirigir a la página de administrador
       } else {
-        window.location.href = "/User-management/User_basic"; // Redirigir a la página de usuario básico
+        window.location.href = "/User-management/UserBasic"; // Redirigir a la página de usuario básico
       }
     } catch (error) {
       console.error(error);
@@ -143,13 +139,11 @@ export default function LoginPage() {
         ref={particlesContainerRef}
         className="absolute inset-0 overflow-hidden pointer-events-none"
       />
-      <ToastContainer position="top-right" autoClose={3000} theme={theme} />
 
       <button
         onClick={toggleTheme}
-        className={`absolute top-6 right-6 p-3 rounded-full shadow-lg z-50 transition-all ${
-          theme === "dark" ? "bg-[#2C2C2C]" : "bg-white"
-        }`}
+        className={`absolute top-6 right-6 p-3 rounded-full shadow-lg z-50 transition-all ${theme === "dark" ? "bg-[#2C2C2C]" : "bg-white"
+          }`}
       >
         {theme === "dark" ? (
           <svg
@@ -183,9 +177,8 @@ export default function LoginPage() {
         </div>
 
         <div
-          className={`relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] ${
-            isFlipped ? "[transform:rotateY(180deg)]" : ""
-          }`}
+          className={`relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] ${isFlipped ? "[transform:rotateY(180deg)]" : ""
+            }`}
         >
           {/* Login */}
           <div className="absolute w-full [backface-visibility:hidden]">
@@ -271,9 +264,8 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`${primaryColor} text-white py-3 rounded-lg transition-colors shadow-md font-medium ${
-                  loading ? "opacity-80" : ""
-                }`}
+                className={`${primaryColor} text-white py-3 rounded-lg transition-colors shadow-md font-medium ${loading ? "opacity-80" : ""
+                  }`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
@@ -460,9 +452,8 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`${primaryColor} text-white py-3 rounded-lg transition-colors shadow-md font-medium ${
-                  loading ? "opacity-80" : ""
-                }`}
+                className={`${primaryColor} text-white py-3 rounded-lg transition-colors shadow-md font-medium ${loading ? "opacity-80" : ""
+                  }`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">

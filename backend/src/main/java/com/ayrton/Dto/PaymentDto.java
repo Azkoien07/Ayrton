@@ -15,7 +15,7 @@ public class PaymentDto {
     private Long id;
 
     @NotNull(message = "El monto de la compra no puede ser nulo.")
-    private double purchaseAmount;
+    private Double purchaseAmount;
 
     @NotNull(message = "El método de pago no puede ser nulo.")
     @Enumerated(EnumType.STRING)

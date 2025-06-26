@@ -94,9 +94,7 @@ export const addTask = createAsyncThunk<NonNullable<AddTaskMutation['addTask']>,
     }
 );
 
-export const updateTask = createAsyncThunk<
-    NonNullable<UpdateTaskMutation['updateTask']>,
-    UpdateTaskMutationVariables,
+export const updateTask = createAsyncThunk<NonNullable<UpdateTaskMutation['updateTask']>, UpdateTaskMutationVariables,
     { rejectValue: RejectedPayload }
 >(
     'task/update',
