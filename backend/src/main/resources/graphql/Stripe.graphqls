@@ -1,0 +1,9 @@
+type ClientSecretResponse {
+    clientSecret: String!
+    message: String
+    code: String
+}
+
+extend type Mutation {
+    createStripePaymentIntent(input: PaymentInput!): ClientSecretResponse!
+}

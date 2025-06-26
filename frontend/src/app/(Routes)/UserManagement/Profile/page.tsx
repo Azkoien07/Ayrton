@@ -1,32 +1,81 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { 
-  User, Mail, Phone, FileText, UserCheck, Camera, Check, X, 
-  Menu, Settings, Home, Users, BarChart3, LogOut, Eye, EyeOff,
+import { cn } from '@utilities/utils';
+import { motion, AnimatePresence } from 'framer-motion';
+import Sidebar from '@components/Sidebar';
+import {
+  User, Mail, Phone, FileText, UserCheck, Camera, X, Settings,
   Shield, Clock, MapPin, Briefcase, Calendar, Save, RefreshCw,
   AlertCircle, CheckCircle, Loader2
 } from 'lucide-react';
 import { cn } from '@utilities/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from '@components/Sidebar';
-import { ProfileData, ValidationErrors, NotificationState, roleOptions,  roleOptionsMap } from '../../../Types/profile';
-import { DashboardProps } from '@/app/Types/dashboard';
+
+
+interface DashboardProps {
+  role?: string;
+  userId?: string;
+}
+
+interface ProfileData {
+  id: number;
+  name: string;
+  lastname: string;
+  email: string;
+  numberPhone: string;
+  role: string;
+  document: string;
+  department?: string;
+  position?: string;
+  joinDate?: string;
+  lastLogin?: string;
+  address?: string;
+  emergencyContact?: string;
+  emergencyPhone?: string;
+}
+
+interface ValidationErrors {
+  email: string;
+  numberPhone: string;
+  emergencyPhone: string;
+  general?: string;
+}
+
+interface NotificationState {
+  show: boolean;
+  type: 'success' | 'error' | 'info';
+  message: string;
+  details?: string;
+}
+
+const roleOptions = {
+  admin: ['Dashboard', 'Usuarios', 'Reportes', 'Configuración'],
+  instructor: ['Dashboard', 'Cursos', 'Estudiantes', 'Configuración'],
+  student: ['Dashboard', 'Mis Cursos', 'Calificaciones', 'Configuración']
+};
+
+const roleOptionsMap = {
+  admin: 'Administrador',
+  instructor: 'Instructor',
+  student: 'Estudiante'
+};
 
 
 const useFormValidation = (data: ProfileData) => {
   const validateEmail = useCallback((email: string): string => {
     if (!email) return 'El correo electrónico es requerido';
-    
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return 'Ingrese un correo electrónico válido';
     }
-    
+
     if (!email.endsWith('.edu.co')) {
       return 'Debe usar un correo institucional (.edu.co)';
     }
-    
+
     return '';
   }, []);
 
@@ -42,7 +91,7 @@ const useFormValidation = (data: ProfileData) => {
     if (!cleanPhone.startsWith('3')) {
       return 'Ingrese un número de celular válido (debe iniciar con 3)';
     }
-    
+
     return '';
   }, []);
   const validateForm = useCallback((): ValidationErrors => {
@@ -63,7 +112,7 @@ const useNotifications = () => {
   });
   const showNotification = useCallback((type: NotificationState['type'], message: string, details?: string) => {
     setNotification({ show: true, type, message, details });
-    
+
     const timer = setTimeout(() => {
       setNotification(prev => ({ ...prev, show: false }));
     }, 5000);
@@ -81,14 +130,14 @@ const useNotifications = () => {
 const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
   const validRole = roleOptions[role as keyof typeof roleOptions] ? role : 'admin';
   const validRoleDisplay = roleOptionsMap[validRole as keyof typeof roleOptionsMap] || 'Administrador';
-  
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [showAdvancedFields, setShowAdvancedFields] = useState(false);
-  
- 
+
+
   const [profileData, setProfileData] = useState<ProfileData>({
     id: 1,
     name: 'Juan Carlos',
@@ -138,7 +187,7 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [hasUnsavedChanges]);
 
-  
+
   const formatPhoneNumber = useCallback((value: string) => {
     const cleaned = value.replace(/\D/g, '');
     const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
@@ -148,21 +197,21 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
     return cleaned;
   }, []);
 
-  
+
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    
+
     let formattedValue = value;
     if (name === 'numberPhone' || name === 'emergencyPhone') {
       formattedValue = formatPhoneNumber(value);
     }
-    
+
     setProfileData(prev => ({
       ...prev,
       [name]: formattedValue
     }));
-    
-    
+
+
     if (errors[name as keyof ValidationErrors]) {
       setErrors(prev => ({
         ...prev,
@@ -171,15 +220,15 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
     }
   }, [formatPhoneNumber, errors]);
 
-  
+
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     setIsSaving(true);
-    
+
     try {
       const validationErrors = validateForm();
-      
+
       if (Object.values(validationErrors).some(error => error)) {
         setErrors(validationErrors);
         showNotification('error', 'Por favor corrige los errores en el formulario');
@@ -188,15 +237,15 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
 
 
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-   
+
+
       if (Math.random() < 0.1) {
         throw new Error('Error de conexión con el servidor');
       }
 
       setOriginalData({ ...profileData });
       setErrors({ email: '', numberPhone: '', emergencyPhone: '' });
-      
+
       const now = new Date();
       const dateTimeStr = now.toLocaleString('es-ES', {
         day: '2-digit',
@@ -206,9 +255,9 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
         minute: '2-digit',
         hour12: true
       });
-      
+
       showNotification('success', '¡Perfil actualizado exitosamente!', `Actualizado el ${dateTimeStr}`);
-      
+
     } catch (error) {
       console.error('Error al actualizar perfil:', error);
       showNotification('error', 'Error al actualizar el perfil', 'Por favor intenta nuevamente');
@@ -223,7 +272,7 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
     if (!files || !files[0]) return;
 
     const file = files[0];
-    
+
 
     if (file.size > 5 * 1024 * 1024) {
       showNotification('error', 'La imagen es muy grande', 'Selecciona una imagen menor a 5MB');
@@ -236,7 +285,7 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
     }
 
     setImageLoading(true);
-    
+
     try {
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -264,18 +313,18 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
 
 
   const formattedDate = useMemo(() => {
-    return new Date().toLocaleDateString('es-ES', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return new Date().toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     });
   }, []);
 
   return (
     <div className="flex h-screen bg-light-background dark:bg-dark-background">
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      
+
       <main className={cn(
         'flex-1 flex flex-col transition-all duration-500 ease-in-out',
         sidebarOpen ? 'ml-[240px]' : 'ml-[72px]'
@@ -295,7 +344,7 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
                   {formattedDate}
                 </p>
               </div>
-              
+
               {/* Indicador de cambios no guardados */}
               <AnimatePresence>
                 {hasUnsavedChanges && (
@@ -326,7 +375,7 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
               {/* Header con gradiente mejorado */}
               <div className="relative h-48 bg-gradient-to-br from-light-primary via-light-primary/90 to-light-primary/70 dark:from-dark-primary dark:via-dark-primary/90 dark:to-dark-primary/70">
                 <div className="absolute inset-0 bg-black/10"></div>
-                
+
                 {/* Información adicional en el header */}
                 <div className="absolute top-4 right-4 text-white/90">
                   <div className="text-right">
@@ -336,7 +385,7 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
                     </p>
                   </div>
                 </div>
-                
+
                 {/* Foto de perfil y nombre */}
                 <div className="absolute left-8 -bottom-16 flex items-end">
                   <div className="relative">
@@ -389,7 +438,7 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
                         Información de Perfil
                       </h3>
                     </div>
-                    
+
                     <button
                       type="button"
                       onClick={() => setShowAdvancedFields(!showAdvancedFields)}
@@ -548,7 +597,7 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
                             <Settings className="mr-2" size={20} />
                             Información Adicional
                           </h4>
-                          
+
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                               <label className="block text-sm font-medium text-light-textSecondary dark:text-dark-textSecondary mb-2">
@@ -695,7 +744,7 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
                       <AlertCircle size={16} className="mr-2" />
                       Los campos marcados con * son obligatorios
                     </div>
-                    
+
                     <div className="flex space-x-3">
                       <button
                         type="button"
@@ -706,7 +755,7 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
                         <RefreshCw className="w-4 h-4 mr-2" />
                         Restablecer
                       </button>
-                      
+
                       <button
                         type="submit"
                         disabled={isSaving || !hasUnsavedChanges}
@@ -813,9 +862,9 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
                 <div className="ml-3 flex-1">
                   <p className={cn(
                     "font-semibold text-sm",
-                    notification.type === 'success' ? "text-green-800 dark:text-green-200": "",
-                    notification.type === 'error' ? "text-red-800 dark:text-red-200": "",
-                    notification.type === 'info' ? "text-blue-800 dark:text-blue-200":""
+                    notification.type === 'success' ? "text-green-800 dark:text-green-200" : "",
+                    notification.type === 'error' ? "text-red-800 dark:text-red-200" : "",
+                    notification.type === 'info' ? "text-blue-800 dark:text-blue-200" : ""
                   )}>
                     {notification.message}
                   </p>
@@ -842,7 +891,7 @@ const ProfilePage = ({ role = 'admin', userId }: DashboardProps) => {
                   <X size={16} />
                 </button>
               </div>
-              
+
               {/* Barra de progreso para auto-hide */}
               <div className={cn(
                 "mt-3 w-full bg-white/30 dark:bg-black/30 rounded-full h-1",

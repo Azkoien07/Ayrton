@@ -1,48 +1,115 @@
 'use client';
 
-import { useState, useEffect, Key, SetStateAction } from 'react';
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
+import type { AppDispatch, RootState } from "@/app/Redux/store";
+import Sidebar from '@components/Sidebar';
+import Barrita from '@components/barrita';
+import ListTasks from '@components/listTasks';
 import { cn } from '@utilities/utils';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
-import Sidebar from '@components/Sidebar';
-
-import Task from '@/app/Components/Task';
-import UserContentAdmin from '@/app/Components/content/UserContentAdmin';
-import Barrita from '@/app/Components/barrita';
 import { motion } from 'framer-motion';
-import ListTasks from '@/app/Components/listtasks'; 
-import { ChevronLeft, ChevronRight, Plus, FileText, Calendar, User, Settings, CalendarDays, X, Save, Edit3, Eye } from 'lucide-react';
+import { AddTaskMutationVariables, UpdateTaskMutationVariables } from '@/generated/graphql';
+
+import {
+    fetchTasks,
+    addTask,
+    updateTask,
+    deleteTask
+} from '@slice/taskSlice';
+
 
 const Dashboard = ({ role }: DashboardProps) => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { data, loading, error, currentPage, totalItems } = useSelector(
+        (state: RootState) => state.task
+    );
+    const [page, setPage] = useState(0);
+    const itemsPerPage = 5;
+    const [searchTermBar, setSearchTermBar] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
     const validRole = roleOptions[role as keyof typeof roleOptions] ? role : 'admin';
     const [selected, setSelected] = useState(roleOptions[validRole as keyof typeof roleOptions][0]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [greeting, setGreeting] = useState('');
-    const [currentSlide, setCurrentSlide] = useState(0);
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newPageTitle, setNewPageTitle] = useState('');
-    const [newPageDescription, setNewPageDescription] = useState('');
-    const [newPageContent, setNewPageContent] = useState('');
-    const [newPageType, setNewPageType] = useState('document');
+
+    useEffect(() => {
+        const debounce = setTimeout(() => {
+            setSearchTerm(searchTermBar);
+            setPage(0);
+        }, 500);
+        return () => clearTimeout(debounce);
+    }, [searchTermBar]);
+
+    useEffect(() => {
+        dispatch(fetchTasks({ page, size: itemsPerPage }));
+    }, [dispatch, page, itemsPerPage]);
 
 
-    const sections = roleOptions[validRole as keyof typeof roleOptions];
+    // Handlers for task operations
+    const handleAddTask = async (data: AddTaskMutationVariables['input']) => {
+        try {
+            const result = await dispatch(addTask(data));
 
+            if (addTask.rejected.match(result)) {
+                const message =
+                    result.payload?.message || result.error?.message || 'Error desconocido al registrar la tarea';
+                toast.error(`Error al registrar la tarea: ${message}`);
+                return false;
+            }
 
-    const pageTypes = [
-        { value: 'document', label: 'Documento', icon: FileText },
-        { value: 'tasks', label: 'Tareas', icon: FileText },
-        { value: 'calendar', label: 'Calendario', icon: Calendar },
-        { value: 'workspace', label: 'Espacio de trabajo', icon: User },
-        { value: 'project', label: 'Proyecto', icon: Settings },
-    ];
+            toast.success("Tarea registrada exitosamente");
+            return true;
+        } catch (e: any) {
+            toast.error(`Excepción no controlada al registrar la tarea: ${e?.message || "Error desconocido"}`);
+            return false;
+        }
+    };
+
+    const handleUpdateTask = async (data: UpdateTaskMutationVariables) => {
+        try {
+            const result = await dispatch(updateTask(data));
+
+            if (updateTask.rejected.match(result)) {
+                const message =
+                    result.payload?.message || result.error?.message || 'Error desconocido al actualizar la tarea';
+                toast.error(`Error al actualizar la tarea: ${message}`);
+                return false;
+            }
+
+            toast.success("Tarea actualizada correctamente");
+            return true;
+        } catch (e: any) {
+            toast.error(`Excepción no controlada al actualizar la tarea: ${e?.message || "Error desconocido"}`);
+            return false;
+        }
+    };
+
+    const handleDeleteTask = async (taskId: string, taskName: string) => {
+        try {
+            const result = await dispatch(deleteTask(taskId));
+
+            if (deleteTask.rejected.match(result)) {
+                const message =
+                    result.payload?.message || result.error?.message || 'Error desconocido al eliminar la tarea';
+                toast.error(`Error al eliminar la tarea: ${message}`);
+                return false;
+            }
+
+            toast.success(`Tarea "${taskName}" eliminada correctamente`);
+            return true;
+        } catch (e: any) {
+            toast.error(`Excepción no controlada al eliminar la tarea: ${e?.message || "Error desconocido"}`);
+            return false;
+        }
+    };
 
     const getTimeBasedGreeting = () => {
         const now = new Date();
         const hour = now.getHours();
-        
+
         if (hour >= 5 && hour < 12) {
             return {
                 greeting: 'Buenos días',
@@ -60,6 +127,7 @@ const Dashboard = ({ role }: DashboardProps) => {
             };
         }
     };
+
     useEffect(() => {
         const updateGreeting = () => {
             const timeGreeting = getTimeBasedGreeting();
@@ -67,70 +135,24 @@ const Dashboard = ({ role }: DashboardProps) => {
         };
 
         updateGreeting();
-        
+
         const interval = setInterval(updateGreeting, 60000);
-        
+
         return () => clearInterval(interval);
     }, []);
-  
-
-    function getDaysInMonth(currentDate: Date): { date: Date; isCurrentMonth: boolean }[] {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-        const firstDayOfMonth = new Date(year, month, 1);
-        const lastDayOfMonth = new Date(year, month + 1, 0);
-        const daysInMonth = lastDayOfMonth.getDate();
-        const days: { date: Date; isCurrentMonth: boolean }[] = [];
-    
-     
-        const startDay = firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
-        for (let i = startDay; i > 0; i--) {
-            const prevDate = new Date(year, month, 1 - i);
-            days.push({ date: prevDate, isCurrentMonth: false });
-        }
-    
-   
-        for (let i = 1; i <= daysInMonth; i++) {
-            days.push({ date: new Date(year, month, i), isCurrentMonth: true });
-        }
- 
-        const endDay = lastDayOfMonth.getDay() === 0 ? 6 : lastDayOfMonth.getDay() - 1;
-        for (let i = 1; days.length % 7 !== 0; i++) {
-            const nextDate = new Date(year, month + 1, i);
-            days.push({ date: nextDate, isCurrentMonth: false });
-        }
-    
-        return days;
-    }
-
-    function navigateMonth(offset: number): void {
-        setCurrentDate(prevDate => {
-            const year = prevDate.getFullYear();
-            const month = prevDate.getMonth();
-     
-            return new Date(year, month + offset, 1);
-        });
-    }
-
-    const monthNames = [
-        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-    ];
-
-    const dayNames = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
 
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
             <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-            
+
             <main
                 className={cn(
                     'flex-1 flex flex-col transition-all duration-500 ease-in-out',
                     sidebarOpen ? 'ml-[240px]' : 'ml-[72px]'
                 )}
             >
-            <header className='sticky top-0 z-40 backdrop-blur-md bg-light-card/80 dark:bg-dark-card/80 border-b border-light-border dark:border-dark-border'>
-            </header>
+                <header className='sticky top-0 z-40 backdrop-blur-md bg-light-card/80 dark:bg-dark-card/80 border-b border-light-border dark:border-dark-border'>
+                </header>
                 <Barrita></Barrita>
                 {/*first content */}
                 <div className="flex-1 overflow-auto">
@@ -152,16 +174,20 @@ const Dashboard = ({ role }: DashboardProps) => {
                             {/* Carrusel de páginas del usuario */}
                             <div className="mt-8">
                                 <div className="flex items-center justify-between mb-6">
-                                    
                                 </div>
+                            </div>
 
-                              
-                            </div>
-                           
                         </div>
-                         <div className="mt-8">
-                               <ListTasks></ListTasks>
-                            </div>
+                        <div className="mt-8">
+                            <ListTasks
+                                tasks={data}
+                                loading={loading}
+                                currentPage={page}
+                                totalItems={totalItems}
+                                onPageChange={setPage}
+                            />
+
+                        </div>
                     </motion.div>
                 </div>
             </main>

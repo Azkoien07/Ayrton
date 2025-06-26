@@ -42,6 +42,9 @@ dependencies {
 	// Web
 	implementation("org.springframework.boot:spring-boot-starter-web")
 
+	// Stripe
+	implementation("com.stripe:stripe-java:24.18.0")
+
 	// JWT
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")

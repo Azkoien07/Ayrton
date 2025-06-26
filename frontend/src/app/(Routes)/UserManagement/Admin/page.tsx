@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { cn } from '@utilities/utils';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
 import Sidebar from '@components/Sidebar';
+import Task from '@components/Task';
+import UserContentAdmin from '@components/content/UserContentAdmin';
 
-import Task from '@/app/Components/Task';
-import UserContentAdmin from '@/app/Components/content/UserContentAdmin';
 
 const Dashboard = ({ role }: DashboardProps) => {
     const validRole = roleOptions[role as keyof typeof roleOptions] ? role : 'admin';
@@ -25,7 +25,7 @@ const Dashboard = ({ role }: DashboardProps) => {
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
             <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-            
+
             <main
                 className={cn(
                     'flex-1 flex flex-col transition-all duration-500 ease-in-out',
@@ -44,15 +44,15 @@ const Dashboard = ({ role }: DashboardProps) => {
                                     </span>
                                 </h1>
                                 <p className="text-sm text-light-textSecondary dark:text-dark-textSecondary mt-1">
-                                    {new Date().toLocaleDateString('es-ES', { 
-                                        weekday: 'long', 
-                                        year: 'numeric', 
-                                        month: 'long', 
-                                        day: 'numeric' 
+                                    {new Date().toLocaleDateString('es-ES', {
+                                        weekday: 'long',
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
                                     })}
                                 </p>
                             </div>
-                            
+
                             {/* Stats Rápidas en Header */}
                             <div className="hidden lg:flex items-center gap-6">
                                 {quickStats.slice(0, 2).map((stat, index) => (
@@ -78,11 +78,11 @@ const Dashboard = ({ role }: DashboardProps) => {
                 {/* Contenido Principal */}
                 <div className="flex-1 overflow-auto">
                     <div className="p-6 space-y-6">
-                        
+
                         {/* Grid de Stats Principales */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             {quickStats.map((stat, index) => (
-                                <div key={index} 
+                                <div key={index}
                                     className="bg-light-card dark:bg-dark-card rounded-xl p-5 border border-light-border dark:border-dark-border
                                         hover:shadow-lg hover:shadow-light-primary/5 dark:hover:shadow-dark-primary/5 transition-all duration-300
                                         hover:border-light-primary/20 dark:hover:border-dark-primary/20"
@@ -104,7 +104,7 @@ const Dashboard = ({ role }: DashboardProps) => {
                             ))}
                         </div>
 
-                 
+
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             <div className="lg:col-span-2">
                                 <Task />
@@ -113,7 +113,7 @@ const Dashboard = ({ role }: DashboardProps) => {
                                 <h3 className="font-semibold text-light-text dark:text-dark-text mb-4">
                                     Estado del Sistema
                                 </h3>
-                                
+
                             </div>
                         </div>
 
@@ -149,8 +149,8 @@ const Dashboard = ({ role }: DashboardProps) => {
                                 </div>
                                 <div className="min-h-[300px]">
                                     <UserContentAdmin role={validRole} />
-                                    
-                                
+
+
                                     <div className="flex flex-col items-center justify-center py-12 text-center">
                                         <div className="w-12 h-12 bg-light-primary/10 dark:bg-dark-primary/10 rounded-full flex items-center justify-center mb-4">
                                             <div className="w-6 h-6 bg-light-primary dark:bg-dark-primary rounded-full opacity-60"></div>

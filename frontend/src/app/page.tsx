@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import Navbar from '@components/Sections/Navbar';
 import Hero from '@components/Sections/Hero';
@@ -130,7 +131,6 @@ const LandingPage = () => {
 
           <Separator />
         </div>
-
         <Footer />
       </main>
 
