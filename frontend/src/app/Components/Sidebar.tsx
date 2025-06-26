@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     FiHome,
@@ -10,10 +10,21 @@ import {
     FiLogOut,
     FiChevronRight,
     FiUser, 
+    FiUsers, 
+    FiClipboard, 
 } from "react-icons/fi";
 
-const navItems = [
+const adminNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/User-management/Admin", color: "from-light-primary to-light-secondary" },
+    { name: "Transactions", icon: <FiCreditCard />, href: "/Transactions", color: "from-light-warning to-orange-500" },
+    { name: "User Management", icon: <FiUsers />, href: "/User-management/User_basic", color: "from-blue-500 to-blue-600" },
+    { name: "Tasks", icon: <FiClipboard />, href: "/Tasks", color: "from-green-500 to-green-600" },
+    { name: "Settings", icon: <FiSettings />, href: "/User-management/Settings", color: "from-slate-500 to-slate-600" },
+];
+
+const userNavItems = [
+    { name: "Dashboard", icon: <FiHome />, href: "/User-management/User_basic", color: "from-light-primary to-light-secondary" },
+    { name: "Tasks", icon: <FiClipboard />, href: "/Tasks", color: "from-green-500 to-green-600" },
     { name: "Transactions", icon: <FiCreditCard />, href: "/Transactions", color: "from-light-warning to-orange-500" },
     { name: "Settings", icon: <FiSettings />, href: "/User-management/Settings", color: "from-slate-500 to-slate-600" },
 ];
@@ -22,20 +33,32 @@ interface SidebarProps {
     sidebarOpen?: boolean; 
     setSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>; 
     onProfileClick?: () => void; 
+    userRole?: string; 
 }
 
 export default function Sidebar({ 
     sidebarOpen: propSidebarOpen, 
     setSidebarOpen: propSetSidebarOpen, 
-    onProfileClick 
+    onProfileClick,
+    userRole: propUserRole 
 }: SidebarProps) {
   
-    const [internalSidebarOpen, setInternalSidebarOpen] = React.useState(true);
+    const [internalSidebarOpen, setInternalSidebarOpen] = useState(true);
+    const [currentUserRole, setCurrentUserRole] = useState<string | null>(propUserRole || null);
+
+    useEffect(() => {
+        if (!propUserRole) {
+            const storedRole = localStorage.getItem("userRole");
+            if (storedRole) {
+                setCurrentUserRole(storedRole);
+            }
+        }
+    }, [propUserRole]);
 
     const sidebarOpen = propSidebarOpen !== undefined ? propSidebarOpen : internalSidebarOpen;
     const setSidebarOpen = propSetSidebarOpen || setInternalSidebarOpen;
 
-    const [isManualToggle, setIsManualToggle] = React.useState(false);
+    const [isManualToggle, setIsManualToggle] = useState(false);
     
     const toggleSideBarCollapseHandler = (event: React.MouseEvent) => {
         event.stopPropagation();
@@ -45,8 +68,8 @@ export default function Sidebar({
         setTimeout(() => setIsManualToggle(false), 3000);
     }
 
-    const [active, setActive] = React.useState("/dashboard");
-    const [hoveredItem, setHoveredItem] = React.useState<string | null>(null);
+    const [active, setActive] = useState("/dashboard");
+    const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
     const handleProfileClick = () => {
         if (onProfileClick) {
@@ -55,6 +78,8 @@ export default function Sidebar({
             window.location.href = '/profile';
         }
     };
+
+    const displayedNavItems = currentUserRole === "admin" ? adminNavItems : userNavItems;
 
     return (
         <motion.aside
@@ -120,7 +145,7 @@ export default function Sidebar({
 
             {/* Navigation */}
             <nav className="flex flex-col mt-8 gap-3 px-4 flex-grow">
-                {navItems.map(({ name, icon, href, color }, index) => {
+                {displayedNavItems.map(({ name, icon, href, color }, index) => {
                     const isActive = active === href;
                     const isHovered = hoveredItem === href;
                     
