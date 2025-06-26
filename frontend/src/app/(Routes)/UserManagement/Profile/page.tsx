@@ -10,55 +10,8 @@ import {
 import { cn } from '@utilities/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from '@components/Sidebar';
-
-
-interface DashboardProps {
-  role?: string;
-  userId?: string;
-}
-
-interface ProfileData {
-  id: number;
-  name: string;
-  lastname: string;
-  email: string;
-  numberPhone: string;
-  role: string;
-  document: string;
-  department?: string;
-  position?: string;
-  joinDate?: string;
-  lastLogin?: string;
-  address?: string;
-  emergencyContact?: string;
-  emergencyPhone?: string;
-}
-
-interface ValidationErrors {
-  email: string;
-  numberPhone: string;
-  emergencyPhone: string;
-  general?: string;
-}
-
-interface NotificationState {
-  show: boolean;
-  type: 'success' | 'error' | 'info';
-  message: string;
-  details?: string;
-}
-
-const roleOptions = {
-  admin: ['Dashboard', 'Usuarios', 'Reportes', 'Configuración'],
-  instructor: ['Dashboard', 'Cursos', 'Estudiantes', 'Configuración'],
-  student: ['Dashboard', 'Mis Cursos', 'Calificaciones', 'Configuración']
-};
-
-const roleOptionsMap = {
-  admin: 'Administrador',
-  instructor: 'Instructor',
-  student: 'Estudiante'
-};
+import { ProfileData, ValidationErrors, NotificationState, roleOptions,  roleOptionsMap } from '../../../Types/profile';
+import { DashboardProps } from '@/app/Types/dashboard';
 
 
 const useFormValidation = (data: ProfileData) => {

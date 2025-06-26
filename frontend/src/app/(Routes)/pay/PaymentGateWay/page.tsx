@@ -43,7 +43,7 @@ const SubscriptionPlansPage = () => {
 
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
-            <Sidebar setSidebarOpen={setSidebarOpen} />
+            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
             
             <main
                 className={cn(
