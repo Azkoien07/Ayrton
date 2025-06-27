@@ -5,12 +5,16 @@ import com.ayrton.Dto.AuthResponseDto;
 import com.ayrton.Security.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -35,6 +39,13 @@ public class AuthController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = jwtUtil.generateToken(userDetails.getUsername(), userDetails.getAuthorities());
 
-        return new AuthResponseDto(token);
+        // Obtener el rol del usuario
+        String role = userDetails.getAuthorities().stream()
+                .findFirst()
+                .map(GrantedAuthority::getAuthority)
+                .map(s -> s.replace("ROLE_", "")) // Eliminar prefijo "ROLE_" si existe
+                .orElse("USER"); // Rol por defecto si no se encuentra ninguno
+
+        return new AuthResponseDto(token, role);
     }
 }

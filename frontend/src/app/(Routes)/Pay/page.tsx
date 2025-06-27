@@ -43,13 +43,8 @@ const SubscriptionPlansPage = () => {
 
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
-<<<<<<< HEAD:frontend/src/app/(Routes)/pay/PaymentGateWay/page.tsx
-            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-            
-=======
             <Sidebar setSidebarOpen={setSidebarOpen} />
 
->>>>>>> origin/gabrielDev:frontend/src/app/(Routes)/Pay/page.tsx
             <main
                 className={cn(
                     'flex-1 flex flex-col transition-all duration-500 ease-in-out',

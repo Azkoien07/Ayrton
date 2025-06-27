@@ -10,6 +10,7 @@ import {
     FiUsers,
     FiClipboard,
 } from "react-icons/fi";
+import { useUser } from '../Context/userContext'; 
 
 const adminNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/Admin", color: "from-light-primary to-light-secondary" },
@@ -30,27 +31,19 @@ interface SidebarProps {
     sidebarOpen?: boolean;
     setSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>;
     onProfileClick?: () => void;
-    userRole?: string;
 }
 
 export default function Sidebar({
     sidebarOpen: propSidebarOpen,
     setSidebarOpen: propSetSidebarOpen,
     onProfileClick,
-    userRole: propUserRole
 }: SidebarProps) {
 
+    const { user } = useUser(); 
     const [internalSidebarOpen, setInternalSidebarOpen] = useState(true);
-    const [currentUserRole, setCurrentUserRole] = useState<string | null>(propUserRole || null);
-
-    useEffect(() => {
-        if (!propUserRole) {
-            const storedRole = localStorage.getItem("userRole");
-            if (storedRole) {
-                setCurrentUserRole(storedRole);
-            }
-        }
-    }, [propUserRole]);
+    
+   
+    const currentUserRole = user?.role || null;
 
     const sidebarOpen = propSidebarOpen !== undefined ? propSidebarOpen : internalSidebarOpen;
     const setSidebarOpen = propSetSidebarOpen || setInternalSidebarOpen;

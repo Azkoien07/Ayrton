@@ -3,9 +3,11 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import { login } from "@services/authService";
+import { login as authServiceLogin } from "@services/authService"; 
+import { useUser } from '../../../Context/userContext'; 
 
 export default function LoginPage() {
+  const { login } = useUser(); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFlipped, setIsFlipped] = useState(false);
@@ -75,17 +77,29 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const data = await login(email, password);
+      const data = await authServiceLogin(email, password); // Usar la función renombrada
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userRole", data.role);
+      console.log("Datos de respuesta del backend:", data);
+      const userRole = typeof data.role === 'object' && data.role !== null && 'name' in data.role
+        ? (data.role as { name: string }).name
+        : data.role;
+
+      console.log("Rol del usuario (procesado):", userRole);
+
+      // Llamar a la función login del contexto con los datos del usuario
+      login({
+        id: data.id, // Asegúrate de que tu API devuelva un 'id'
+        email: data.email, // Asegúrate de que tu API devuelva un 'email'
+        role: userRole,
+        // Añade otras propiedades del usuario si las necesitas en el contexto
+      });
 
       toast.success("¡Inicio de sesión exitoso!");
 
-      if (data.role === "admin") {
-        window.location.href = "/User-management/Admin"; // Redirigir a la página de administrador
+      if (userRole && userRole.toLowerCase() === "admin") {
+        window.location.href = "/UserManagement/Admin"; 
       } else {
-        window.location.href = "/User-management/UserBasic"; // Redirigir a la página de usuario básico
+        window.location.href = "/UserManagement/UserBasic"; 
       }
     } catch (error) {
       console.error(error);
