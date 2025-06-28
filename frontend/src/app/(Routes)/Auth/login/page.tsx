@@ -85,7 +85,7 @@ export default function LoginPage() {
       if (data.role === "admin") {
         window.location.href = "/User-management/Admin"; // Redirigir a la página de administrador
       } else {
-        window.location.href = "/User-management/UserBasic"; // Redirigir a la página de usuario básico
+        window.location.href = "/User-management/userBasic"; // Redirigir a la página de usuario básico
       }
     } catch (error) {
       console.error(error);

@@ -32,8 +32,10 @@ const TechnologyCard: React.FC<TechStackItem> = ({
     return (
         <div
             className={`group relative overflow-hidden backdrop-blur-sm bg-white/10 dark:bg-gray-900/20 border border-white/20 dark:border-gray-700/30 rounded-2xl p-4 sm:p-6 transition-all duration-700 ease-out cursor-pointer 
-      ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'} 
-      ${isHovered ? 'transform -translate-y-2 scale-[1.02]' : ''}`}
+            ${isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-12 scale-95'} 
+            ${isHovered ? 'transform -translate-y-2 scale-[1.02]' : ''}
+            h-full flex flex-col justify-between`}
+
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             style={{
@@ -196,7 +198,8 @@ const TechStack: React.FC = () => {
                 </div>
 
                 <div className="w-full max-w-7xl">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
+
                         {technologies.map((tech, index) => {
                             const isLast = index === technologies.length - 1;
                             return (

@@ -1,12 +1,12 @@
 'use client';
+
 import { useState } from 'react';
-import { DashboardProps, roleOptions } from '@Types/dashboard';
-import Sidebar from '@components/Sidebar';
 import { motion } from 'framer-motion';
-import Barrita from '@components/barrita';
 import { cn } from '@utilities/utils';
 import { Plan, plans } from '@Types/Plan';
-import PayModal from '@components/Modals/paymodal';
+import Sidebar from '@components/Sidebar';
+import Barrita from '@components/barrita';
+import PayModal from '@components/Modals/modalPay';
 
 
 const SubscriptionPlansPage = () => {

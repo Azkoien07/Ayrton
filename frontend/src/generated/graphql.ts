@@ -65,6 +65,12 @@ export type ChallengeUpdateInput = {
   state: Scalars['Boolean']['input'];
 };
 
+export type ClientSecretResponse = {
+  clientSecret: Scalars['String']['output'];
+  code?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+};
+
 export enum Dificulty {
   Alta = 'Alta',
   Baja = 'Baja',
@@ -81,6 +87,7 @@ export type Mutation = {
   addTask?: Maybe<Response>;
   addUser?: Maybe<Response>;
   addVoucher?: Maybe<Response>;
+  createStripePaymentIntent: ClientSecretResponse;
   deleteChallenge?: Maybe<Response>;
   deletePayment?: Maybe<Response>;
   deletePlan?: Maybe<Response>;
@@ -144,6 +151,11 @@ export type MutationAddUserArgs = {
 
 export type MutationAddVoucherArgs = {
   input?: InputMaybe<VoucherInput>;
+};
+
+
+export type MutationCreateStripePaymentIntentArgs = {
+  input: PaymentInput;
 };
 
 
@@ -928,6 +940,13 @@ export type DeleteRoleMutationVariables = Exact<{
 
 
 export type DeleteRoleMutation = { deleteRole?: { code?: string | null, message?: string | null, id?: string | null } | null };
+
+export type CreateIntentMutationVariables = Exact<{
+  input: PaymentInput;
+}>;
+
+
+export type CreateIntentMutation = { createStripePaymentIntent: { clientSecret: string, code?: string | null, message?: string | null } };
 
 export type GetAllTasksQueryVariables = Exact<{
   page: Scalars['Int']['input'];
@@ -2285,6 +2304,41 @@ export function useDeleteRoleMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteRoleMutationHookResult = ReturnType<typeof useDeleteRoleMutation>;
 export type DeleteRoleMutationResult = Apollo.MutationResult<DeleteRoleMutation>;
 export type DeleteRoleMutationOptions = Apollo.BaseMutationOptions<DeleteRoleMutation, DeleteRoleMutationVariables>;
+export const CreateIntentDocument = gql`
+    mutation CreateIntent($input: PaymentInput!) {
+  createStripePaymentIntent(input: $input) {
+    clientSecret
+    code
+    message
+  }
+}
+    `;
+export type CreateIntentMutationFn = Apollo.MutationFunction<CreateIntentMutation, CreateIntentMutationVariables>;
+
+/**
+ * __useCreateIntentMutation__
+ *
+ * To run a mutation, you first call `useCreateIntentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateIntentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createIntentMutation, { data, loading, error }] = useCreateIntentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateIntentMutation(baseOptions?: Apollo.MutationHookOptions<CreateIntentMutation, CreateIntentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateIntentMutation, CreateIntentMutationVariables>(CreateIntentDocument, options);
+      }
+export type CreateIntentMutationHookResult = ReturnType<typeof useCreateIntentMutation>;
+export type CreateIntentMutationResult = Apollo.MutationResult<CreateIntentMutation>;
+export type CreateIntentMutationOptions = Apollo.BaseMutationOptions<CreateIntentMutation, CreateIntentMutationVariables>;
 export const GetAllTasksDocument = gql`
     query GetAllTasks($page: Int!, $size: Int!) {
   allTasks(page: $page, size: $size) {
