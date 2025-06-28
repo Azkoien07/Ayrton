@@ -10,6 +10,7 @@ import {
     FiUsers,
     FiClipboard,
 } from "react-icons/fi";
+
 const adminNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/Admin", color: "from-light-primary to-light-secondary" },
     { name: "Transactions", icon: <FiCreditCard />, href: "/Transactions", color: "from-light-warning to-orange-500" },
@@ -40,7 +41,7 @@ export default function Sidebar({
 }: SidebarProps) {
 
     const [internalSidebarOpen, setInternalSidebarOpen] = useState(true);
-    
+
     const sidebarOpen = propSidebarOpen !== undefined ? propSidebarOpen : internalSidebarOpen;
     const setSidebarOpen = propSetSidebarOpen || setInternalSidebarOpen;
 

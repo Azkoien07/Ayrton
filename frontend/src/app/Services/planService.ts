@@ -1,3 +1,4 @@
+/*
 import { ApolloClient, NormalizedCache } from "@apollo/client";
 import { PaginationParams } from '@Types/pagination';
 import { GET_ALL_PLANS, GET_PLAN_BY_ID, ADD_PLAN, UPDATE_PLAN, DELETE_PLAN } from '@graphql/Plans/plansGraph';
@@ -74,3 +75,4 @@ export const deletePlan = async (client: ApolloClient<NormalizedCache>, id: stri
 
     return data.deletePlan;
 };
+*/

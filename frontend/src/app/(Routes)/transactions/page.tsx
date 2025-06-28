@@ -3,14 +3,14 @@
 import { useState } from 'react';
 import { cn } from '@utilities/utils';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
-import Sidebar from '@components/Sidebar';
-import DashboardHeader from '@/app/Components/Transactions/DashboardHeader';
-import WelcomeSection from '@/app/Components/Transactions/WelcomeSection';
-import QuickStatsSection from '@/app/Components/Transactions/QuickStatsSection';
-import RecentPaymentsSection from '@/app/Components/Transactions/RecentPaymentsSection';
-import VouchersSection from '@/app/Components/Transactions/VouchersSection';
-import { VoucherEntity } from '@Types/voucher';
-import { useDashboardData } from '@/app/Hooks/useDashboardData';
+import Sidebar from '@components/UI/Sidebar';
+import DashboardHeader from '@components/Transactions/DashboardHeader';
+import WelcomeSection from '@components/Transactions/WelcomeSection';
+import QuickStatsSection from '@components/Transactions/QuickStatsSection';
+import RecentPaymentsSection from '@components/Transactions/RecentPaymentsSection';
+import VouchersSection from '@components/Transactions/VouchersSection';
+import { useDashboardData } from '@hooks/useDashboardData';
+import { Voucher } from '@/generated/graphql';
 
 const DashboardContent = ({ sidebarOpen, validRole }: { sidebarOpen: boolean; validRole: string }) => {
     const {
@@ -54,7 +54,7 @@ const DashboardContent = ({ sidebarOpen, validRole }: { sidebarOpen: boolean; va
                     <div className="text-red-500 text-6xl mb-4">⚠️</div>
                     <h2 className="text-xl font-bold text-light-text dark:text-dark-text mb-2">Error al cargar datos</h2>
                     <p className="text-light-textSecondary dark:text-dark-textSecondary mb-4">{error}</p>
-                    <button 
+                    <button
                         onClick={() => { fetchPayments(); fetchVouchers(); }}
                         className="bg-light-primary dark:bg-dark-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
                     >
@@ -72,17 +72,17 @@ const DashboardContent = ({ sidebarOpen, validRole }: { sidebarOpen: boolean; va
                 sidebarOpen ? 'ml-[240px]' : 'ml-[72px]'
             )}
         >
-            <DashboardHeader 
-                validRole={validRole ?? 'admin'} 
-                fetchPayments={fetchPayments} 
-                fetchVouchers={fetchVouchers} 
-                sidebarOpen={sidebarOpen} 
+            <DashboardHeader
+                validRole={validRole ?? 'admin'}
+                fetchPayments={fetchPayments}
+                fetchVouchers={fetchVouchers}
+                sidebarOpen={sidebarOpen}
             />
 
             <div className="flex-1 overflow-auto">
                 <WelcomeSection />
                 <QuickStatsSection stats={stats} vouchersLength={vouchers.length} />
-                <RecentPaymentsSection 
+                <RecentPaymentsSection
                     filteredPayments={filteredPayments}
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
@@ -92,10 +92,10 @@ const DashboardContent = ({ sidebarOpen, validRole }: { sidebarOpen: boolean; va
                     setDateFilter={setDateFilter}
                 />
                 <VouchersSection vouchers={vouchers
-                    .filter((v: VoucherEntity) => v.id !== undefined) 
-                    .map((v: VoucherEntity) => ({
+                    .filter((v: Voucher) => v.id !== undefined)
+                    .map((v: Voucher) => ({
                         ...v,
-                    })) as VoucherEntity[]}
+                    })) as Voucher[]}
                 />
             </div>
         </main>

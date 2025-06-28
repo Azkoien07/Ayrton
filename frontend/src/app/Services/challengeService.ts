@@ -1,3 +1,4 @@
+/*
 import { ApolloClient, NormalizedCache } from "@apollo/client";
 import { PaginationParams } from '@Types/pagination';
 import { GET_ALL_CHALLENGES, GET_CHALLENGE_BY_ID, ADD_CHALLENGE, UPDATE_CHALLENGE, DELETE_CHALLENGE } from '@graphql/Challenges/challengeGraph';
@@ -73,3 +74,4 @@ export const deleteChallenge = async (client: ApolloClient<NormalizedCache>, id:
 
     return data.deleteChallenge;
 };
+*/

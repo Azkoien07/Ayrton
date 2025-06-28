@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
-import { motion } from "framer-motion";
-import FormEditProfile from '../../../Components/formeditProfileUser';
+import React from 'react';
+import FormEditProfile from '@components/Features/Profile/FormEditProfileUser';
 
 const ProfileUser: React.FC = () => {
   return (

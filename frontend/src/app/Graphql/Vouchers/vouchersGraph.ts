@@ -1,4 +1,3 @@
-// voucherQueries.ts
 import { gql } from '@apollo/client';
 
 export const GET_ALL_VOUCHERS = gql`
@@ -42,7 +41,6 @@ export const GET_VOUCHER_BY_ID = gql`
   }
 `;
 
-// Mutations 
 export const ADD_VOUCHER = gql`
   mutation AddVoucher($input: VoucherInput!) {
     addVoucher(input: $input) {

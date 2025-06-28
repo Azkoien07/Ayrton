@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, CalendarDays, Plus, X, Check, Clock, Edit3 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CalendarDays, Plus, X, Check, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface Task {
@@ -79,35 +79,35 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
         const lastDayOfMonth = new Date(year, month + 1, 0);
         const daysInMonth = lastDayOfMonth.getDate();
         const days: CalendarDay[] = [];
-   
+
         const startDay = firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
         for (let i = startDay; i > 0; i--) {
             const prevDate = new Date(year, month, 1 - i);
-            days.push({ 
-                date: prevDate, 
+            days.push({
+                date: prevDate,
                 isCurrentMonth: false,
                 tasks: getTasksForDate(prevDate)
             });
         }
-    
+
         for (let i = 1; i <= daysInMonth; i++) {
             const currentDay = new Date(year, month, i);
-            days.push({ 
-                date: currentDay, 
+            days.push({
+                date: currentDay,
                 isCurrentMonth: true,
                 tasks: getTasksForDate(currentDay)
             });
         }
-    
+
         while (days.length % 7 !== 0) {
             const nextDate = new Date(year, month + 1, days.length - (daysInMonth + startDay) + 1);
-            days.push({ 
-                date: nextDate, 
+            days.push({
+                date: nextDate,
                 isCurrentMonth: false,
                 tasks: getTasksForDate(nextDate)
             });
         }
-    
+
         return days;
     }
 
@@ -140,7 +140,7 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
     }
 
     function toggleTaskComplete(taskId: string): void {
-        setTasks(prev => prev.map(task => 
+        setTasks(prev => prev.map(task =>
             task.id === taskId ? { ...task, completed: !task.completed } : task
         ));
     }
@@ -189,14 +189,14 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
                                 >
                                     <ChevronLeft size={20} />
                                 </button>
-                                
+
                                 <div className="flex items-center space-x-3">
                                     <CalendarDays size={20} className="text-light-primary dark:text-dark-primary" />
                                     <h3 className="text-lg font-semibold text-light-text dark:text-dark-text">
                                         {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
                                     </h3>
                                 </div>
-                                
+
                                 <button
                                     onClick={() => navigateMonth(1)}
                                     className="p-2 rounded-full hover:bg-light-cardHover dark:hover:bg-dark-cardHover transition-colors text-light-text dark:text-dark-text"
@@ -223,23 +223,23 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
                                     const isTodayDay = isToday(day.date);
                                     const hasActiveTasks = day.tasks.some(task => !task.completed);
                                     const completedTasks = day.tasks.filter(task => task.completed).length;
-                                    
+
                                     return (
                                         <button
                                             key={index}
                                             onClick={() => handleDayClick(day.date)}
                                             className={`
                                                 group relative aspect-square flex flex-col items-center justify-center text-sm rounded-lg transition-all duration-200 hover:bg-light-cardHover dark:hover:bg-dark-cardHover
-                                                ${!day.isCurrentMonth 
-                                                    ? 'text-light-textSecondary dark:text-dark-textSecondary opacity-50' 
+                                                ${!day.isCurrentMonth
+                                                    ? 'text-light-textSecondary dark:text-dark-textSecondary opacity-50'
                                                     : 'text-light-text dark:text-dark-text'
                                                 }
-                                                ${isSelected 
-                                                    ? 'bg-light-primary dark:bg-dark-primary text-white font-semibold shadow-lg' 
+                                                ${isSelected
+                                                    ? 'bg-light-primary dark:bg-dark-primary text-white font-semibold shadow-lg'
                                                     : ''
                                                 }
-                                                ${isTodayDay && !isSelected 
-                                                    ? 'bg-light-success/20 dark:bg-dark-success/20 text-light-success dark:text-dark-success font-medium ring-1 ring-light-success/30 dark:ring-dark-success/30' 
+                                                ${isTodayDay && !isSelected
+                                                    ? 'bg-light-success/20 dark:bg-dark-success/20 text-light-success dark:text-dark-success font-medium ring-1 ring-light-success/30 dark:ring-dark-success/30'
                                                     : ''
                                                 }
                                             `}
@@ -247,23 +247,21 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
                                             <span className="text-sm font-medium">
                                                 {day.date.getDate()}
                                             </span>
-                                            
+
                                             {/* Task indicators */}
                                             {day.tasks.length > 0 && (
                                                 <div className="flex space-x-1 mt-1">
                                                     {hasActiveTasks && (
-                                                        <div className={`w-1.5 h-1.5 rounded-full ${
-                                                            isSelected 
-                                                                ? 'bg-white' 
+                                                        <div className={`w-1.5 h-1.5 rounded-full ${isSelected
+                                                                ? 'bg-white'
                                                                 : 'bg-light-warning dark:bg-dark-warning'
-                                                        }`}></div>
+                                                            }`}></div>
                                                     )}
                                                     {completedTasks > 0 && (
-                                                        <div className={`w-1.5 h-1.5 rounded-full ${
-                                                            isSelected 
-                                                                ? 'bg-white/70' 
+                                                        <div className={`w-1.5 h-1.5 rounded-full ${isSelected
+                                                                ? 'bg-white/70'
                                                                 : 'bg-light-success dark:bg-dark-success'
-                                                        }`}></div>
+                                                            }`}></div>
                                                     )}
                                                 </div>
                                             )}
@@ -292,8 +290,8 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
                         <div className="flex items-center justify-between mb-4">
                             <div>
                                 <h3 className="text-lg font-semibold text-light-text dark:text-dark-text">
-                                    {selectedDate.toLocaleDateString('es-ES', { 
-                                        weekday: 'long', 
+                                    {selectedDate.toLocaleDateString('es-ES', {
+                                        weekday: 'long',
                                         day: 'numeric',
                                         month: 'long'
                                     })}
@@ -324,31 +322,28 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
                                         key={task.id}
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        className={`p-3 rounded-lg border transition-all duration-200 ${
-                                            task.completed 
-                                                ? 'bg-light-background dark:bg-dark-background border-light-border dark:border-dark-border opacity-75' 
+                                        className={`p-3 rounded-lg border transition-all duration-200 ${task.completed
+                                                ? 'bg-light-background dark:bg-dark-background border-light-border dark:border-dark-border opacity-75'
                                                 : 'bg-light-cardHover dark:bg-dark-cardHover border-light-border dark:border-dark-border hover:border-light-primary dark:hover:border-dark-primary'
-                                        }`}
+                                            }`}
                                     >
                                         <div className="flex items-start justify-between">
                                             <div className="flex items-start space-x-3 flex-1">
                                                 <button
                                                     onClick={() => toggleTaskComplete(task.id)}
-                                                    className={`mt-1 p-1 rounded-full transition-all duration-200 ${
-                                                        task.completed 
-                                                            ? 'bg-light-success dark:bg-dark-success text-white' 
+                                                    className={`mt-1 p-1 rounded-full transition-all duration-200 ${task.completed
+                                                            ? 'bg-light-success dark:bg-dark-success text-white'
                                                             : 'border-2 border-light-border dark:border-dark-border hover:border-light-success dark:hover:border-dark-success'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {task.completed && <Check size={12} />}
                                                 </button>
-                                                
+
                                                 <div className="flex-1">
-                                                    <p className={`text-sm font-medium ${
-                                                        task.completed 
-                                                            ? 'line-through text-light-textSecondary dark:text-dark-textSecondary' 
+                                                    <p className={`text-sm font-medium ${task.completed
+                                                            ? 'line-through text-light-textSecondary dark:text-dark-textSecondary'
                                                             : 'text-light-text dark:text-dark-text'
-                                                    }`}>
+                                                        }`}>
                                                         {task.title}
                                                     </p>
                                                     <div className="flex items-center space-x-2 mt-2">
@@ -363,7 +358,7 @@ const UserCalendar: React.FC<UserCalendarProps> = ({
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <button
                                                 onClick={() => deleteTask(task.id)}
                                                 className="p-1 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-error dark:hover:text-dark-error transition-colors duration-200"

@@ -59,6 +59,9 @@
       ],
       "@context/*": [
         "./src/app/Context/*"
+      ],
+      "@hooks/*": [
+        "./src/app/Hooks/*"
       ]
     }
   },

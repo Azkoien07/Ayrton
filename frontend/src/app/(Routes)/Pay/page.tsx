@@ -1,11 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { cn } from '@utilities/utils';
 import { Plan, plans } from '@Types/Plan';
-import Sidebar from '@components/Sidebar';
-import Barrita from '@components/barrita';
+import Sidebar from '@components/UI/Sidebar';
+import Barrita from '@components/Header';
 import PayModal from '@components/Modals/modalPay';
 import SubscriptionHeader from '@components/SubscriptionHeader';
 import PlanCard from '@components/PlanCard';

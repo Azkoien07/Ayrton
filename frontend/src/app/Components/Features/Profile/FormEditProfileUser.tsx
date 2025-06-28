@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { 
-  User, Mail, Phone, FileText, UserCheck, 
+import {
+  User, Mail, Phone, FileText, UserCheck,
   Shield, MapPin, Briefcase
 } from 'lucide-react';
 
-import ProfileAvatar from './Profile/ProfileAvatar';
-import FormField from './Profile/FormField';
-import Notification from './Notification';
-import Sidebar from './Sidebar';
-import ProfileActions from './Profile/ProfileActions';
+import ProfileAvatar from './ProfileAvatar';
+import FormField from './FormField';
+import Notification from '../../Notification';
+import Sidebar from '../../UI/Sidebar';
+import ProfileActions from './ProfileActions';
 
 const ProfileData = {
   name: '',
@@ -36,12 +36,13 @@ const FormEditProfile: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+
   const validateForm = useCallback(() => {
     const errors: { [key: string]: string } = {};
     if (!profileData.name) errors.name = "El nombre es obligatorio";
     if (!profileData.username) errors.username = "El nombre de usuario es obligatorio";
     if (!profileData.email) errors.email = "El email es obligatorio";
-    
+
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   }, [profileData]);
@@ -50,10 +51,10 @@ const FormEditProfile: React.FC = () => {
     if (!validateForm()) return;
 
     setIsSaving(true);
-    
-  
+
+
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
     setIsSaving(false);
     setIsEditing(false);
     setNotification({
@@ -66,7 +67,7 @@ const FormEditProfile: React.FC = () => {
   const handleCancel = useCallback(() => {
     setIsEditing(false);
     setValidationErrors({});
-    setProfileData({ ...ProfileData }); 
+    setProfileData({ ...ProfileData });
   }, []);
 
   const updateField = useCallback((field: string, value: any) => {
@@ -75,11 +76,11 @@ const FormEditProfile: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-light-background">
-         <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-         
+      <Sidebar role={''} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
       <div className="max-w-4xl mx-auto p-6">
         {/* Header */}
-        <motion.div 
+        <motion.div
           className="mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -107,7 +108,7 @@ const FormEditProfile: React.FC = () => {
                 Información Personal
               </h2>
             </div>
-            
+
             <ProfileActions
               isEditing={isEditing}
               isSaving={isSaving}
@@ -118,7 +119,7 @@ const FormEditProfile: React.FC = () => {
           </div>
           <div className="p-6">
             <div className="flex flex-col lg:flex-row gap-8">
-              <motion.div 
+              <motion.div
                 className="flex flex-col items-center space-y-4"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -129,7 +130,7 @@ const FormEditProfile: React.FC = () => {
                   onImageChange={(image: any) => updateField('profileImage', image)}
                   isEditing={isEditing}
                 />
-                
+
                 <div className="text-center">
                   <h3 className="text-lg font-semibold text-light-text">
                     {profileData.name || 'Nombre no definido'}
@@ -142,7 +143,7 @@ const FormEditProfile: React.FC = () => {
 
               {/* Formulario */}
               <div className="flex-1 space-y-6">
-                <motion.div 
+                <motion.div
                   className="grid grid-cols-1 md:grid-cols-2 gap-6"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -157,7 +158,7 @@ const FormEditProfile: React.FC = () => {
                     disabled={!isEditing}
                     placeholder="Ingresa tu nombre completo"
                   />
-                  
+
                   <FormField
                     label="Nombre de Usuario"
                     value={profileData.username}
@@ -167,36 +168,36 @@ const FormEditProfile: React.FC = () => {
                     disabled={!isEditing}
                     placeholder="Ej: juanperez"
                   />
-                  
+
                   <FormField
                     label="Email"
                     value={profileData.email}
-                    onChange={(value:any) => updateField('email', value)}
+                    onChange={(value: any) => updateField('email', value)}
                     type="email"
                     icon={Mail}
                     error={validationErrors.email}
                     disabled={!isEditing}
                     placeholder="tu@email.com"
                   />
-                  
+
                   <FormField
                     label="Teléfono"
                     value={profileData.phone}
-                    onChange={(value:any) => updateField('phone', value)}
+                    onChange={(value: any) => updateField('phone', value)}
                     icon={Phone}
                     disabled={!isEditing}
                     placeholder="+57 300 123 4567"
                   />
-                  
+
                   <FormField
                     label="Ubicación"
                     value={profileData.location}
-                    onChange={(value:any) => updateField('location', value)}
+                    onChange={(value: any) => updateField('location', value)}
                     icon={MapPin}
                     disabled={!isEditing}
                     placeholder="Ciudad, País"
                   />
-                  
+
                   <FormField
                     label="Empresa"
                     value={profileData.company}
@@ -222,9 +223,8 @@ const FormEditProfile: React.FC = () => {
                     disabled={!isEditing}
                     placeholder="Cuéntanos sobre ti..."
                     rows={4}
-                    className={`w-full px-4 py-3 rounded-lg border border-light-border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-200 resize-none ${
-                      !isEditing ? 'bg-light-accentSoft cursor-not-allowed' : 'bg-light-card'
-                    }`}
+                    className={`w-full px-4 py-3 rounded-lg border border-light-border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-200 resize-none ${!isEditing ? 'bg-light-accentSoft cursor-not-allowed' : 'bg-light-card'
+                      }`}
                   />
                 </motion.div>
 
@@ -249,7 +249,7 @@ const FormEditProfile: React.FC = () => {
           </div>
         </motion.div>
       </div>
-      <Notification 
+      <Notification
         notification={notification}
         onClose={() => setNotification(prev => ({ ...prev, show: false }))}
       />

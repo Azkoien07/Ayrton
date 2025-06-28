@@ -3,15 +3,14 @@
 import { useState, useEffect } from 'react';
 import { cn } from '@utilities/utils';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
-import Sidebar from '@components/Sidebar';
-import Task from '@components/Task';
-import UserContentAdmin from '@components/content/UserContentAdmin';
 import { useUser } from '@context/userContext';
+import Sidebar from '@components/UI/Sidebar';
+import UserContentAdmin from '@components/Content/UserContentAdmin';
 
 
 const Dashboard = ({ role }: DashboardProps) => {
     const { user } = useUser();
-    const [userRole, setUserRole] = useState<string>('user'); // Default to 'user'
+    const [userRole, setUserRole] = useState<string>('user');
 
     useEffect(() => {
         if (user && user.role) {
@@ -116,9 +115,6 @@ const Dashboard = ({ role }: DashboardProps) => {
 
 
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <div className="lg:col-span-2">
-                                <Task />
-                            </div>
                             <div className="bg-light-card dark:bg-dark-card rounded-xl p-4 border border-light-border dark:border-dark-border">
                                 <h3 className="font-semibold text-light-text dark:text-dark-text mb-4">
                                     Estado del Sistema

@@ -1,41 +1,19 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { Eye, Edit2, Trash2, Clock, Calendar, Plus, Search, CheckCircle2, Circle, AlertCircle } from 'lucide-react';
-import { Priority, TypeTask } from '@/generated/graphql';
+import { Priority, TypeTask, AddTaskMutationVariables, UpdateTaskMutationVariables } from '@/generated/graphql';
+import { TaskItem, TaskFormData, TaskListProps, ModalType, FilterType, SortType } from "@components/Features/Task/Type/taskTypes";
+import { calcularTiempoTranscurrido, esVencida, formatToLocalDateTime, getPrioridadColor, getEstadoColor, mapStateToStatus } from "@components/Features/Task/taskUtils";
 
-export interface TaskItem {
-  id: string;
-  name: string;
-  description: string;
-  priority: Priority;
-  typeTask: TypeTask;
-  state: boolean;
-  fCreation: string;
-  fExpiration: string;
-  reminder?: string | null;
-}
-
-interface TaskFormData {
-  name: string;
-  description: string;
-  priority: Priority;
-  fExpiration: string;
-  state: boolean;
-}
-
-interface TaskListProps {
-  tasks: TaskItem[];
-  loading: boolean;
-  currentPage: number;
-  totalItems: number;
-  onPageChange: (page: number) => void;
-  onDispatchAction: (action: any) => void;
-}
-
-type ModalType = 'view' | 'edit' | 'delete' | 'create';
-type FilterType = 'todas' | 'completada' | 'en_progreso' | 'pendiente'; // Still mapping to component's logic
-type SortType = 'fExpiration' | 'priority' | 'fCreation'; // Updated to match TaskItem fields
-
-export default function ImprovedTaskList({ tasks, loading, currentPage, totalItems, onPageChange, onDispatchAction }: TaskListProps) {
+export default function ListTasks({
+  tasks,
+  loading,
+  currentPage,
+  totalItems,
+  onPageChange,
+  onAddTask,
+  onUpdateTask,
+  onDeleteTask,
+}: TaskListProps) {
   const [selectedTask, setSelectedTask] = useState<TaskItem | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState<ModalType>('view');
@@ -46,75 +24,20 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
     name: '',
     description: '',
     fExpiration: '',
+    reminder: '',
     priority: Priority.Media,
+    typeTask: TypeTask.Personal,
     state: false
   });
 
-  const formatearFecha = useCallback((fecha: string) => {
-    return new Date(fecha).toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  }, []);
-
-  const calcularTiempoTranscurrido = useCallback((fechaCreacion: string) => {
-    const ahora = new Date();
-    const fechaInicio = new Date(fechaCreacion);
-    const diferencia = ahora.getTime() - fechaInicio.getTime();
-
-    const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-    const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-    if (dias > 0) {
-      return `${dias} día${dias > 1 ? 's' : ''} ${horas}h`;
-    } else if (horas > 0) {
-      return `${horas} hora${horas > 1 ? 's' : ''}`;
-    } else {
-      const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-      return `${minutos} min`;
-    }
-  }, []);
-
-  const esVencida = useCallback((fExpiration: string) => {
-    return new Date(fExpiration) < new Date();
-  }, []);
-
-  const getPrioridadColor = useCallback((priority: Priority): string => {
-    const colors = {
-      [Priority.Alta]: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-      [Priority.Media]: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-      [Priority.Baja]: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-    };
-    return colors[priority] || 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
-  }, []);
-
-  // Helper to map boolean `state` to string status for display and filtering
-  const mapStateToStatus = useCallback((state: boolean): 'completada' | 'en_progreso' | 'pendiente' => {
-    // This mapping assumes: true = completada, false = pendiente/en_progreso.
-    // If you have a separate 'in_progreso' state, your TaskItem would need a different field,
-    // or your slice logic would need to send a specific string.
-    return state ? 'completada' : 'pendiente'; // Defaulting false to 'pendiente'
-  }, []);
-
-  const getEstadoColor = useCallback((status: 'completada' | 'en_progreso' | 'pendiente') => {
-    const colors = {
-      completada: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-      en_progreso: 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400',
-      pendiente: 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400',
-    };
-    return colors[status] || 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
-  }, []);
-
+  const itemsPerPage = 5;
 
   const filteredAndSortedTasks = useMemo(() => {
     let filtered = tasks.filter(task => {
       const matchesSearch = task.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         task.description.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const taskStatus = mapStateToStatus(task.state); // Map boolean state to string status
+      const taskStatus = mapStateToStatus(task.state);
       const matchesFilter = filterStatus === 'todas' || taskStatus === filterStatus;
       return matchesSearch && matchesFilter;
     });
@@ -138,7 +61,7 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
   const taskStats = useMemo(() => {
     const total = tasks.length;
     const completadas = tasks.filter(t => t.state).length;
-    const enProgreso = 0; // No direct 'en_progreso' state in TaskItem. You might need to add a `status` field to TaskItem if you want this granular stat.
+    const enProgreso = 0;
     const pendientes = tasks.filter(t => !t.state).length;
     const vencidas = tasks.filter(t => !t.state && esVencida(t.fExpiration)).length;
 
@@ -153,82 +76,107 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
     if (action === 'edit' && task) {
       setEditFormData({
         name: task.name,
-        description: task.description,
+        description: task.description || '',
         fExpiration: task.fExpiration.slice(0, 16),
+        reminder: task.reminder ? task.reminder.slice(0, 16) : '',
         priority: task.priority,
-        state: task.state
+        state: task.state,
+        typeTask: task.typeTask
       });
     } else if (action === 'create') {
       setEditFormData({
         name: '',
         description: '',
         fExpiration: '',
+        reminder: '',
         priority: Priority.Media,
-        state: false
+        state: false,
+        typeTask: TypeTask.Personal
       });
     }
 
     setShowModal(true);
   }, []);
 
+
   const handleCloseModal = useCallback(() => {
     setShowModal(false);
     setSelectedTask(null);
     setModalType('view');
-    setEditFormData({
-      name: '',
-      description: '',
-      fExpiration: '',
-        priority: Priority.Media,
-        state: false
-    });
   }, []);
 
-  const handleDelete = useCallback((taskId: string) => {
-    onDispatchAction({ type: 'tasks/deleteTask', payload: taskId });
-    handleCloseModal();
-  }, [handleCloseModal, onDispatchAction]);
 
-  const handleSaveEdit = useCallback(() => {
+  const handleCreateTask = useCallback(async () => {
+
+    const input: AddTaskMutationVariables["input"] = {
+      name: editFormData.name,
+      description: editFormData.description || '',
+      priority: editFormData.priority,
+      state: editFormData.state,
+      typeTask: editFormData.typeTask,
+      fCreation: formatToLocalDateTime(new Date().toISOString()),
+      fExpiration: formatToLocalDateTime(editFormData.fExpiration),
+      reminder: editFormData.reminder
+        ? formatToLocalDateTime(editFormData.reminder)
+        : null,
+    };
+
+    const success = await onAddTask(input);
+    if (success) {
+      handleCloseModal();
+    }
+  }, [editFormData, onAddTask, handleCloseModal]);
+
+  const handleUpdateTask = useCallback(async () => {
     if (!selectedTask) return;
 
-    const updatedTask: TaskItem = {
-      ...selectedTask,
-      name: editFormData.name,
-      description: editFormData.description,
-      priority: editFormData.priority,
-      state: editFormData.state,
-      fExpiration: editFormData.fExpiration + ':00Z'
+    const input: UpdateTaskMutationVariables = {
+      id: selectedTask.id,
+      input: {
+        name: editFormData.name,
+        description: editFormData.description,
+        priority: editFormData.priority,
+        state: editFormData.state,
+        fCreation: selectedTask.fCreation,
+        fExpiration: formatToLocalDateTime(editFormData.fExpiration),
+        reminder: editFormData.reminder
+          ? formatToLocalDateTime(editFormData.reminder)
+          : null,
+        typeTask: editFormData.typeTask,
+      },
     };
-    onDispatchAction({ type: 'tasks/updateTask', payload: updatedTask });
-    handleCloseModal();
-  }, [selectedTask, editFormData, handleCloseModal, onDispatchAction]);
 
-  const handleCreateTask = useCallback(() => {
-    // Generate a simple unique ID for client-side creation. Your backend/slice should handle real ID generation.
-    const newId = `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const newTask: TaskItem = {
-      id: newId,
-      name: editFormData.name,
-      description: editFormData.description,
-      priority: editFormData.priority,
-      state: editFormData.state,
-      typeTask: TypeTask.Personal, // Default value, adjust as needed or add to form
-      fCreation: new Date().toISOString(),
-      fExpiration: editFormData.fExpiration + ':00Z'
+    const success = await onUpdateTask(input);
+    if (success) {
+      handleCloseModal();
+    }
+  }, [selectedTask, editFormData, onUpdateTask, handleCloseModal]);
+
+  const handleDelete = useCallback(async () => {
+    if (!selectedTask) return;
+    const success = await onDeleteTask(selectedTask.id, selectedTask.name);
+    if (success) {
+      handleCloseModal();
+    }
+  }, [selectedTask, onDeleteTask, handleCloseModal]);
+
+  const toggleTaskStatus = useCallback(async (task: TaskItem) => {
+    const input: UpdateTaskMutationVariables = {
+      id: task.id,
+      input: {
+        name: task.name,
+        description: task.description,
+        priority: task.priority,
+        typeTask: task.typeTask,
+        fCreation: task.fCreation,
+        fExpiration: task.fExpiration,
+        reminder: task.reminder,
+        state: !task.state,
+      },
     };
-    onDispatchAction({ type: 'tasks/createTask', payload: newTask });
-    handleCloseModal();
-  }, [editFormData, handleCloseModal, onDispatchAction]);
+    await onUpdateTask(input);
+  }, [onUpdateTask]);
 
-  const toggleTaskStatus = useCallback((taskId: string) => {
-    const taskToToggle = tasks.find(task => task.id === taskId);
-    if (!taskToToggle) return;
-
-    const newStatus = !taskToToggle.state; // Toggle boolean state
-    const updatedTask: TaskItem = { ...taskToToggle, state: newStatus };
-    onDispatchAction({ type: 'tasks/updateTaskStatus', payload: updatedTask });
-  }, [tasks, onDispatchAction]);
 
   return (
     <div className='rounded-lg bg-gradient-to-r from-light-primary/10 to-light-primary/5 dark:from-dark-primary/10 dark:to-dark-primary/5 p-10 lg:p-20 border border-light-border dark:border-dark-border'>
@@ -296,7 +244,6 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
               <option value="todas">Todas</option>
               <option value="pendiente">Pendientes</option>
               <option value="completada">Completadas</option>
-              {/* If you have a true 'en_progreso' state in your TaskItem, add it here */}
             </select>
             <select
               value={sortBy}
@@ -314,7 +261,6 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
       {loading ? (
         <div className="text-center py-12">
           <p className="text-gray-600 dark:text-gray-400">Cargando tareas...</p>
-          {/* You can add a spinner here */}
         </div>
       ) : (
         <>
@@ -331,18 +277,17 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                     : task.state
                       ? 'border-l-green-500'
                       : task.priority === Priority.Alta
-                          ? 'border-l-red-400'
-                          : task.priority === Priority.Media
-                            ? 'border-l-yellow-400'
-                            : 'border-l-green-400'
+                        ? 'border-l-red-400'
+                        : task.priority === Priority.Media
+                          ? 'border-l-yellow-400'
+                          : 'border-l-green-400'
                     } border-r border-t border-b border-gray-200 dark:border-gray-700`}
                 >
                   <div className="p-6">
-                    {/* Header de la card */}
                     <div className="flex justify-between items-start mb-3">
                       <div className="flex items-start space-x-3 flex-1">
                         <button
-                          onClick={() => toggleTaskStatus(task.id)}
+                          onClick={() => toggleTaskStatus(task)}
                           className="mt-1 text-gray-400 hover:text-blue-600 transition-colors"
                         >
                           {task.state ? (
@@ -416,7 +361,7 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                       </div>
                       <div className="flex items-center">
                         <Calendar className="w-3 h-3 mr-1" />
-                        {formatearFecha(task.fExpiration)}
+                        {formatToLocalDateTime(task.fExpiration)}
                       </div>
                     </div>
                   </div>
@@ -451,22 +396,21 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
               )}
             </div>
           )}
-          {/* Pagination Controls */}
           {totalItems > 0 && (
             <div className="flex justify-center mt-8">
               <button
                 onClick={() => onPageChange(currentPage - 1)}
-                disabled={currentPage === 1}
+                disabled={currentPage === 0}
                 className="px-4 py-2 mx-1 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 disabled:opacity-50"
               >
                 Anterior
               </button>
               <span className="px-4 py-2 mx-1 text-gray-800 dark:text-gray-200">
-                Página {currentPage} de {Math.ceil(totalItems / (/* items per page */ 10))}
+                Página {currentPage + 1} de {Math.ceil(totalItems / itemsPerPage)}
               </span>
               <button
                 onClick={() => onPageChange(currentPage + 1)}
-                disabled={currentPage * 10 >= totalItems}
+                disabled={(currentPage + 1) * itemsPerPage >= totalItems}
                 className="px-4 py-2 mx-1 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 disabled:opacity-50"
               >
                 Siguiente
@@ -527,7 +471,7 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Fecha de vencimiento</label>
-                    <p className="text-gray-900 dark:text-white">{formatearFecha(selectedTask.fExpiration)}</p>
+                    <p className="text-gray-900 dark:text-white">{formatToLocalDateTime(selectedTask.fExpiration)}</p>
                   </div>
                 </div>
               )}
@@ -546,7 +490,7 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                       Cancelar
                     </button>
                     <button
-                      onClick={() => handleDelete(selectedTask.id)}
+                      onClick={handleDelete}
                       className="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-md transition-colors"
                     >
                       Eliminar
@@ -569,6 +513,7 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                       required
                     />
                   </div>
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Descripción
@@ -580,6 +525,7 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Fecha de vencimiento *
@@ -592,6 +538,19 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                       required
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Recordatorio
+                    </label>
+                    <input
+                      type="datetime-local"
+                      value={editFormData.reminder || ''}
+                      onChange={(e) => setEditFormData({ ...editFormData, reminder: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -599,7 +558,9 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                       </label>
                       <select
                         value={editFormData.priority}
-                        onChange={(e) => setEditFormData({ ...editFormData, priority: e.target.value as Priority })}
+                        onChange={(e) =>
+                          setEditFormData({ ...editFormData, priority: e.target.value as Priority })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value={Priority.Baja}>Baja</option>
@@ -607,21 +568,42 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                         <option value={Priority.Alta}>Alta</option>
                       </select>
                     </div>
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Estado
                       </label>
                       <select
-                        value={editFormData.state ? 'completada' : 'pendiente'} // Map boolean state to string for select
-                        onChange={(e) => setEditFormData({ ...editFormData, state: e.target.value === 'completada' })}
+                        value={editFormData.state ? 'completada' : 'pendiente'}
+                        onChange={(e) =>
+                          setEditFormData({ ...editFormData, state: e.target.value === 'completada' })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="pendiente">Pendiente</option>
-                        {/* If you have a true 'en_progreso' state in your TaskItem, you'd handle it here */}
                         <option value="completada">Completada</option>
                       </select>
                     </div>
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Tipo de Tarea *
+                    </label>
+                    <select
+                      value={editFormData.typeTask}
+                      onChange={(e) =>
+                        setEditFormData({ ...editFormData, typeTask: e.target.value as TypeTask })
+                      }
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    >
+                      <option value={TypeTask.Personal}>Personal</option>
+                      <option value={TypeTask.Laboral}>Laboral</option>
+                      <option value={TypeTask.Educativa}>Educativa</option>
+                    </select>
+                  </div>
+
                   <div className="flex justify-end space-x-3 pt-4">
                     <button
                       onClick={handleCloseModal}
@@ -630,15 +612,16 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                       Cancelar
                     </button>
                     <button
-                      onClick={modalType === 'create' ? handleCreateTask : handleSaveEdit}
+                      onClick={modalType === 'create' ? handleCreateTask : handleUpdateTask}
                       className="px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-md transition-colors"
-                      disabled={!editFormData.name || !editFormData.fExpiration}
+                      disabled={!editFormData.name || !editFormData.fExpiration || !editFormData.typeTask}
                     >
                       {modalType === 'create' ? 'Crear Tarea' : 'Guardar Cambios'}
                     </button>
                   </div>
                 </div>
               )}
+
             </div>
           </div>
         </div>

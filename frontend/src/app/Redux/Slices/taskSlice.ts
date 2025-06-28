@@ -66,9 +66,7 @@ export const fetchTaskById = createAsyncThunk<NonNullable<GetTaskByIdQuery['task
     }
 );
 
-export const addTask = createAsyncThunk<NonNullable<AddTaskMutation['addTask']>, AddTaskMutationVariables['input'],
-    { rejectValue: RejectedPayload }
->(
+export const addTask = createAsyncThunk<TaskItem, AddTaskMutationVariables['input'], { rejectValue: RejectedPayload }>(
     'task/add',
     async (input, { rejectWithValue }) => {
         try {
@@ -76,15 +74,17 @@ export const addTask = createAsyncThunk<NonNullable<AddTaskMutation['addTask']>,
                 mutation: ADD_TASK,
                 variables: { input }
             });
+
             const res = data?.addTask;
 
-            if (!res || res.code !== '200') {
+            if (!res || res.code !== '200' || !res.id) {
                 return rejectWithValue({
                     code: res?.code ?? '500',
                     message: res?.message ?? 'Operation failed.'
                 });
             }
-            return res;
+
+            return { ...input, id: res.id };
 
         } catch (error: any) {
             const errorMessage = error?.message || 'Unknown error during add task';
@@ -94,7 +94,7 @@ export const addTask = createAsyncThunk<NonNullable<AddTaskMutation['addTask']>,
     }
 );
 
-export const updateTask = createAsyncThunk<NonNullable<UpdateTaskMutation['updateTask']>, UpdateTaskMutationVariables,
+export const updateTask = createAsyncThunk<TaskItem, UpdateTaskMutationVariables,
     { rejectValue: RejectedPayload }
 >(
     'task/update',
@@ -104,15 +104,17 @@ export const updateTask = createAsyncThunk<NonNullable<UpdateTaskMutation['updat
                 mutation: UPDATE_TASK,
                 variables: { id, input },
             });
+
             const res = data?.updateTask;
 
             if (!res || res.code !== '200') {
                 return rejectWithValue({
                     code: res?.code ?? '500',
-                    message: res?.message ?? 'Operation failed.'
+                    message: res?.message ?? 'Operation failed.',
                 });
             }
-            return res;
+
+            return { id, ...input };
 
         } catch (error: any) {
             const errorMessage = error?.message || 'Unknown error during update task';
@@ -121,6 +123,7 @@ export const updateTask = createAsyncThunk<NonNullable<UpdateTaskMutation['updat
         }
     }
 );
+
 
 export const deleteTask = createAsyncThunk<
     string,
@@ -212,42 +215,47 @@ const taskSlice = createSlice({
                 state.error = payload ? { code: payload.code, message: payload.message } : { code: '500', message: action.error.message || 'Error fetching task by ID' };
                 state.selectedItem = null;
             })
-
             .addCase(addTask.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(addTask.fulfilled, (state) => {
+            .addCase(addTask.fulfilled, (state, action: PayloadAction<TaskItem>) => {
                 state.loading = false;
                 state.error = null;
+                state.data.unshift(action.payload);
+                state.totalItems += 1;
             })
             .addCase(addTask.rejected, (state, action) => {
                 state.loading = false;
                 const payload = action.payload as RejectedPayload | undefined;
                 state.error = payload ? { code: payload.code, message: payload.message } : { code: '500', message: action.error.message || 'Error adding task' };
             })
-
             .addCase(updateTask.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(updateTask.fulfilled, (state) => {
+            .addCase(updateTask.fulfilled, (state, action: PayloadAction<TaskItem>) => {
                 state.loading = false;
                 state.error = null;
+                const index = state.data.findIndex(task => task.id === action.payload.id);
+                if (index !== -1) {
+                    state.data[index] = action.payload;
+                }
             })
             .addCase(updateTask.rejected, (state, action) => {
                 state.loading = false;
                 const payload = action.payload as RejectedPayload | undefined;
                 state.error = payload ? { code: payload.code, message: payload.message } : { code: '500', message: action.error.message || 'Error updating task' };
             })
-
             .addCase(deleteTask.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(deleteTask.fulfilled, (state) => {
+            .addCase(deleteTask.fulfilled, (state, action: PayloadAction<string>) => {
                 state.loading = false;
                 state.error = null;
+                state.data = state.data.filter(task => task.id !== action.payload);
+                state.totalItems = Math.max(0, state.totalItems - 1);
             })
             .addCase(deleteTask.rejected, (state, action) => {
                 state.loading = false;
