@@ -5,7 +5,7 @@ export interface Plans {
     buttonText: string;
 }
 
-// Data
+
 export const plans: Plans[] = [
     {
         name: "Básico",

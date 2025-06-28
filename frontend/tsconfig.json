@@ -56,6 +56,9 @@
       ],
       "@slice/*": [
         "./src/app/Redux/Slices/*"
+      ],
+      "@context/*": [
+        "./src/app/Context/*"
       ]
     }
   },

@@ -1,12 +1,13 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { Eye, Edit2, Trash2, Clock, Calendar, Plus, Search, CheckCircle2, Circle, AlertCircle } from 'lucide-react';
+import { Priority, TypeTask } from '@/generated/graphql';
 
 export interface TaskItem {
   id: string;
   name: string;
   description: string;
-  priority: 'alta' | 'media' | 'baja';
-  typeTask: string;
+  priority: Priority;
+  typeTask: TypeTask;
   state: boolean;
   fCreation: string;
   fExpiration: string;
@@ -16,7 +17,7 @@ export interface TaskItem {
 interface TaskFormData {
   name: string;
   description: string;
-  priority: 'alta' | 'media' | 'baja';
+  priority: Priority;
   fExpiration: string;
   state: boolean;
 }
@@ -45,7 +46,7 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
     name: '',
     description: '',
     fExpiration: '',
-    priority: 'media',
+    priority: Priority.Media,
     state: false
   });
 
@@ -81,13 +82,13 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
     return new Date(fExpiration) < new Date();
   }, []);
 
-  const getPrioridadColor = useCallback((priority: string): string => {
+  const getPrioridadColor = useCallback((priority: Priority): string => {
     const colors = {
-      alta: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
-      media: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-      baja: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
+      [Priority.Alta]: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400',
+      [Priority.Media]: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
+      [Priority.Baja]: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
     };
-    return colors[priority as keyof typeof colors] || 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+    return colors[priority] || 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
   }, []);
 
   // Helper to map boolean `state` to string status for display and filtering
@@ -123,7 +124,7 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
         case 'fExpiration':
           return new Date(a.fExpiration).getTime() - new Date(b.fExpiration).getTime();
         case 'priority':
-          const prioridadOrder = { alta: 3, media: 2, baja: 1 };
+          const prioridadOrder = { [Priority.Alta]: 3, [Priority.Media]: 2, [Priority.Baja]: 1 };
           return prioridadOrder[b.priority] - prioridadOrder[a.priority];
         case 'fCreation':
           return new Date(b.fCreation).getTime() - new Date(a.fCreation).getTime();
@@ -162,7 +163,7 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
         name: '',
         description: '',
         fExpiration: '',
-        priority: 'media',
+        priority: Priority.Media,
         state: false
       });
     }
@@ -178,8 +179,8 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
       name: '',
       description: '',
       fExpiration: '',
-      priority: 'media',
-      state: false
+        priority: Priority.Media,
+        state: false
     });
   }, []);
 
@@ -212,7 +213,7 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
       description: editFormData.description,
       priority: editFormData.priority,
       state: editFormData.state,
-      typeTask: 'General', // Default value, adjust as needed or add to form
+      typeTask: TypeTask.Personal, // Default value, adjust as needed or add to form
       fCreation: new Date().toISOString(),
       fExpiration: editFormData.fExpiration + ':00Z'
     };
@@ -329,11 +330,11 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                     ? 'border-l-red-500 bg-red-50/50 dark:bg-red-900/10'
                     : task.state
                       ? 'border-l-green-500'
-                      : task.priority === 'alta'
-                        ? 'border-l-red-400'
-                        : task.priority === 'media'
-                          ? 'border-l-yellow-400'
-                          : 'border-l-green-400'
+                      : task.priority === Priority.Alta
+                          ? 'border-l-red-400'
+                          : task.priority === Priority.Media
+                            ? 'border-l-yellow-400'
+                            : 'border-l-green-400'
                     } border-r border-t border-b border-gray-200 dark:border-gray-700`}
                 >
                   <div className="p-6">
@@ -598,12 +599,12 @@ export default function ImprovedTaskList({ tasks, loading, currentPage, totalIte
                       </label>
                       <select
                         value={editFormData.priority}
-                        onChange={(e) => setEditFormData({ ...editFormData, priority: e.target.value as 'alta' | 'media' | 'baja' })}
+                        onChange={(e) => setEditFormData({ ...editFormData, priority: e.target.value as Priority })}
                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
-                        <option value="baja">Baja</option>
-                        <option value="media">Media</option>
-                        <option value="alta">Alta</option>
+                        <option value={Priority.Baja}>Baja</option>
+                        <option value={Priority.Media}>Media</option>
+                        <option value={Priority.Alta}>Alta</option>
                       </select>
                     </div>
                     <div>

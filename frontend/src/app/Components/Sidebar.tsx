@@ -10,14 +10,10 @@ import {
     FiUsers,
     FiClipboard,
 } from "react-icons/fi";
-import { useUser } from '../Context/userContext'; 
-
 const adminNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/Admin", color: "from-light-primary to-light-secondary" },
     { name: "Transactions", icon: <FiCreditCard />, href: "/Transactions", color: "from-light-warning to-orange-500" },
-    { name: "User Management", icon: <FiUsers />, href: "/UserManagement/User_basic", color: "from-blue-500 to-blue-600" },
-    { name: "Tasks", icon: <FiClipboard />, href: "/Tasks", color: "from-green-500 to-green-600" },
-    { name: "Settings", icon: <FiSettings />, href: "/UserManagement/Settings", color: "from-slate-500 to-slate-600" },
+    { name: "User Management", icon: <FiUsers />, href: "/UserManagement/pqrs", color: "from-blue-500 to-blue-600" },
 ];
 
 const userNavItems = [
@@ -31,20 +27,18 @@ interface SidebarProps {
     sidebarOpen?: boolean;
     setSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>;
     onProfileClick?: () => void;
+    role: string; // Add role prop
 }
 
 export default function Sidebar({
     sidebarOpen: propSidebarOpen,
     setSidebarOpen: propSetSidebarOpen,
     onProfileClick,
+    role, // Destructure role prop
 }: SidebarProps) {
 
-    const { user } = useUser(); 
     const [internalSidebarOpen, setInternalSidebarOpen] = useState(true);
     
-   
-    const currentUserRole = user?.role || null;
-
     const sidebarOpen = propSidebarOpen !== undefined ? propSidebarOpen : internalSidebarOpen;
     const setSidebarOpen = propSetSidebarOpen || setInternalSidebarOpen;
 
@@ -69,7 +63,7 @@ export default function Sidebar({
         }
     };
 
-    const displayedNavItems = currentUserRole === "admin" ? adminNavItems : userNavItems;
+    const displayedNavItems = (role || "").toLowerCase() === "admin" ? adminNavItems : userNavItems;
 
     return (
         <motion.aside
@@ -265,7 +259,7 @@ export default function Sidebar({
                                 className="absolute -top-1 -right-1 w-4 h-4 bg-light-primary dark:bg-dark-primary 
                                     rounded-full flex items-center justify-center"
                             >
-                                <FiUser className="w-2 h-2 text-white" />
+                                <FiUser className="w-2 h-2" />
                             </motion.div>
                         )}
                     </div>
