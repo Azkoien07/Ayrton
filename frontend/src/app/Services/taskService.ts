@@ -1,3 +1,4 @@
+/*
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { PaginationParams } from '@Types/pagination';
 import { GET_ALL_TASKS, GET_TASK_BY_ID, ADD_TASK, UPDATE_TASK, DELETE_TASK } from '@graphql/Tasks/tasksGraph';
@@ -74,3 +75,4 @@ export const deleteTask = async (client: ApolloClient<NormalizedCacheObject>, id
 
     return data.deleteTask;
 };
+*/

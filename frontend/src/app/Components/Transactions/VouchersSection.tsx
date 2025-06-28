@@ -1,15 +1,15 @@
+'use client';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Receipt, MoreVertical } from 'lucide-react';
-
-import { PaymentEntity, UserEntity } from '@Types/typestransations';
-import { VoucherEntity } from '@Types/voucher';
+import { Voucher } from '@/generated/graphql';
 
 interface VouchersSectionProps {
-    vouchers: VoucherEntity[];
+    vouchers?: Voucher[];
 }
 
-const VouchersSection: React.FC<VouchersSectionProps> = ({ vouchers }) => {
+const VouchersSection: React.FC<VouchersSectionProps> = ({ vouchers = [] }) => {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -17,19 +17,17 @@ const VouchersSection: React.FC<VouchersSectionProps> = ({ vouchers }) => {
             transition={{ duration: 0.3, delay: 0.3 }}
             className="px-6 pb-6"
         >
-            <div className='rounded-lg bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border'>
+            <div className="rounded-lg bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border">
                 <div className="p-6 border-b border-light-border dark:border-dark-border">
                     <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-xl font-bold text-light-text dark:text-dark-text">
-                            Vouchers Disponibles
-                        </h2>
+                        <h2 className="text-xl font-bold text-light-text dark:text-dark-text">Vouchers Disponibles</h2>
                         <button className="bg-light-primary dark:bg-dark-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2">
                             <Plus className="w-4 h-4" />
                             Nuevo Voucher
                         </button>
                     </div>
                 </div>
-                
+
                 <div className="p-6">
                     {vouchers.length === 0 ? (
                         <div className="text-center py-8">
@@ -41,7 +39,10 @@ const VouchersSection: React.FC<VouchersSectionProps> = ({ vouchers }) => {
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {vouchers.map((voucher) => (
-                                <div key={voucher.id} className="bg-light-background dark:bg-dark-background rounded-lg p-6 border border-light-border dark:border-dark-border hover:border-light-primary/20 dark:hover:border-dark-primary/20 transition-colors">
+                                <div
+                                    key={voucher.id}
+                                    className="bg-light-background dark:bg-dark-background rounded-lg p-6 border border-light-border dark:border-dark-border hover:border-light-primary/20 dark:hover:border-dark-primary/20 transition-colors"
+                                >
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="flex items-center gap-3">
                                             <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/20">
@@ -60,7 +61,7 @@ const VouchersSection: React.FC<VouchersSectionProps> = ({ vouchers }) => {
                                             <MoreVertical className="w-4 h-4 text-light-textSecondary dark:text-dark-textSecondary" />
                                         </button>
                                     </div>
-                                    
+
                                     <div className="space-y-3">
                                         <div className="flex items-center justify-between">
                                             <span className="text-sm text-light-textSecondary dark:text-dark-textSecondary">
@@ -70,7 +71,7 @@ const VouchersSection: React.FC<VouchersSectionProps> = ({ vouchers }) => {
                                                 {voucher.payment ? 'Asociado' : 'No asociado'}
                                             </span>
                                         </div>
-                                        
+
                                         {voucher.payment && (
                                             <div className="flex items-center justify-between">
                                                 <span className="text-sm text-light-textSecondary dark:text-dark-textSecondary">
@@ -81,7 +82,7 @@ const VouchersSection: React.FC<VouchersSectionProps> = ({ vouchers }) => {
                                                 </span>
                                             </div>
                                         )}
-                                        
+
                                         <div className="pt-2 border-t border-light-border dark:border-dark-border">
                                             <div className="flex gap-2">
                                                 <button className="flex-1 bg-light-primary dark:bg-dark-primary text-white px-3 py-2 rounded-lg hover:opacity-90 transition-opacity text-sm">

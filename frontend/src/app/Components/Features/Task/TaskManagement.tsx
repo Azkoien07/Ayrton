@@ -4,24 +4,21 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import type { AppDispatch, RootState } from "@/app/Redux/store";
-import ListTasks from '@components/listtasks';
-
-import { AddTaskMutationVariables, UpdateTaskMutationVariables } from '@/generated/graphql';
-import {
-    fetchTasks,
-    addTask,
-    updateTask,
-    deleteTask
-} from '@slice/taskSlice';
+import { AddTaskMutationVariables, UpdateTaskMutationVariables } from "@/generated/graphql";
+import { fetchTasks, addTask, updateTask, deleteTask, } from "@slice/taskSlice";
+import ListTasks from "@components/Features/Task/ListTasks";
 
 interface TaskManagementProps {
-  searchTermBar: string;
-  setSearchTermBar: (term: string) => void;
+    searchTermBar: string;
+    setSearchTermBar: (term: string) => void;
 }
 
-export default function TaskManagement({ searchTermBar, setSearchTermBar }: TaskManagementProps) {
+export default function TaskManagement({
+    searchTermBar,
+    setSearchTermBar,
+}: TaskManagementProps) {
     const dispatch = useDispatch<AppDispatch>();
-    const { data, loading, error, currentPage, totalItems } = useSelector(
+    const { data, loading, totalItems } = useSelector(
         (state: RootState) => state.task
     );
     const [page, setPage] = useState(0);
@@ -41,24 +38,30 @@ export default function TaskManagement({ searchTermBar, setSearchTermBar }: Task
     }, [dispatch, page, itemsPerPage]);
 
     // Handlers for task operations
-    const handleAddTask = async (data: AddTaskMutationVariables['input']) => {
+    const handleAddTask = async (data: AddTaskMutationVariables["input"]) => {
         try {
             const result = await dispatch(addTask(data));
 
             if (addTask.rejected.match(result)) {
                 const message =
-                    result.payload?.message || result.error?.message || 'Error desconocido al registrar la tarea';
+                    result.payload?.message ||
+                    result.error?.message ||
+                    "Error desconocido al registrar la tarea";
                 toast.error(`Error al registrar la tarea: ${message}`);
                 return false;
             }
 
             toast.success("Tarea registrada exitosamente");
+
             return true;
         } catch (e: any) {
-            toast.error(`Excepción no controlada al registrar la tarea: ${e?.message || "Error desconocido"}`);
+            toast.error(
+                `Excepción no controlada al registrar la tarea: ${e?.message || "Error desconocido"}`
+            );
             return false;
         }
     };
+
 
     const handleUpdateTask = async (data: UpdateTaskMutationVariables) => {
         try {
@@ -66,15 +69,21 @@ export default function TaskManagement({ searchTermBar, setSearchTermBar }: Task
 
             if (updateTask.rejected.match(result)) {
                 const message =
-                    result.payload?.message || result.error?.message || 'Error desconocido al actualizar la tarea';
+                    result.payload?.message ||
+                    result.error?.message ||
+                    "Error desconocido al actualizar la tarea";
                 toast.error(`Error al actualizar la tarea: ${message}`);
                 return false;
             }
 
             toast.success("Tarea actualizada correctamente");
+
             return true;
         } catch (e: any) {
-            toast.error(`Excepción no controlada al actualizar la tarea: ${e?.message || "Error desconocido"}`);
+            toast.error(
+                `Excepción no controlada al actualizar la tarea: ${e?.message || "Error desconocido"
+                }`
+            );
             return false;
         }
     };
@@ -85,7 +94,9 @@ export default function TaskManagement({ searchTermBar, setSearchTermBar }: Task
 
             if (deleteTask.rejected.match(result)) {
                 const message =
-                    result.payload?.message || result.error?.message || 'Error desconocido al eliminar la tarea';
+                    result.payload?.message ||
+                    result.error?.message ||
+                    "Error desconocido al eliminar la tarea";
                 toast.error(`Error al eliminar la tarea: ${message}`);
                 return false;
             }
@@ -93,20 +104,11 @@ export default function TaskManagement({ searchTermBar, setSearchTermBar }: Task
             toast.success(`Tarea "${taskName}" eliminada correctamente`);
             return true;
         } catch (e: any) {
-            toast.error(`Excepción no controlada al eliminar la tarea: ${e?.message || "Error desconocido"}`);
+            toast.error(
+                `Excepción no controlada al eliminar la tarea: ${e?.message || "Error desconocido"
+                }`
+            );
             return false;
-        }
-    };
-
-    const onDispatchAction = (action: { type: string; payload: any }) => {
-        if (action.type === 'tasks/createTask') {
-            handleAddTask(action.payload);
-        } else if (action.type === 'tasks/updateTask') {
-            handleUpdateTask(action.payload);
-        } else if (action.type === 'tasks/deleteTask') {
-            handleDeleteTask(action.payload.id, action.payload.name); // Assuming payload has id and name
-        } else if (action.type === 'tasks/updateTaskStatus') {
-            handleUpdateTask(action.payload); // Re-use updateTask for status change
         }
     };
 
@@ -118,7 +120,9 @@ export default function TaskManagement({ searchTermBar, setSearchTermBar }: Task
                 currentPage={page}
                 totalItems={totalItems}
                 onPageChange={setPage}
-                onDispatchAction={onDispatchAction}
+                onAddTask={handleAddTask}
+                onUpdateTask={handleUpdateTask}
+                onDeleteTask={handleDeleteTask}
             />
         </div>
     );

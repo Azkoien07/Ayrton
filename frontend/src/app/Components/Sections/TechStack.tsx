@@ -113,7 +113,7 @@ const TechStack: React.FC = () => {
             color: "#61DBFB",
             gradient: "bg-gradient-to-br from-cyan-400 to-blue-500",
             delay: 200,
-            icon: <FaReact className="text-4xl text-[#61DBFB]" />,
+            icon: < FaReact className="text-4xl text-[#61DBFB]" />,
         },
         {
             title: "TypeScript",

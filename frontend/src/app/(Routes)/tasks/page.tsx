@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Sidebar from '@components/Sidebar';
-import Barrita from '@components/barrita';
 import { cn } from '@utilities/utils';
-import TaskDashboardHeader from '@components/TaskDashboardHeader';
-import TaskManagement from '@components/TaskManagement';
+import Sidebar from '@components/UI/Sidebar';
+import Barrita from '@components/Header';
+import TaskDashboardHeader from '@components/Features/Task/TaskDashboardHeader';
+import TaskManagement from '@components/Features/Task/TaskManagement';
 
 export default function Dashboard() {
     const [sidebarOpen, setSidebarOpen] = useState(false);

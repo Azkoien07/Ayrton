@@ -3,15 +3,14 @@
 import { useState } from 'react';
 import { DashboardProps, roleOptions } from '@/app/Types/dashboard';
 import { motion } from 'framer-motion';
-import { 
-    Settings, 
-    Palette, 
-    Bell, 
-    Shield, 
-    Users, 
+import {
+    Settings,
+    Palette,
+    Bell,
+    Shield,
+    Users,
     Database,
     Monitor,
-    Globe,
     Lock,
     Zap,
     Eye,
@@ -77,7 +76,7 @@ export default function CuadrosSettings({ role }: DashboardProps) {
         },
     ];
 
-const getColorClasses = (color: string) => {
+    const getColorClasses = (color: string) => {
         const colorMap = {
             blue: {
                 bg: 'bg-blue-50 dark:bg-blue-900/20',
@@ -114,19 +113,19 @@ const getColorClasses = (color: string) => {
                 icon: 'text-gray-600 dark:text-gray-400',
                 button: 'bg-gray-600 hover:bg-gray-700',
                 border: 'border-gray-200 dark:border-gray-800'
-            }, 
+            },
         };
         return colorMap[color as keyof typeof colorMap] || colorMap.blue;
     };
 
     return (
-           <div className="space-y-6">
+        <div className="space-y-6">
             {/* Grid de configuraciones */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {settingsCards.map((card, index) => {
                     const IconComponent = card.icon;
                     const colors = getColorClasses(card.color);
-                    
+
                     return (
                         <motion.div
                             key={card.id}
@@ -212,7 +211,7 @@ const getColorClasses = (color: string) => {
                         </button>
                     </div>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="bg-light-background dark:bg-dark-background rounded-lg p-4">
                         <div className="flex items-center gap-3 mb-2">
@@ -265,7 +264,7 @@ const getColorClasses = (color: string) => {
                                 <div className="absolute w-4 h-4 bg-white rounded-full shadow left-1 top-1 transition-transform duration-300 ease-in-out"></div>
                             </div>
                         </label>
-                        
+
                     </div>
                 </div>
             </motion.div>

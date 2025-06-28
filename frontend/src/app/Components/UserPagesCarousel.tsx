@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Plus, FileText, Calendar, User, Settings } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
 import { cn } from '@utilities/utils';
 
 interface UserPage {
@@ -92,9 +92,9 @@ const UserPagesCarousel: React.FC<UserPagesCarouselProps> = ({
                                     <div className="relative overflow-hidden rounded-lg bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border hover:border-light-primary dark:hover:border-dark-primary transition-all duration-300 hover:shadow-lg">
                                         {/* Thumbnail/Preview */}
                                         <div className="aspect-video bg-gradient-to-br from-light-primary/10 to-light-primary/5 dark:from-dark-primary/10 dark:to-dark-primary/5 flex items-center justify-center relative overflow-hidden">
-                                            <IconComponent 
-                                                size={32} 
-                                                className="text-light-primary dark:text-dark-primary opacity-60" 
+                                            <IconComponent
+                                                size={32}
+                                                className="text-light-primary dark:text-dark-primary opacity-60"
                                             />
                                             {/* Overlay de hover */}
                                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>

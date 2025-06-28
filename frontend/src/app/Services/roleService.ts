@@ -1,3 +1,4 @@
+/*
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { PaginationParams } from '@Types/pagination';
 import { GET_ALL_ROLES, GET_ROLE_BY_ID, ADD_ROLE, UPDATE_ROLE, DELETE_ROLE } from '@graphql/Roles/rolesGraph';
@@ -75,3 +76,4 @@ export const deleteRole = async (client: ApolloClient<NormalizedCacheObject>, id
 
     return data.deleteRole;
 };
+*/

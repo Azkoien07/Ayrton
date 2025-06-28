@@ -5,8 +5,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 interface User {
     id: string;
     email: string;
-    role: string; // 'admin' or 'user'
-    // Add any other user properties you need
+    role: string;
 }
 
 interface UserContextType {

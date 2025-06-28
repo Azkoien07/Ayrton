@@ -39,12 +39,12 @@ public class AuthController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = jwtUtil.generateToken(userDetails.getUsername(), userDetails.getAuthorities());
 
-        // Obtener el rol del usuario
+        // Get user role
         String role = userDetails.getAuthorities().stream()
                 .findFirst()
                 .map(GrantedAuthority::getAuthority)
-                .map(s -> s.replace("ROLE_", "")) // Eliminar prefijo "ROLE_" si existe
-                .orElse("USER"); // Rol por defecto si no se encuentra ninguno
+                .map(s -> s.replace("ROLE_", ""))
+                .orElse("USER");
 
         return new AuthResponseDto(token, role);
     }

@@ -4,19 +4,37 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { login } from "@services/authService";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from '@slice/userSlice'
+import type { AppDispatch, RootState } from "@/app/Redux/store";
 
 export default function LoginPage() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading } = useSelector(
+    (state: RootState) => state.task
+  );
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFlipped, setIsFlipped] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const updateRegisterForm = (field: keyof typeof registerForm, value: string) => {
+    setRegisterForm((prev) => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
   const [registerForm, setRegisterForm] = useState({
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    username: "",
+    planId: "1",
+    roleId: "2"
   });
-  const [loading, setLoading] = useState(false);
+
   const particlesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -70,51 +88,74 @@ export default function LoginPage() {
 
   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
 
-  const handleLoginSubmit = async (e: React.FormEvent) => {
+
+  // Handlers for login and register
+  const handleLoginUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
       const data = await login(email, password);
+
+      if (!data?.token || !data?.role) {
+        toast.error("Datos de sesión inválidos.");
+        return;
+      }
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("userRole", data.role);
 
       toast.success("¡Inicio de sesión exitoso!");
 
-      if (data.role === "Admin") {
-        window.location.href = "/UserManagement/Admin"; 
-      } else {
-        window.location.href = "/User-management/userBasic"; 
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Credenciales inválidas o error del servidor.");
-    } finally {
-      setLoading(false);
+      // Redirección según rol
+      const redirectPath =
+        data.role === "Admin"
+          ? "/UserManagement/Admin"
+          : "/UserManagement/UserBasic";
+
+      window.location.href = redirectPath;
+    } catch (error: any) {
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error desconocido al iniciar sesión";
+
+      toast.error(`Error al iniciar sesión: ${message}`);
     }
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+
+  const handleRegisterUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (registerForm.password !== registerForm.confirmPassword) {
+
+    const { name, email, password, confirmPassword, username, planId, roleId } = registerForm;
+
+    if (password !== confirmPassword) {
       toast.error("Las contraseñas no coinciden");
       return;
     }
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      toast.success("¡Cuenta creada con éxito!");
+
+    try {
+      const result = await dispatch(addUser({ name, email, password, username, planId, roleId }));
+
+      if (addUser.rejected.match(result)) {
+        const message =
+          result.payload?.message ||
+          result.error?.message ||
+          "Error desconocido al registrar el usuario";
+
+        toast.error(`Error al registrar el usuario: ${message}`);
+        return;
+      }
+
+      toast.success("Usuario registrado correctamente");
       setIsFlipped(false);
-    }, 1500);
+    } catch (e: any) {
+      toast.error(
+        `Excepción no controlada al registrar el usuario: ${e?.message || "Error desconocido"}`
+      );
+    }
   };
 
-  const updateRegisterForm = (
-    field: keyof typeof registerForm,
-    value: string
-  ) => {
-    setRegisterForm((prev) => ({ ...prev, [field]: value }));
-  };
 
   const bgColor = theme === "dark" ? "bg-[#1C1C1C]" : "bg-[#F4F4F4]";
   const textColor = theme === "dark" ? "text-[#EAEAEA]" : "text-[#2B2D42]";
@@ -183,7 +224,7 @@ export default function LoginPage() {
           {/* Login */}
           <div className="absolute w-full [backface-visibility:hidden]">
             <form
-              onSubmit={handleLoginSubmit}
+              onSubmit={handleLoginUser}
               className={`${cardBg} shadow-2xl rounded-xl p-10 flex flex-col gap-6 transition-transform duration-500 transform border ${borderColor}`}
             >
               <h2 className="text-2xl font-semibold text-center mb-2">
@@ -312,7 +353,7 @@ export default function LoginPage() {
           {/* Register */}
           <div className="absolute w-full [transform:rotateY(180deg)] [backface-visibility:hidden]">
             <form
-              onSubmit={handleRegisterSubmit}
+              onSubmit={handleRegisterUser}
               className={`${cardBg} shadow-2xl rounded-xl p-10 flex flex-col gap-6 transition-transform duration-500 transform border ${borderColor}`}
             >
               <h2 className="text-2xl font-semibold text-center mb-2">

@@ -1,3 +1,4 @@
+/*
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { PaginationParams } from '@Types/pagination';
 import { GET_ALL_USERS, GET_USER_BY_ID, ADD_USER, UPDATE_USER, DELETE_USER } from '@graphql/Users/usersGraph';
@@ -75,3 +76,4 @@ export const deleteUser = async (client: ApolloClient<NormalizedCacheObject>, id
 
     return data.deleteUser;
 };
+*/

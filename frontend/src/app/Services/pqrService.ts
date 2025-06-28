@@ -1,3 +1,4 @@
+/*
 import { ApolloClient, NormalizedCache } from "@apollo/client";
 import { PaginationParams } from '@Types/pagination';
 import { GET_ALL_PQRS, GET_PQR_BY_ID, ADD_PQR, UPDATE_PQR, DELETE_PQR } from '@graphql/Pqrs/pqrsGraph';
@@ -73,3 +74,4 @@ export const deletePqr = async (client: ApolloClient<NormalizedCache>, id: strin
 
     return data.deletePqr;
 };
+*/

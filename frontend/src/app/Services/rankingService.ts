@@ -1,3 +1,4 @@
+/*
 import { ApolloClient, NormalizedCache } from '@apollo/client';
 import { PaginationParams } from '@Types/pagination';
 import { GET_ALL_RANKINGS, GET_RANKING_BY_ID, ADD_RANKING, UPDATE_RANKING, DELETE_RANKING } from '@graphql/Rankings/rankingsGraph';
@@ -75,3 +76,4 @@ export const deleteRanking = async (client: ApolloClient<NormalizedCache>, id: s
 
     return data.deleteRanking;
 };
+*/

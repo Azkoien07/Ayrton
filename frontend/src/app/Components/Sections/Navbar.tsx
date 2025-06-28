@@ -19,13 +19,13 @@ const Navbar = () => {
 
     return (
         <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${scrolled
-                ? 'bg-light-background/95 dark:bg-dark-background/95 backdrop-blur-lg shadow-lg border-b border-light-border/50 dark:border-dark-border/50'
-                : 'bg-light-background/80 dark:bg-dark-background/80 backdrop-blur-md shadow-md'
+            ? 'bg-light-background/95 dark:bg-dark-background/95 backdrop-blur-lg shadow-lg border-b border-light-border/50 dark:border-dark-border/50'
+            : 'bg-light-background/80 dark:bg-dark-background/80 backdrop-blur-md shadow-md'
             }`}>
             <div className="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-8 py-4">
                 {/* Logo con efecto hover mejorado */}
                 <Link href="/" className="group">
-                    <span className="bebas-title text-2xl tracking-wide bg-gradient-to-r from-light-primary via-light-secondary to-light-accent dark:from-dark-primary dark:via-dark-secondary dark:to-dark-accent bg-clip-text text-transparent cursor-pointer select-none transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-sm">
+                    <span className="bebas-title text-3xl tracking-wide bg-gradient-to-r from-light-primary via-light-secondary to-light-accent dark:from-dark-primary dark:via-dark-secondary dark:to-dark-accent bg-clip-text text-transparent cursor-pointer select-none transition-all duration-300 group-hover:scale-105 group-hover:drop-shadow-sm">
                         Ayrton
                     </span>
                 </Link>
@@ -44,7 +44,7 @@ const Navbar = () => {
                             >
                                 <span className="relative z-10">{item.text}</span>
                                 {/* Efecto de hover con gradiente */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-light-accentSoft to-light-accent/20 dark:from-dark-accentSoft to-dark-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
+                                <div className="absolute inset-0 bg-gradient-to-r from-light-accentSoft to-light-accent/20 dark:from-dark-accentSoft opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                                 {/* Línea inferior animada */}
                                 <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-light-primary to-light-accent dark:from-dark-primary dark:to-dark-accent group-hover:w-full transition-all duration-300"></div>
                             </a>

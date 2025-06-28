@@ -15,27 +15,27 @@ const quickStats = [
     },
 ];
 
-export default function Barrita() {
+export default function Header() {
     return (
         <div className="px-6 py-4">
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-2xl font-bold text-light-text dark:text-dark-text">
-                        Bienvenido, 
+                        Bienvenido,
                         <span className="text-light-primary dark:text-dark-primary capitalize">
                             Julian
                         </span>
                     </h1>
                     <p className="text-sm text-light-textSecondary dark:text-dark-textSecondary mt-1">
-                        {new Date().toLocaleDateString('es-ES', { 
-                            weekday: 'long', 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric' 
+                        {new Date().toLocaleDateString('es-ES', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
                         })}
                     </p>
                 </div>
-                
+
                 {/* Stats Rápidas en Header */}
                 <div className="hidden lg:flex items-center gap-6">
 
