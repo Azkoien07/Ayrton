@@ -1,28 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Search, Eye, Edit, Trash2, CreditCard, DollarSign } from 'lucide-react';
-
-interface PaymentEntity {
-    id: number;
-    purchaseAmount: number;
-    paymentMethod: 'TarjetaCredito' | 'TarjetaDebito' | 'Paypal';
-    paymentDate: string;
-    voucher?: VoucherEntity;
-    users?: UserEntity[];
-}
-
-interface VoucherEntity {
-    id: number;
-    code: string;
-    payments?: PaymentEntity[];
-}
-
-interface UserEntity {
-    id: number;
-    name: string;
-    email: string;
-    payments?: PaymentEntity[];
-}
+import { PaymentEntity, UserEntity } from '@Types/typestransations';
+import { VoucherEntity } from '@Types/voucher';
+import { PaymentMethod } from '@/generated/graphql'; // Importar PaymentMethod del archivo generado
 
 interface RecentPaymentsSectionProps {
     filteredPayments: PaymentEntity[];
@@ -45,11 +26,11 @@ const RecentPaymentsSection: React.FC<RecentPaymentsSectionProps> = ({
 }) => {
     const getPaymentMethodIcon = (method: string) => {
         switch (method) {
-            case 'TarjetaCredito':
+            case PaymentMethod.TarjetaCredito:
                 return <CreditCard className="w-4 h-4 text-blue-600" />;
-            case 'TarjetaDebito':
+            case PaymentMethod.TarjetaDebito:
                 return <CreditCard className="w-4 h-4 text-green-600" />;
-            case 'Paypal':
+            case PaymentMethod.Paypal:
                 return <DollarSign className="w-4 h-4 text-yellow-600" />;
             default:
                 return <CreditCard className="w-4 h-4 text-gray-600" />;
@@ -58,11 +39,11 @@ const RecentPaymentsSection: React.FC<RecentPaymentsSectionProps> = ({
 
     const getPaymentMethodColor = (method: string) => {
         switch (method) {
-            case 'TarjetaCredito':
+            case PaymentMethod.TarjetaCredito:
                 return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
-            case 'TarjetaDebito':
+            case PaymentMethod.TarjetaDebito:
                 return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
-            case 'Paypal':
+            case PaymentMethod.Paypal:
                 return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
             default:
                 return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
@@ -106,9 +87,9 @@ const RecentPaymentsSection: React.FC<RecentPaymentsSectionProps> = ({
                             className="px-4 py-2 bg-light-background dark:bg-dark-background border border-light-border dark:border-dark-border rounded-lg focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary"
                         >
                             <option value="all">Todos los métodos</option>
-                            <option value="TarjetaCredito">Tarjeta de Crédito</option>
-                            <option value="TarjetaDebito">Tarjeta de Débito</option>
-                            <option value="Paypal">PayPal</option>
+                            <option value={PaymentMethod.TarjetaCredito}>Tarjeta de Crédito</option>
+                            <option value={PaymentMethod.TarjetaDebito}>Tarjeta de Débito</option>
+                            <option value={PaymentMethod.Paypal}>PayPal</option>
                         </select>
                         <select
                             value={dateFilter}
@@ -153,9 +134,9 @@ const RecentPaymentsSection: React.FC<RecentPaymentsSectionProps> = ({
                                         <td className="p-4">
                                             <div className="flex items-center gap-3">
                                                 <div className="p-2 rounded-lg bg-light-background dark:bg-dark-background">
-                                                    {getPaymentMethodIcon(payment.paymentMethod)}
+                                                {getPaymentMethodIcon(payment.paymentMethod as PaymentMethod)}
                                                 </div>
-                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPaymentMethodColor(payment.paymentMethod)}`}>
+                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPaymentMethodColor(payment.paymentMethod as PaymentMethod)}`}>
                                                     {payment.paymentMethod}
                                                 </span>
                                             </div>

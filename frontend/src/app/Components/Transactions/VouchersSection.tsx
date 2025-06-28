@@ -2,27 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Receipt, MoreVertical } from 'lucide-react';
 
-interface PaymentEntity {
-    id: number;
-    purchaseAmount: number;
-    paymentMethod: 'TarjetaCredito' | 'TarjetaDebito' | 'Paypal';
-    paymentDate: string;
-    voucher?: VoucherEntity;
-    users?: UserEntity[];
-}
-
-interface VoucherEntity {
-    id: number;
-    code: string;
-    payments?: PaymentEntity[];
-}
-
-interface UserEntity {
-    id: number;
-    name: string;
-    email: string;
-    payments?: PaymentEntity[];
-}
+import { PaymentEntity, UserEntity } from '@Types/typestransations';
+import { VoucherEntity } from '@Types/voucher';
 
 interface VouchersSectionProps {
     vouchers: VoucherEntity[];
@@ -83,20 +64,20 @@ const VouchersSection: React.FC<VouchersSectionProps> = ({ vouchers }) => {
                                     <div className="space-y-3">
                                         <div className="flex items-center justify-between">
                                             <span className="text-sm text-light-textSecondary dark:text-dark-textSecondary">
-                                                Pagos asociados:
+                                                Estado del pago:
                                             </span>
                                             <span className="text-sm font-medium text-light-text dark:text-dark-text">
-                                                {voucher.payments?.length || 0}
+                                                {voucher.payment ? 'Asociado' : 'No asociado'}
                                             </span>
                                         </div>
                                         
-                                        {voucher.payments && voucher.payments.length > 0 && (
+                                        {voucher.payment && (
                                             <div className="flex items-center justify-between">
                                                 <span className="text-sm text-light-textSecondary dark:text-dark-textSecondary">
-                                                    Total usado:
+                                                    Monto del pago:
                                                 </span>
                                                 <span className="text-sm font-bold text-green-600">
-                                                    ${voucher.payments.reduce((sum, payment) => sum + payment.purchaseAmount, 0).toLocaleString()}
+                                                    ${voucher.payment.purchaseAmount.toLocaleString()}
                                                 </span>
                                             </div>
                                         )}

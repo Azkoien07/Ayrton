@@ -14,10 +14,12 @@ const adminNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/Admin", color: "from-light-primary to-light-secondary" },
     { name: "Transactions", icon: <FiCreditCard />, href: "/Transactions", color: "from-light-warning to-orange-500" },
     { name: "User Management", icon: <FiUsers />, href: "/UserManagement/pqrs", color: "from-blue-500 to-blue-600" },
+    { name: "Settings", icon: <FiSettings />, href: "/User-management/Settings", color: "from-slate-500 to-slate-600" },
 ];
 
 const userNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/UserBasic", color: "from-light-primary to-light-secondary" },
+    { name: "Dashboard", icon: <FiHome />, href: "/User-management/userBasic", color: "from-light-primary to-light-secondary" },
     { name: "Tasks", icon: <FiClipboard />, href: "/Tasks", color: "from-green-500 to-green-600" },
     { name: "Plans", icon: <FiCreditCard />, href: "/pay/PaymentGateWay", color: "from-light-warning to-orange-500" },
     { name: "Settings", icon: <FiSettings />, href: "/UserManagement/Settings", color: "from-slate-500 to-slate-600" },

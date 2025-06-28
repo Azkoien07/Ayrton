@@ -1,16 +1,17 @@
 import { VoucherEntity } from '@Types/voucher';
+import { PaymentMethod } from '@/generated/graphql'; // Importar PaymentMethod del archivo generado
 
 export interface PaymentEntity {
-    id: number;
+    id: string; 
     purchaseAmount: number;
-    paymentMethod: 'TarjetaCredito' | 'TarjetaDebito' | 'Paypal';
+    paymentMethod: PaymentMethod; // Usar el enum PaymentMethod de graphql.ts
     paymentDate: string;
     voucher?: VoucherEntity;
     users?: UserEntity[];
 }
 
 export interface UserEntity {
-    id: number;
+    id: string; // Cambiado de number a string
     name: string;
     email: string;
     payments?: PaymentEntity[];

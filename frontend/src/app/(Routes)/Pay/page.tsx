@@ -1,10 +1,12 @@
 'use client';
+
 import { useState } from 'react';
-import Sidebar from '@components/Sidebar';
-import Barrita from '@components/barrita';
+import { motion } from 'framer-motion';
 import { cn } from '@utilities/utils';
 import { Plan, plans } from '@Types/Plan';
-import PayModal from '@components/Modals/paymodal';
+import Sidebar from '@components/Sidebar';
+import Barrita from '@components/barrita';
+import PayModal from '@components/Modals/modalPay';
 import SubscriptionHeader from '@components/SubscriptionHeader';
 import PlanCard from '@components/PlanCard';
 import SubscriptionBenefits from '@components/SubscriptionBenefits';
@@ -47,7 +49,7 @@ const SubscriptionPlansPage = () => {
 
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
-            <Sidebar setSidebarOpen={setSidebarOpen} />
+            <Sidebar setSidebarOpen={setSidebarOpen} role="user" />
 
             <main
                 className={cn(
