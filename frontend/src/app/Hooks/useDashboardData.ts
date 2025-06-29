@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { client } from '@/app/Lib/apollo-client';
-import VoucherService from '@/app/Services/voucherService';
+import { getAllVouchers } from '@/app/Services/voucherService';
 import { getAllPayments } from '@/app/Services/paymentService';
 import { PaymentEntity } from '@Types/typestransations';
 import { VoucherEntity } from '@Types/voucher';
@@ -32,8 +32,6 @@ interface UseDashboardDataResult {
 }
 
 export const useDashboardData = (): UseDashboardDataResult => {
-    const voucherService = new VoucherService(client);
-    
     const [payments, setPayments] = useState<PaymentEntity[]>([]);
     const [vouchers, setVouchers] = useState<VoucherEntity[]>([]);
     const [loading, setLoading] = useState(true);
@@ -73,8 +71,11 @@ export const useDashboardData = (): UseDashboardDataResult => {
 
     const fetchVouchers = async () => {
         try {
-            const data = await voucherService.getVouchers(pagination);
-            setVouchers(Array.isArray(data) ? data : []);
+            const response = await getAllVouchers(client, pagination);
+            if (!response) {
+                throw new Error('Error al obtener los vouchers');
+            }
+            setVouchers(Array.isArray(response) ? response : []);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Error desconocido al obtener vouchers');
             console.error('Error al obtener vouchers:', err);
@@ -124,7 +125,7 @@ export const useDashboardData = (): UseDashboardDataResult => {
         fetchVouchers();
     }, []);
 
-    const filteredPayments = payments.filter(payment => {
+    const filteredPayments = payments.filter((payment: PaymentEntity) => {
         const matchesSearch = (payment.voucher?.code || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
                             payment.paymentMethod.toLowerCase().includes(searchTerm.toLowerCase()) ||
                             payment.id.toLowerCase().includes(searchTerm.toLowerCase());

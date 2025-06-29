@@ -5,20 +5,12 @@ import { cn } from '@utilities/utils';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
 import { useUser } from '@context/userContext';
 import Sidebar from '@components/UI/Sidebar';
-import UserContentAdmin from '@components/Content/UserContentAdmin';
+import UserContentAdmin from '@components/content/UserContentAdmin';
 
 
 const Dashboard = ({ role }: DashboardProps) => {
     const { user } = useUser();
-    const [userRole, setUserRole] = useState<string>('user');
-
-    useEffect(() => {
-        if (user && user.role) {
-            setUserRole(user.role);
-        }
-    }, [user]);
-
-    const validRole = roleOptions[userRole as keyof typeof roleOptions] ? userRole : 'admin';
+    const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
     const [selected, setSelected] = useState(roleOptions[validRole as keyof typeof roleOptions][0]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -33,7 +25,7 @@ const Dashboard = ({ role }: DashboardProps) => {
 
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
-            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} role={userRole} />
+            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} role={validRole} />
 
             <main
                 className={cn(

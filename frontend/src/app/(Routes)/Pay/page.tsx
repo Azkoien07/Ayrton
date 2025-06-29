@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { cn } from '@utilities/utils';
 import { Plan, plans } from '@Types/Plan';
+import { useUser } from '@context/userContext';
 import Sidebar from '@components/UI/Sidebar';
 import Barrita from '@components/Header';
 import PayModal from '@components/Modals/modalPay';
@@ -12,6 +13,8 @@ import SubscriptionBenefits from '@components/SubscriptionBenefits';
 
 
 const SubscriptionPlansPage = () => {
+    const { user } = useUser();
+    const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
     const [showModal, setShowModal] = useState(false);
@@ -48,7 +51,7 @@ const SubscriptionPlansPage = () => {
 
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
-            <Sidebar setSidebarOpen={setSidebarOpen} role="user" />
+            <Sidebar setSidebarOpen={setSidebarOpen} role={validRole} />
 
             <main
                 className={cn(

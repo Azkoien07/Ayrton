@@ -36,8 +36,9 @@ input PqrInput {
     title: String!
     description: String!
     argument: String!
-    answer: String!
-    state: Boolean!
+    userName: String!
+    userEmail: String!
+    userPhone: String!
 }
 
 input PqrUpdateInput {
@@ -45,6 +46,9 @@ input PqrUpdateInput {
     title: String!
     description: String!
     argument: String!
+    userName: String!
+    userEmail: String!
+    userPhone: String!
     answer: String!
     state: Boolean!
 }

@@ -8,7 +8,6 @@ export interface PqrEntity{
     state: boolean;
     users?: UserEntity[];
 }
-//nesectio crear un UserEntity[] para los types
 interface UserEntity{
     id:number;
     name:string;

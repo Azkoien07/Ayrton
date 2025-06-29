@@ -36,13 +36,11 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const login = (userData: User) => {
         setUser(userData);
         localStorage.setItem('currentUser', JSON.stringify(userData));
-        localStorage.setItem('userRole', userData.role); // Store role separately for Sidebar
     };
 
     const logout = () => {
         setUser(null);
         localStorage.removeItem('currentUser');
-        localStorage.removeItem('userRole'); // Remove role from localStorage
     };
 
     return (

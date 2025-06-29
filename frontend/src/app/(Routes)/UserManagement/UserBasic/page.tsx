@@ -26,13 +26,7 @@ type UserPage = {
 
 const UserBasicContent = () => {
     const { user } = useUser();
-    const [userRole, setUserRole] = useState<string>('user');
-
-    useEffect(() => {
-        if (user?.role) setUserRole(user.role);
-    }, [user]);
-
-    const validRole = roleOptions[userRole as keyof typeof roleOptions] ? userRole : 'admin';
+    const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
     const [selected, setSelected] = useState(roleOptions[validRole as keyof typeof roleOptions][0]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [greeting, setGreeting] = useState('');
@@ -229,7 +223,7 @@ const UserBasicContent = () => {
 
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
-            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} role={userRole} />
+            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} role={validRole} />
 
             <main className={cn('flex-1 flex flex-col transition-all duration-500 ease-in-out', sidebarOpen ? 'ml-[240px]' : 'ml-[72px]')}>
                 <header className="sticky top-0 z-40 backdrop-blur-md bg-light-card/80 dark:bg-dark-card/80 border-b border-light-border dark:border-dark-border" />

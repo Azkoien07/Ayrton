@@ -9,20 +9,22 @@ import {
     FiUser,
     FiUsers,
     FiClipboard,
+    FiVoicemail,
 } from "react-icons/fi";
 
 const adminNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/Admin", color: "from-light-primary to-light-secondary" },
     { name: "Transactions", icon: <FiCreditCard />, href: "/Transactions", color: "from-light-warning to-orange-500" },
     { name: "User Management", icon: <FiUsers />, href: "/UserManagement/pqrs", color: "from-blue-500 to-blue-600" },
-    { name: "Settings", icon: <FiSettings />, href: "/User-management/Settings", color: "from-slate-500 to-slate-600" },
+    {name: "Ranking", icon:<FiUser/>, href:"/UserManagement/RankingUsers",color:"from-purple-500 to-purple-600"},
+    { name: "Settings", icon: <FiSettings />, href: "/UserManagement/Settings", color: "from-slate-500 to-slate-600" },
 ];
 
 const userNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/UserBasic", color: "from-light-primary to-light-secondary" },
-    { name: "Dashboard", icon: <FiHome />, href: "/User-management/userBasic", color: "from-light-primary to-light-secondary" },
     { name: "Tasks", icon: <FiClipboard />, href: "/Tasks", color: "from-green-500 to-green-600" },
-    { name: "Plans", icon: <FiCreditCard />, href: "/pay/PaymentGateWay", color: "from-light-warning to-orange-500" },
+    { name: "Plans", icon: <FiCreditCard />, href: "/Pay", color: "from-light-warning to-orange-500" },
+    { name: "Pqrs", icon: <FiVoicemail />, href: "/PqrUser", color: "from-light-warning to-orange-500" },
     { name: "Settings", icon: <FiSettings />, href: "/UserManagement/Settings", color: "from-slate-500 to-slate-600" },
 ];
 
@@ -30,14 +32,14 @@ interface SidebarProps {
     sidebarOpen?: boolean;
     setSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>;
     onProfileClick?: () => void;
-    role: string; // Add role prop
+    role: string;
 }
 
 export default function Sidebar({
     sidebarOpen: propSidebarOpen,
     setSidebarOpen: propSetSidebarOpen,
     onProfileClick,
-    role, // Destructure role prop
+    role, 
 }: SidebarProps) {
 
     const [internalSidebarOpen, setInternalSidebarOpen] = useState(true);
@@ -90,12 +92,10 @@ export default function Sidebar({
                 backdrop-blur-xl bg-opacity-95 dark:bg-opacity-95
                 flex flex-col overflow-hidden"
         >
-            {/* Header with Logo and Toggle Button */}
             <motion.div
                 className="flex items-center justify-between h-20 border-b border-light-border dark:border-dark-border px-4 relative"
                 whileHover={{ scale: 1.02 }}
             >
-                {/* Logo o contenido del header */}
                 <div className="flex items-center">
                     {sidebarOpen && (
                         <motion.h1
@@ -121,7 +121,7 @@ export default function Sidebar({
                     whileTap={{ scale: 0.9 }}
                     title={sidebarOpen ? "Cerrar sidebar" : "Abrir sidebar"}
                 >
-                    <motion.div
+                   <motion.div
                         animate={{ rotate: sidebarOpen ? 180 : 0 }}
                         transition={{ duration: 0.2 }}
                     >
@@ -135,7 +135,6 @@ export default function Sidebar({
                 {displayedNavItems.map(({ name, icon, href, color }, index) => {
                     const isActive = active === href;
                     const isHovered = hoveredItem === href;
-
                     return (
                         <motion.div
                             key={href}

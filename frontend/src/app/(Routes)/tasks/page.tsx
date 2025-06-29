@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { cn } from '@utilities/utils';
+import { useUser } from '@context/userContext';
 import Sidebar from '@components/UI/Sidebar';
 import Barrita from '@components/Header';
 import TaskDashboardHeader from '@components/Features/Task/TaskDashboardHeader';
 import TaskManagement from '@components/Features/Task/TaskManagement';
 
 export default function Dashboard() {
+    const { user } = useUser();
+    const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [searchTermBar, setSearchTermBar] = useState("");
 
@@ -16,7 +19,7 @@ export default function Dashboard() {
 
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
-            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} role="user" />
+            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} role={validRole} />
 
             <main
                 className={cn(

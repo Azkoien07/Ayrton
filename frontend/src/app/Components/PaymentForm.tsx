@@ -5,9 +5,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/Redux/store';
 import { createStripePaymentIntent, resetStripePayment } from '@slice/stripePaymentSlice';
 import { PaymentInput, PaymentMethod } from '@/generated/graphql';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import clsx from 'clsx';
+import PaymentFormHeader from './PaymentFormComponents/PaymentFormHeader';
+import AmountInput from './PaymentFormComponents/AmountInput';
+import PaymentMethodSelector from './PaymentFormComponents/PaymentMethodSelector';
+import CardInfoInput from './PaymentFormComponents/CardInfoInput';
+import PaymentButton from './PaymentFormComponents/PaymentButton';
+import SecurityInfo from './PaymentFormComponents/SecurityInfo';
+import PaymentErrorDisplay from './PaymentFormComponents/PaymentErrorDisplay';
+
+
+const USD_TO_COP_RATE = 4200;
 
 export default function PaymentForm() {
     const dispatch = useDispatch<AppDispatch>();
@@ -16,26 +26,54 @@ export default function PaymentForm() {
 
     const { clientSecret, loading, error } = useSelector((state: RootState) => state.stripe);
 
-    const [amount, setAmount] = useState<number>(0);
+    const [amountUSD, setAmountUSD] = useState<number>(0);
+    const [amountCOP, setAmountCOP] = useState<number>(0);
+    const [currency, setCurrency] = useState<'USD' | 'COP'>('USD');
     const [method, setMethod] = useState<PaymentMethod>(PaymentMethod.TarjetaCredito);
+    const [cardFocused, setCardFocused] = useState(false);
+
+    useEffect(() => {
+        if (currency === 'USD') {
+            setAmountCOP(Math.round(amountUSD * USD_TO_COP_RATE));
+        } else {
+            setAmountUSD(Number((amountCOP / USD_TO_COP_RATE).toFixed(2)));
+        }
+    }, [amountUSD, amountCOP, currency]);
+
+    const handleAmountChange = (value: number) => {
+        if (currency === 'USD') {
+            setAmountUSD(value);
+        } else {
+            setAmountCOP(value);
+        }
+    };
+
+    const toggleCurrency = () => {
+        setCurrency(prev => prev === 'USD' ? 'COP' : 'USD');
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!stripe || !elements) return;
 
+        if (amountUSD <= 0) {
+            toast.error(' El monto debe ser mayor a cero');
+            return;
+        }
+
         const input: PaymentInput = {
-            purchaseAmount: amount,
+            purchaseAmount: amountUSD, 
             paymentMethod: method,
         };
 
         const res = await dispatch(createStripePaymentIntent(input));
         if (createStripePaymentIntent.rejected.match(res)) {
-            toast.error('❌ Error creando PaymentIntent');
+            toast.error(' Error creando PaymentIntent');
             return;
         }
 
         if (!clientSecret) {
-            toast.error('⚠️ clientSecret no disponible');
+            toast.error(' clientSecret no disponible');
             return;
         }
 
@@ -46,86 +84,51 @@ export default function PaymentForm() {
         });
 
         if (result.error) {
-            toast.error(`❌ Pago fallido: ${result.error.message}`);
+            toast.error(` Pago fallido: ${result.error.message}`);
         } else if (result.paymentIntent?.status === 'succeeded') {
-            toast.success('✅ ¡Pago exitoso!');
+            toast.success(' ¡Pago exitoso!');
             dispatch(resetStripePayment());
-            setAmount(0); // limpiar
+            setAmountUSD(0);
+            setAmountCOP(0);
         }
     };
 
+    const formatCurrency = (amount: number, currencyType: 'USD' | 'COP') => {
+        return new Intl.NumberFormat('es-CO', {
+            style: 'currency',
+            currency: currencyType,
+            minimumFractionDigits: currencyType === 'COP' ? 0 : 2,
+            maximumFractionDigits: currencyType === 'COP' ? 0 : 2,
+        }).format(amount);
+    };
+
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-2xl shadow p-6 space-y-6"
-        >
-            <h2 className="text-xl font-semibold text-light-primary dark:text-dark-primary">Información del Pago</h2>
-
-            <div>
-                <label className="block text-light-text dark:text-dark-text mb-1 font-medium">Monto (USD)</label>
-                <input
-                    type="number"
-                    className="w-full px-4 py-2 rounded-xl border border-light-border dark:border-dark-border bg-white dark:bg-dark-background text-light-text dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary"
-                    value={amount}
-                    min={1}
-                    onChange={(e) => setAmount(Number(e.target.value))}
-                    required
-                />
-            </div>
-
-            <div>
-                <label className="block text-light-text dark:text-dark-text mb-1 font-medium">Método de Pago</label>
-                <select
-                    className="w-full px-4 py-2 rounded-xl border border-light-border dark:border-dark-border bg-white dark:bg-dark-background text-light-text dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary"
-                    value={method}
-                    onChange={(e) => setMethod(e.target.value as PaymentMethod)}
-                >
-                    <option value={PaymentMethod.TarjetaCredito}>Tarjeta de Crédito</option>
-                    <option value={PaymentMethod.TarjetaDebito}>Tarjeta de Débito</option>
-                    <option value={PaymentMethod.Paypal}>PayPal</option>
-                </select>
-            </div>
-
-            <div>
-                <label className="block text-light-text dark:text-dark-text mb-1 font-medium">Tarjeta</label>
-                <div className="px-4 py-3 border border-light-border dark:border-dark-border rounded-xl bg-white dark:bg-dark-background">
-                    <CardElement
-                        options={{
-                            style: {
-                                base: {
-                                    fontSize: '16px',
-                                    color: '#374151',
-                                    '::placeholder': {
-                                        color: '#9CA3AF',
-                                    },
-                                },
-                                invalid: {
-                                    color: '#EF4444',
-                                },
-                            },
-                        }}
-                    />
-                </div>
-            </div>
-
-            <button
-                type="submit"
-                disabled={!stripe || loading}
-                className={clsx(
-                    'w-full py-3 rounded-xl text-white font-semibold transition',
-                    loading
-                        ? 'bg-light-accent dark:bg-dark-accent cursor-not-allowed'
-                        : 'bg-light-primary hover:bg-light-secondary dark:bg-dark-primary dark:hover:bg-dark-secondary'
-                )}
+        <div className="max-w-md mx-auto">
+            <form
+                onSubmit={handleSubmit}
+                className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl shadow-2xl p-12 space-y-4"
             >
-                {loading ? 'Procesando...' : 'Pagar'}
-            </button>
-
-            {error && (
-                <p className="text-light-error dark:text-dark-error text-sm text-center">
-                    ⚠️ {error}
-                </p>
-            )}
-        </form>
+                <PaymentFormHeader />
+                <AmountInput
+                    amountUSD={amountUSD}
+                    amountCOP={amountCOP}
+                    currency={currency}
+                    handleAmountChange={handleAmountChange}
+                    setCurrency={setCurrency}
+                    formatCurrency={formatCurrency}
+                    USD_TO_COP_RATE={USD_TO_COP_RATE}
+                />
+                <PaymentMethodSelector method={method} setMethod={setMethod} />
+                <CardInfoInput cardFocused={cardFocused} setCardFocused={setCardFocused} />
+                <PaymentButton
+                    loading={loading}
+                    stripe={stripe}
+                    amountUSD={amountUSD}
+                    formatCurrency={formatCurrency}
+                />
+                <SecurityInfo />
+                <PaymentErrorDisplay error={error} />
+            </form>
+        </div>
     );
 }

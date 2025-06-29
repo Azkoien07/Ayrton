@@ -2,6 +2,7 @@
 import { roleOptions } from '@Types/dashboard';
 import { cn } from '@utilities/utils';
 import { motion } from 'framer-motion'
+import { useUser } from '@context/userContext';
 import Sidebar from '@components/UI/Sidebar';
 import { useState } from 'react';
 import CuadrosSettings from '@components/cuadrosSettings';
@@ -11,14 +12,14 @@ type SettingsPageProps = {
 };
 
 export default function SettingsPage() {
+    const { user } = useUser();
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    const role = 'admin';
-    const validRole = roleOptions[role as keyof typeof roleOptions] ? role : 'admin';
+    const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
 
     return (
         <div className='flex h-screen bg-light-background dark:bg-dark-background'>
-            <Sidebar role='' setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
+            <Sidebar role={validRole} setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
             <main
                 className={cn(
                     'flex-1 flex flex-col transition-all duration-500 ease-in-out',
@@ -70,7 +71,7 @@ export default function SettingsPage() {
 
                     {/* Contenido principal */}
                     <div className='px-6 pb-6'>
-                        <CuadrosSettings role={role} />
+                        <CuadrosSettings role={validRole} />
                     </div>
                 </div>
             </main>

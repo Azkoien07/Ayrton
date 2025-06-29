@@ -1,4 +1,3 @@
-/*
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { PaginationParams } from '@Types/pagination';
 import { GET_ALL_PAYMENTS, GET_PAYMENT_BY_ID, ADD_PAYMENT, UPDATE_PAYMENT, DELETE_PAYMENT } from '@graphql/Payments/paymentGraph';
@@ -74,4 +73,3 @@ export const deletePayment = async (client: ApolloClient<NormalizedCacheObject>,
 
     return data.deletePayment;
 };
-*/

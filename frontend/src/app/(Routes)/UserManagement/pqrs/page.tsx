@@ -5,9 +5,12 @@ import PqrCard from '@/app/Components/Pqrs/PqrCard';
 import StatsCard from '@/app/Components/Pqrs/StatsCard';
 import PqrModal from '@/app/Components/Pqrs/PqrModal';
 import { usePqrData } from '@/app/Hooks/usePqrData';
-import Sidebar from '@components/Sidebar';
+import { useUser } from '@context/userContext';
+import Sidebar from '@/app/Components/UI/Sidebar';
 
 const PqrDashboard = () => {
+    const { user } = useUser();
+    const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
     const {
         filteredPqrs,
         searchTerm,
@@ -27,7 +30,7 @@ const PqrDashboard = () => {
 
     return (
         <div className="min-h-screen bg-light-background dark:bg-dark-background">
-            <Sidebar role="Admin" />
+            <Sidebar role={validRole} />
             <div className="ml-[250px]"> {/* Ajusta el margen izquierdo para el sidebar */}
                 <header className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border p-6">
                     <div className="flex items-center justify-between">
@@ -86,6 +89,8 @@ const PqrDashboard = () => {
                             color="bg-emerald-500"
                         />
                     </div>
+
+                    {/* Filtros y búsqueda */}
                     <div className="bg-light-surface dark:bg-dark-surface rounded-lg p-6 mb-6 border border-light-border dark:border-dark-border">
                         <div className="flex flex-col lg:flex-row gap-4">
                             <div className="flex-1">

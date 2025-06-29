@@ -108,7 +108,7 @@ export default function LoginPage() {
 
       // Redirección según rol
       const redirectPath =
-        data.role === "Admin"
+        data.role && data.role.includes("Admin")
           ? "/UserManagement/Admin"
           : "/UserManagement/UserBasic";
 

@@ -10,6 +10,7 @@ import {
 import ProfileAvatar from './ProfileAvatar';
 import FormField from './FormField';
 import Notification from '../../Notification';
+import { useUser } from '@context/userContext';
 import Sidebar from '../../UI/Sidebar';
 import ProfileActions from './ProfileActions';
 
@@ -28,6 +29,8 @@ const ProfileData = {
 
 
 const FormEditProfile: React.FC = () => {
+  const { user } = useUser();
+  const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
   const [profileData, setProfileData] = useState({ ...ProfileData });
   const [isEditing, setIsEditing] = useState(false);
   const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
@@ -76,7 +79,7 @@ const FormEditProfile: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-light-background">
-      <Sidebar role={''} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar role={validRole} sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       <div className="max-w-4xl mx-auto p-6">
         {/* Header */}

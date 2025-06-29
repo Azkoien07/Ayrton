@@ -1,4 +1,3 @@
-/*
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { PaginationParams } from '@Types/pagination';
 import { GET_ALL_VOUCHERS, GET_VOUCHER_BY_ID, ADD_VOUCHER, UPDATE_VOUCHER, DELETE_VOUCHER } from '@graphql/Vouchers/vouchersGraph';
@@ -75,4 +74,3 @@ export const deleteVoucher = async (client: ApolloClient<NormalizedCacheObject>,
 
     return data.deleteVoucher;
 };
-*/

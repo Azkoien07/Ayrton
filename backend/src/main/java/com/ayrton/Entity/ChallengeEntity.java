@@ -21,7 +21,6 @@ public class ChallengeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Enums
     public enum Category {
         Desarrollo,
         Productividad,

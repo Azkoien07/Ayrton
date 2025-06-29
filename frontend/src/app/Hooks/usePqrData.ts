@@ -111,7 +111,7 @@ export const usePqrData = () => {
 
     const handleEdit = (pqr: PqrEntity) => {
         console.log('Editar PQR:', pqr);
-        // Implementar lógica de edición
+
     };
 
     const handleDelete = (id: number) => {
