@@ -1,3 +1,4 @@
+/*
 import axios from 'axios';
 
 export const login = async (email: string, password: string) => {
@@ -7,3 +8,4 @@ export const login = async (email: string, password: string) => {
     });
     return response.data;
 };
+*/

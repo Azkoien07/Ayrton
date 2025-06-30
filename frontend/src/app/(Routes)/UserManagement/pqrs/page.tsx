@@ -105,7 +105,7 @@ const PqrDashboard = () => {
                                     />
                                 </div>
                             </div>
-                            
+
                             <div className="flex gap-4">
                                 <select
                                     className="px-4 py-2 bg-light-background dark:bg-dark-background border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary focus:border-transparent text-light-text dark:text-dark-text"
@@ -117,7 +117,7 @@ const PqrDashboard = () => {
                                     <option value="Queja">Quejas</option>
                                     <option value="Reclamo">Reclamos</option>
                                 </select>
-                                
+
                                 <select
                                     className="px-4 py-2 bg-light-background dark:bg-dark-background border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary focus:border-transparent text-light-text dark:text-dark-text"
                                     value={stateFilter}
@@ -155,13 +155,21 @@ const PqrDashboard = () => {
                     )}
                 </div>
                 <PqrModal
-                    pqr={selectedPqr}
+                    formData={selectedPqr || {
+                        typePqr: 'Peticion',
+                        title: '',
+                        description: '',
+                        argument: '',
+                        userName: '',
+                        userEmail: '',
+                        userPhone: ''
+                    }}
                     isOpen={isModalOpen}
                     onClose={() => {
                         setIsModalOpen(false);
                     }}
                 />
-            </div> 
+            </div>
         </div>
     );
 };

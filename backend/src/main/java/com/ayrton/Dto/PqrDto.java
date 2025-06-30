@@ -27,7 +27,6 @@ public class PqrDto {
     @NotNull(message = "El argumento de la PQR no puede ser nulo.")
     private String argument;
 
-    @NotNull(message = "La respuesta de la PQR no puede ser nula.")
     private String answer;
 
     @NotNull(message = "El estado de la PQR no puede ser nulo.")

@@ -9,6 +9,7 @@ import taskReducer from '@slice/taskSlice'
 import userReducer from '@slice/userSlice'
 import voucherReducer from '@slice/voucherSlice'
 import stripeReducer from '@slice/stripePaymentSlice'
+import authReducer from '@slice/authSlice'
 
 export const store = configureStore({
     reducer: {
@@ -21,7 +22,8 @@ export const store = configureStore({
         task: taskReducer,
         user: userReducer,
         voucher: voucherReducer,
-        stripe: stripeReducer
+        stripe: stripeReducer,
+        auth: authReducer
     }
 });
 

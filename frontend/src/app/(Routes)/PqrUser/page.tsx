@@ -1,86 +1,57 @@
 'use client';
 
 import { useState } from 'react';
-import { Send, FileText, AlertCircle, MessageSquare, ArrowLeft, CheckCircle, User, Mail, Phone } from 'lucide-react';
-import { useApolloClient, NormalizedCacheObject } from '@apollo/client';
-import { addPqr } from '@/app/Services/pqrService';
-import { PqrInput } from '@/generated/graphql';
-import Sidebar from '@/app/Components/UI/Sidebar';
-import PqrTypeSelection from '@/app/Components/Pqrs/PqrTypeSelection';
-import PqrModal from '@/app/Components/Pqrs/PqrModal';
-import ContactInfoForm from '@/app/Components/Pqrs/ContactInfoForm';
-import { usePathname } from 'next/navigation';
-
-interface PqrFormData {
-    typePqr: 'Peticion' | 'Queja' | 'Reclamo' | '';
-    title: string;
-    description: string;
-    argument: string;
-    userInfo: {
-        name: string;
-        email: string;
-        phone: string;
-    };
-}
-
-interface FormErrors {
-    typePqr?: string;
-    title?: string;
-    description?: string;
-    argument?: string;
-    userInfo?: {
-        name?: string;
-        email?: string;
-        phone?: string;
-    };
-}
+import { Send, ArrowLeft, CheckCircle, Menu, X, FileText, AlertCircle, MessageSquare } from 'lucide-react';
+import Sidebar from '@components/UI/Sidebar';
+import PqrTypeSelection from '@components/Pqrs/PqrTypeSelection';
+import PqrModal from '@components/Pqrs/PqrModal';
+import ContactInfoForm from '@components/Pqrs/ContactInfoForm';
+import { PqrFormData, FormErrors, pqrTypesConfig } from '@Types/Pqr';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState, AppDispatch } from '@/app/Redux/store';
+import { addPqr, updatePqr, deletePqr } from '@slice/pqrSlice';
+import { AddPqrMutationVariables, PqrInput, TypePqr } from '@/generated/graphql';
+import { toast } from 'sonner';
 
 const CreatePqrForm = () => {
-    const [formData, setFormData] = useState<PqrFormData>({
-        typePqr: '',
+    const [formData, setFormData] = useState<PqrInput>({
+        typePqr: TypePqr.Peticion,
         title: '',
         description: '',
         argument: '',
-        userInfo: {
-            name: '',
-            email: '',
-            phone: ''
-        }
+        userName: '',
+        userEmail: '',
+        userPhone: ''
     });
 
+    const dispatch = useDispatch<AppDispatch>();
+    const { data, loading, totalItems } = useSelector(
+        (state: RootState) => state.task
+    );
     const [errors, setErrors] = useState<FormErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    const pqrTypes = [
-        {
-            type: 'Peticion' as const,
-            title: 'Petición',
-            description: 'Solicitud de información, servicios o trámites',
-            icon: <FileText className="w-6 h-6" />,
-            color: 'border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-600 dark:bg-blue-900/20 dark:text-blue-300'
-        },
-        {
-            type: 'Queja' as const,
-            title: 'Queja',
-            description: 'Manifestación de inconformidad por un servicio',
-            icon: <AlertCircle className="w-6 h-6" />,
-            color: 'border-yellow-300 bg-yellow-50 text-yellow-700 dark:border-yellow-600 dark:bg-yellow-900/20 dark:text-yellow-300'
-        },
-        {
-            type: 'Reclamo' as const,
-            title: 'Reclamo',
-            description: 'Exigencia de reparación o compensación por un daño',
-            icon: <MessageSquare className="w-6 h-6" />,
-            color: 'border-red-300 bg-red-50 text-red-700 dark:border-red-600 dark:bg-red-900/20 dark:text-red-300'
-        }
-    ];
+    const iconMap = {
+        FileText: <FileText className="w-6 h-6" />,
+        AlertCircle: <AlertCircle className="w-6 h-6" />,
+        MessageSquare: <MessageSquare className="w-6 h-6" />
+    };
+
+    const pqrTypes = pqrTypesConfig.map(config => ({
+        ...config,
+        icon: iconMap[config.iconName]
+    }));
+
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
+
         if (!formData.typePqr) {
             newErrors.typePqr = 'Debe seleccionar un tipo de PQR';
         }
+
         if (!formData.title.trim()) {
             newErrors.title = 'El título es obligatorio';
         } else if (formData.title.length > 50) {
@@ -92,31 +63,49 @@ const CreatePqrForm = () => {
         } else if (formData.description.length > 1000) {
             newErrors.description = 'La descripción no puede exceder 1000 caracteres';
         }
+
         if (!formData.argument.trim()) {
             newErrors.argument = 'El argumento es obligatorio';
         }
-        const userErrors: any = {};
-        if (!formData.userInfo.name.trim()) {
-            userErrors.name = 'El nombre es obligatorio';
-        }
-        if (!formData.userInfo.email.trim()) {
-            userErrors.email = 'El email es obligatorio';
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.userInfo.email)) {
-            userErrors.email = 'El email no tiene un formato válido';
-        }
-        if (!formData.userInfo.phone.trim()) {
-            userErrors.phone = 'El teléfono es obligatorio';
-        }
 
-        if (Object.keys(userErrors).length > 0) {
-            newErrors.userInfo = userErrors;
+        if (!formData.userName.trim()) {
+            newErrors.userName = 'El nombre es obligatorio';
+        }
+        if (!formData.userEmail.trim()) {
+            newErrors.userEmail = 'El email es obligatorio';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.userEmail)) {
+            newErrors.userEmail = 'El email no tiene un formato válido';
+        }
+        if (!formData.userPhone.trim()) {
+            newErrors.userPhone = 'El teléfono es obligatorio';
         }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    const client = useApolloClient();
+    const handleAddPqr = async (data: AddPqrMutationVariables["input"]) => {
+        try {
+            const result = await dispatch(addPqr(data));
+
+            if (addPqr.rejected.match(result)) {
+                const message =
+                    result.payload?.message ||
+                    result.error?.message ||
+                    "Error desconocido al crear la PQR";
+                toast.error(`Error al crear la PQR: ${message}`);
+                return false;
+            }
+
+            toast.success('PQR creada exitosamente');
+            return true;
+        } catch (e: any) {
+            toast.error(
+                `Excepción no controlada al crear la PQR: ${e?.message || "Error desconocido"}`
+            );
+            return false;
+        }
+    };
 
     const handleSubmit = async () => {
         if (!validateForm()) {
@@ -125,24 +114,38 @@ const CreatePqrForm = () => {
 
         setIsSubmitting(true);
 
-    };
-    const handleInputChange = (field: string, value: string) => {
-        if (field.includes('.')) {
-            const [parent, child] = field.split('.');
-            setFormData(prev => ({
-                ...prev,
-                [parent]: {
-                    ...(prev[parent as keyof PqrFormData] as Record<string, any> ?? {}),
-                    [child]: value
-                }
-            }));
-        } else {
-            setFormData(prev => ({
-                ...prev,
-                [field]: value
-            }));
+        try {
+            // Formatear los datos según el pqrInput esperado
+            const pqrInput: AddPqrMutationVariables["input"] = {
+                typePqr: formData.typePqr,
+                title: formData.title.trim(),
+                description: formData.description.trim(),
+                argument: formData.argument.trim(),
+                userName: formData.userName.trim(),
+                userEmail: formData.userEmail.trim(),
+                userPhone: formData.userPhone.trim()
+            };
+
+            const success = await handleAddPqr(pqrInput);
+
+            if (success) {
+                setIsSubmitted(true);
+            }
+        } catch (error) {
+            console.error('Error al enviar PQR:', error);
+            toast.error('Error inesperado al enviar la PQR');
+        } finally {
+            setIsSubmitting(false);
         }
     };
+
+    const handleInputChange = (field: string, value: string) => {
+        setFormData(prev => ({
+            ...prev,
+            [field]: value
+        }));
+    };
+
     const nextStep = () => {
         if (currentStep === 1 && !formData.typePqr) {
             setErrors({ typePqr: 'Debe seleccionar un tipo de PQR' });
@@ -161,45 +164,45 @@ const CreatePqrForm = () => {
 
     const resetForm = () => {
         setFormData({
-            typePqr: '',
+            typePqr: TypePqr.Peticion,
             title: '',
             description: '',
             argument: '',
-            userInfo: {
-                name: '',
-                email: '',
-                phone: ''
-            }
+            userName: '',
+            userEmail: '',
+            userPhone: ''
         });
         setErrors({});
         setIsSubmitted(false);
         setCurrentStep(1);
     };
 
+    const stepTitles = ['Tipo de PQR', 'Información', 'Datos de Contacto'];
+
     if (isSubmitted) {
         return (
             <div className="min-h-screen bg-light-background dark:bg-dark-background flex items-center justify-center p-4">
-                <div className="bg-light-surface dark:bg-dark-surface rounded-lg p-8 max-w-md w-full text-center shadow-lg border border-light-border dark:border-dark-border">
+                <div className="bg-light-surface dark:bg-dark-surface rounded-xl p-6 sm:p-8 max-w-md w-full text-center shadow-lg border border-light-border dark:border-dark-border">
                     <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
                         <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
                     </div>
-                    <h2 className="text-2xl font-bold text-light-text dark:text-dark-text mb-4">
+                    <h2 className="text-xl sm:text-2xl font-bold text-light-text dark:text-dark-text mb-4">
                         ¡PQR Enviada Exitosamente!
                     </h2>
-                    <p className="text-light-textSecondary dark:text-dark-textSecondary mb-6">
-                        Hemos recibido tu {formData.typePqr?.toLowerCase()} y la procesaremos a la brevedad. 
+                    <p className="text-sm sm:text-base text-light-textSecondary dark:text-dark-textSecondary mb-6">
+                        Hemos recibido tu {formData.typePqr?.toLowerCase()} y la procesaremos a la brevedad.
                         Te contactaremos al correo proporcionado con la respuesta.
                     </p>
                     <div className="space-y-3">
                         <button
                             onClick={resetForm}
-                            className="w-full bg-light-primary dark:bg-dark-primary text-white py-3 px-4 rounded-lg hover:opacity-90 transition-opacity"
+                            className="w-full bg-light-primary dark:bg-dark-primary text-white py-3 px-4 rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
                         >
                             Crear Nueva PQR
                         </button>
                         <button
                             onClick={() => window.history.back()}
-                            className="w-full bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text py-3 px-4 rounded-lg border border-light-border dark:border-dark-border hover:bg-light-border dark:hover:bg-dark-border transition-colors"
+                            className="w-full bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text py-3 px-4 rounded-lg border border-light-border dark:border-dark-border hover:bg-light-border dark:hover:bg-dark-border transition-colors text-sm sm:text-base"
                         >
                             Volver al Inicio
                         </button>
@@ -208,130 +211,215 @@ const CreatePqrForm = () => {
             </div>
         );
     }
-    const pathname = usePathname();
+
     return (
         <div className="min-h-screen bg-light-background dark:bg-dark-background flex">
-            <Sidebar role={''}  />
-            <div className="flex-1 flex flex-col">
+            {/* Sidebar Desktop */}
+            <div className="hidden lg:block">
+                <Sidebar role={'user'} />
+            </div>
+
+            {/* Mobile Sidebar Overlay */}
+            {sidebarOpen && (
+                <div className="fixed inset-0 z-50 lg:hidden">
+                    <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setSidebarOpen(false)} />
+                    <div className="relative w-64">
+                        <Sidebar role={'user'} />
+                        <button
+                            onClick={() => setSidebarOpen(false)}
+                            className="absolute top-4 right-4 p-2 text-white hover:bg-white/10 rounded-lg"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            <div className="flex-1 flex flex-col min-w-0">
                 {/* Header */}
-                <header className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border p-6">
-                    <div className="max-w-4xl mx-auto">
-                        <div className="flex items-center gap-4">
-                            <button
-                                onClick={() => window.history.back()}
-                                className="p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors"
-                            >
-                                <ArrowLeft className="w-5 h-5" />
-                            </button>
-                            <div>
-                                <h1 className="text-2xl font-bold text-light-text dark:text-dark-text">
-                                    Crear Nueva PQR
-                                </h1>
-                                <p className="text-light-textSecondary dark:text-dark-textSecondary">
-                                    Completa el formulario para enviar tu petición, queja o reclamo
-                                </p>
+                <header className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border">
+                    <div className="px-4 py-4 sm:px-6 sm:py-6">
+                        <div className="max-w-none lg:max-w-6xl xl:max-w-7xl mx-auto">
+                            <div className="flex items-center gap-3 sm:gap-4">
+                                {/* Mobile menu button */}
+                                <button
+                                    onClick={() => setSidebarOpen(true)}
+                                    className="lg:hidden p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors rounded-lg hover:bg-light-border dark:hover:bg-dark-border"
+                                >
+                                    <Menu className="w-5 h-5" />
+                                </button>
+
+                                <button
+                                    onClick={() => window.history.back()}
+                                    className="p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors rounded-lg hover:bg-light-border dark:hover:bg-dark-border"
+                                >
+                                    <ArrowLeft className="w-5 h-5" />
+                                </button>
+
+                                <div className="min-w-0 flex-1">
+                                    <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-light-text dark:text-dark-text truncate">
+                                        Crear Nueva PQR
+                                    </h1>
+                                    <p className="text-xs sm:text-sm lg:text-base text-light-textSecondary dark:text-dark-textSecondary mt-1 hidden sm:block">
+                                        Completa el formulario para enviar tu petición, queja o reclamo
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </header>
-                <div className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border p-6">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="flex items-center justify-between mb-8">
-                            <div className="flex items-center space-x-40">
-                                {[1, 2, 3].map((step) => (
-                                    <div key={step} className="flex items-center">
-                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                                            step <= currentStep
-                                                ? 'bg-light-primary dark:bg-dark-primary text-white'
+
+                {/* Progress Steps */}
+                <div className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border">
+                    <div className="px-4 py-4 sm:px-6 sm:py-6">
+                        <div className="max-w-none lg:max-w-4xl xl:max-w-5xl mx-auto">
+                            {/* Desktop Progress */}
+                            <div className="hidden sm:flex items-center justify-center mb-6">
+                                <div className="flex items-center space-x-6 md:space-x-8 lg:space-x-12 xl:space-x-16">
+                                    {[1, 2, 3].map((step) => (
+                                        <div key={step} className="flex items-center">
+                                            <div className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full flex items-center justify-center text-sm lg:text-base font-medium transition-all duration-300 ${step <= currentStep
+                                                ? 'bg-light-primary dark:bg-dark-primary text-white shadow-lg'
                                                 : 'bg-light-border dark:bg-dark-border text-light-textSecondary dark:text-dark-textSecondary'
-                                        }`}>
-                                            {step}
-                                        </div>
-                                        {step < 3 && (
-                                            <div className={`w-12 h-0.5 ml-2 ${
-                                                step < currentStep
+                                                }`}>
+                                                {step}
+                                            </div>
+                                            {step < 3 && (
+                                                <div className={`w-6 md:w-8 lg:w-12 xl:w-16 h-0.5 ml-2 lg:ml-3 transition-all duration-500 ${step < currentStep
                                                     ? 'bg-light-primary dark:bg-dark-primary'
                                                     : 'bg-light-border dark:bg-dark-border'
-                                            }`} />
-                                        )}
-                                    </div>
+                                                    }`} />
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Mobile Progress */}
+                            <div className="sm:hidden mb-4">
+                                <div className="flex items-center justify-center mb-3">
+                                    <span className="text-sm font-medium text-light-text dark:text-dark-text">
+                                        Paso {currentStep} de 3
+                                    </span>
+                                </div>
+                                <div className="w-full bg-light-border dark:bg-dark-border rounded-full h-2.5">
+                                    <div
+                                        className="bg-light-primary dark:bg-dark-primary h-2.5 rounded-full transition-all duration-500 ease-out"
+                                        style={{ width: `${(currentStep / 3) * 100}%` }}
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Step Labels */}
+                            <div className="hidden sm:flex justify-between text-xs md:text-sm lg:text-base text-light-textSecondary dark:text-dark-textSecondary max-w-md lg:max-w-lg xl:max-w-xl mx-auto">
+                                {stepTitles.map((title, index) => (
+                                    <span
+                                        key={index}
+                                        className={`text-center flex-1 transition-all duration-300 ${index + 1 === currentStep
+                                            ? 'text-light-primary dark:text-dark-primary font-semibold'
+                                            : index + 1 < currentStep
+                                                ? 'text-light-text dark:text-dark-text font-medium'
+                                                : ''
+                                            }`}
+                                    >
+                                        {title}
+                                    </span>
                                 ))}
                             </div>
-                        </div>
-                        <div className="flex justify-between text-sm text-light-textSecondary dark:text-dark-textSecondary">
-                            <span>Tipo de PQR</span>
-                            <span>Información</span>
-                            <span>Datos de Contacto</span>
+
+                            {/* Mobile Current Step */}
+                            <div className="sm:hidden text-center mt-2">
+                                <span className="text-sm font-semibold text-light-primary dark:text-dark-primary">
+                                    {stepTitles[currentStep - 1]}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className="max-w-4xl mx-auto p-6 flex-grow">
-                    {currentStep === 1 && (
-                        <PqrTypeSelection
-                            pqrTypes={pqrTypes}
-                            selectedType={formData.typePqr}
-                            onSelectType={(type) => {
-                                handleInputChange('typePqr', type);
-                                setErrors({});
-                            }}
-                            error={errors.typePqr}
-                        />
-                    )}
-                    {currentStep === 2 && (
-                        <PqrModal
-                            pqr={null}
-                            isOpen={true}
-                            onClose={() => {}}
-                        />
-                    )}
-                    {currentStep === 3 && (
-                        <ContactInfoForm
-                            userInfo={formData.userInfo}
-                            typePqr={formData.typePqr}
-                            title={formData.title}
-                            description={formData.description}
-                            onInputChange={handleInputChange}
-                            errors={errors}
-                        />
-                    )}
-                    <div className="flex justify-between mt-8">
-                        <button
-                            type="button"
-                            onClick={prevStep}
-                            className={`px-6 py-3 rounded-lg border border-light-border dark:border-dark-border text-light-text dark:text-dark-text hover:bg-light-border dark:hover:bg-dark-border transition-colors ${
-                                currentStep === 1 ? 'invisible' : ''
-                            }`}
-                        >
-                            Anterior
-                        </button>
 
-                        {currentStep < 3 ? (
+                {/* Main Content */}
+                <div className="flex-1 overflow-y-auto">
+                    <div className="max-w-none lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+                        <div className="min-h-[400px] lg:min-h-[500px]">
+                            {currentStep === 1 && (
+                                <div className="w-full max-w-none lg:max-w-3xl xl:max-w-4xl mx-auto">
+                                    <PqrTypeSelection
+                                        pqrTypes={pqrTypes}
+                                        selectedType={formData.typePqr}
+                                        onSelectType={(type) => {
+                                            handleInputChange('typePqr', type);
+                                            setErrors({});
+                                        }}
+                                        error={errors.typePqr}
+                                    />
+                                </div>
+                            )}
+
+                            {currentStep === 2 && (
+                                <div className="w-full max-w-none lg:max-w-2xl xl:max-w-3xl mx-auto">
+                                    <PqrModal
+                                        formData={formData}
+                                        onInputChange={handleInputChange}
+                                        errors={errors}
+                                    />
+                                </div>
+                            )}
+
+                            {currentStep === 3 && (
+                                <div className="w-full max-w-none lg:max-w-2xl xl:max-w-3xl mx-auto">
+                                    <ContactInfoForm
+                                        name={formData.userName}
+                                        email={formData.userEmail}
+                                        phone={formData.userPhone}
+                                        typePqr={formData.typePqr}
+                                        title={formData.title}
+                                        description={formData.description}
+                                        onInputChange={handleInputChange}
+                                        errors={errors}
+                                    />
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Navigation Buttons */}
+                        <div className="flex flex-col sm:flex-row justify-between gap-4 mt-8 pt-6 border-t border-light-border dark:border-dark-border max-w-none lg:max-w-2xl xl:max-w-3xl mx-auto">
                             <button
                                 type="button"
-                                onClick={nextStep}
-                                className="px-6 py-3 bg-light-primary dark:bg-dark-primary text-white rounded-lg hover:opacity-90 transition-opacity"
+                                onClick={prevStep}
+                                className={`order-2 sm:order-1 px-6 py-3 lg:px-8 lg:py-4 rounded-lg border border-light-border dark:border-dark-border text-light-text dark:text-dark-text hover:bg-light-border dark:hover:bg-dark-border transition-all duration-200 text-sm sm:text-base lg:text-lg font-medium ${currentStep === 1 ? 'invisible' : ''
+                                    }`}
                             >
-                                Siguiente
+                                Anterior
                             </button>
-                        ) : (
-                            <button
-                                onClick={handleSubmit}
-                                disabled={isSubmitting}
-                                className="px-6 py-3 bg-light-primary dark:bg-dark-primary text-white rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                                        Enviando...
-                                    </>
-                                ) : (
-                                    <>
-                                        <Send className="w-4 h-4" />
-                                        Enviar PQR
-                                    </>
-                                )}
-                            </button>
-                        )}
+
+                            {currentStep < 3 ? (
+                                <button
+                                    type="button"
+                                    onClick={nextStep}
+                                    className="order-1 sm:order-2 px-6 py-3 lg:px-8 lg:py-4 bg-light-primary dark:bg-dark-primary text-white rounded-lg hover:opacity-90 transition-all duration-200 text-sm sm:text-base lg:text-lg font-medium shadow-lg hover:shadow-xl"
+                                >
+                                    Siguiente
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={handleSubmit}
+                                    disabled={isSubmitting}
+                                    className="order-1 sm:order-2 px-6 py-3 lg:px-8 lg:py-4 bg-light-primary dark:bg-dark-primary text-white rounded-lg hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base lg:text-lg font-medium shadow-lg hover:shadow-xl disabled:shadow-none"
+                                >
+                                    {isSubmitting ? (
+                                        <>
+                                            <div className="animate-spin rounded-full h-4 w-4 lg:h-5 lg:w-5 border-b-2 border-white"></div>
+                                            Enviando...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Send className="w-4 h-4 lg:w-5 lg:h-5" />
+                                            Enviar PQR
+                                        </>
+                                    )}
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,51 @@
+export interface PqrFormData {
+    typePqr: 'Peticion' | 'Queja' | 'Reclamo' | '';
+    title: string;
+    description: string;
+    argument: string;
+    userName: string;
+    userEmail: string;
+    userPhone: string;
+}
+
+export interface FormErrors {
+    typePqr?: string;
+    title?: string;
+    description?: string;
+    argument?: string;
+    userName?: string;
+    userEmail?: string;
+    userPhone?: string;
+}
+
+export interface PqrTypeConfig {
+    type: 'Peticion' | 'Queja' | 'Reclamo';
+    title: string;
+    description: string;
+    iconName: 'FileText' | 'AlertCircle' | 'MessageSquare';
+    color: string;
+}
+
+export const pqrTypesConfig: PqrTypeConfig[] = [
+    {
+        type: 'Peticion',
+        title: 'Petición',
+        description: 'Solicitud de información, servicios o trámites',
+        iconName: 'FileText',
+        color: 'border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-600 dark:bg-blue-900/20 dark:text-blue-300'
+    },
+    {
+        type: 'Queja',
+        title: 'Queja',
+        description: 'Manifestación de inconformidad por un servicio',
+        iconName: 'AlertCircle',
+        color: 'border-yellow-300 bg-yellow-50 text-yellow-700 dark:border-yellow-600 dark:bg-yellow-900/20 dark:text-yellow-300'
+    },
+    {
+        type: 'Reclamo',
+        title: 'Reclamo',
+        description: 'Exigencia de reparación o compensación por un daño',
+        iconName: 'MessageSquare',
+        color: 'border-red-300 bg-red-50 text-red-700 dark:border-red-600 dark:bg-red-900/20 dark:text-red-300'
+    }
+];
