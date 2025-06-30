@@ -3,34 +3,28 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
     FiHome, FiSettings, FiCreditCard, FiLogOut, FiChevronRight,
     FiUser, FiUsers, FiClipboard, FiVoicemail, FiBarChart,
-    FiShield, FiDatabase, FiTrendingUp
+    FiShield, FiDatabase, FiTrendingUp,FiXOctagon
 } from "react-icons/fi";
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/Redux/store';
-
-// Tipado para roles
 type UserRole = 'admin' | 'user' | 'superadmin' | null;
-
-// Navegación por rol
 const adminNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/Admin", color: "from-light-primary to-light-secondary", description: "Panel de control administrativo" },
     { name: "Transactions", icon: <FiCreditCard />, href: "/Transactions", color: "from-light-warning to-orange-500", description: "Gestión de transacciones" },
     { name: "User Management", icon: <FiUsers />, href: "/UserManagement/pqrs", color: "from-blue-500 to-blue-600", description: "Administración de usuarios" },
     { name: "Ranking", icon: <FiTrendingUp />, href: "/UserManagement/RankingUsers", color: "from-purple-500 to-purple-600", description: "Ranking de usuarios" },
-    { name: "Analytics", icon: <FiBarChart />, href: "/Analytics", color: "from-indigo-500 to-indigo-600", description: "Análisis y reportes" },
     { name: "Settings", icon: <FiSettings />, href: "/UserManagement/Settings", color: "from-slate-500 to-slate-600", description: "Configuración del sistema" },
 ];
-
 const superAdminNavItems = [
     ...adminNavItems,
     { name: "System Control", icon: <FiShield />, href: "/SuperAdmin/SystemControl", color: "from-red-500 to-red-600", description: "Control total del sistema" },
     { name: "Database", icon: <FiDatabase />, href: "/SuperAdmin/Database", color: "from-gray-700 to-gray-800", description: "Gestión de base de datos" },
 ];
-
 const userNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/UserBasic", color: "from-light-primary to-light-secondary", description: "Mi panel personal" },
     { name: "Tasks", icon: <FiClipboard />, href: "/Tasks", color: "from-green-500 to-green-600", description: "Mis tareas" },
     { name: "Plans", icon: <FiCreditCard />, href: "/Pay", color: "from-light-warning to-orange-500", description: "Planes y pagos" },
+     { name: "Challenges", icon: <FiXOctagon />, href: "/Challenge", color: "from-light-warning to-orange-500", description: "Planes y pagos" },
     { name: "Pqrs", icon: <FiVoicemail />, href: "/PqrUser", color: "from-blue-500 to-blue-600", description: "Soporte y PQRS" },
     { name: "Settings", icon: <FiSettings />, href: "/UserManagement/Settings", color: "from-slate-500 to-slate-600", description: "Mi configuración" },
 ];
@@ -39,6 +33,7 @@ interface SidebarProps {
     sidebarOpen?: boolean;
     setSidebarOpen?: React.Dispatch<React.SetStateAction<boolean>>;
     onProfileClick?: () => void;
+    role?: UserRole;
 }
 
 const getNavigationItems = (role: UserRole) => {

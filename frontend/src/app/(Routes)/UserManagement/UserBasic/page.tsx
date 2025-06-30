@@ -228,8 +228,8 @@ const UserBasicContent = () => {
             <main className={cn('flex-1 flex flex-col transition-all duration-500 ease-in-out', sidebarOpen ? 'ml-[240px]' : 'ml-[72px]')}>
                 <header className="sticky top-0 z-40 backdrop-blur-md bg-light-card/80 dark:bg-dark-card/80 border-b border-light-border dark:border-dark-border" />
                 <Barrita />
-                <div className="flex-1 overflow-auto">
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="p-6">
+                <div className="flex-1 overflow-auto px-4 py-6 sm:px-6 lg:px-8">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="max-w-7xl mx-auto">
                         <div className="rounded-lg bg-gradient-to-r from-light-primary/10 to-light-primary/5 dark:from-dark-primary/10 dark:to-dark-primary/5 p-10 lg:p-20 border border-light-border dark:border-dark-border">
                             <div className="flex items-center space-x-2 mb-4">
                                 <span className="text-light-textSecondary dark:text-dark-textSecondary text-3xl font-light">{greeting}</span>

@@ -1,6 +1,6 @@
 import { client } from '@lib/apollo-client';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PqrItem } from '@Types/slices/pqr';
+import { Pqr } from '@/app/Types/Pqr'; // Importar Pqr en lugar de PqrItem
 import { createInitialPaginatedState, RejectedPayload, GenericPaginatedState } from '@Types/generics/generic';
 import { GET_ALL_PQRS, GET_PQR_BY_ID, ADD_PQR, UPDATE_PQR, DELETE_PQR } from '@graphql/Pqrs/pqrsGraph';
 import {
@@ -14,10 +14,11 @@ import {
     UpdatePqrMutationVariables,
     DeletePqrMutation,
     DeletePqrMutationVariables,
-    Pqr as GraphQLPqrType
+    Pqr as GraphQLPqrType // Renombrar para evitar conflicto con la interfaz Pqr local
 } from "@/generated/graphql";
 
-const transformGraphQLToPqrItem = (graphqlData: GraphQLPqrType): PqrItem => {
+// Función de transformación actualizada para mapear a la interfaz Pqr
+const transformGraphQLToPqr = (graphqlData: GraphQLPqrType): Pqr => {
     return {
         id: graphqlData.id,
         typePqr: graphqlData.typePqr,
@@ -26,12 +27,14 @@ const transformGraphQLToPqrItem = (graphqlData: GraphQLPqrType): PqrItem => {
         argument: graphqlData.argument,
         answer: graphqlData.answer,
         state: graphqlData.state,
+        userEmail: '', 
+        userName: '',  
     };
 };
 
 
-interface PqrState extends GenericPaginatedState<PqrItem> {
-    selectedItem: PqrItem | null;
+interface PqrState extends GenericPaginatedState<Pqr> { 
+    selectedItem: Pqr | null;
 }
 
 export const fetchPqrs = createAsyncThunk<NonNullable<GetAllPqrsQuery['allPqrs']>, GetAllPqrsQueryVariables
@@ -124,8 +127,8 @@ export const updatePqr = createAsyncThunk<
 );
 
 export const deletePqr = createAsyncThunk<
-    string,
-    string,
+    string, 
+    string, 
     { rejectValue: RejectedPayload }
 >(
     'pqr/delete',
@@ -140,8 +143,7 @@ export const deletePqr = createAsyncThunk<
             if (!res || res.code !== '200') {
                 return rejectWithValue({ code: res?.code ?? '500', message: res?.message ?? 'Unknown error' });
             }
-            return id;
-
+            return id; // Devolver el ID de la PQR eliminada
         } catch (error: any) {
             const errorMessage = error?.message || 'Unknown error during delete PQR';
             const errorCode = error?.graphQLErrors?.[0]?.extensions?.code || '500';
@@ -151,7 +153,7 @@ export const deletePqr = createAsyncThunk<
 );
 
 const initialState: PqrState = {
-    ...createInitialPaginatedState<PqrItem>(),
+    ...createInitialPaginatedState<Pqr>(), // Usar Pqr en lugar de PqrItem
     selectedItem: null,
 };
 
@@ -177,7 +179,7 @@ const pqrSlice = createSlice({
                 if (action.payload?.data) {
                     state.data = action.payload.data
                         .filter((item): item is NonNullable<typeof item> => item !== null)
-                        .map(transformGraphQLToPqrItem);
+                        .map(transformGraphQLToPqr);
                 } else {
                     state.data = [];
                 }
@@ -201,7 +203,7 @@ const pqrSlice = createSlice({
             .addCase(fetchPqrById.fulfilled, (state, action: PayloadAction<NonNullable<GetPqrByIdQuery['pqrById']>>) => {
                 state.loading = false;
                 if (action.payload?.data) {
-                    state.selectedItem = transformGraphQLToPqrItem(action.payload.data);
+                    state.selectedItem = transformGraphQLToPqr(action.payload.data); // Usar la función de transformación actualizada
                 } else {
                     state.selectedItem = null;
                 }

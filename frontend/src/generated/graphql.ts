@@ -37,6 +37,7 @@ export type ChallengeInput = {
   description: Scalars['String']['input'];
   dificulty: Dificulty;
   name: Scalars['String']['input'];
+  points: Scalars['Int']['input'];
   state: Scalars['Boolean']['input'];
 };
 
@@ -62,6 +63,7 @@ export type ChallengeUpdateInput = {
   description: Scalars['String']['input'];
   dificulty: Dificulty;
   name: Scalars['String']['input'];
+  points: Scalars['Int']['input'];
   state: Scalars['Boolean']['input'];
 };
 

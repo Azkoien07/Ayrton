@@ -13,7 +13,7 @@ type SettingsPageProps = {
 
 export default function SettingsPage() {
   const { user } = useUser();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
 
@@ -31,11 +31,7 @@ export default function SettingsPage() {
   return (
     <div className="flex h-screen bg-light-background dark:bg-dark-background">
       {/* Sidebar collapsible on mobile */}
-      <Sidebar
-        role={validRole}
-        setSidebarOpen={setSidebarOpen}
-        sidebarOpen={isMobile ? sidebarOpen : true} // Always open on desktop
-      />
+    <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} role={validRole} />
 
      <main
   className={cn(
@@ -43,12 +39,12 @@ export default function SettingsPage() {
     isMobile
       ? 'ml-0'
       : sidebarOpen
-      ? 'ml-[160px]' // reducido para acercar al sidebar
+      ? 'ml-[240px]'
       : 'ml-[72px]'
   )}
 >
         {/* Header */}
-<header className="sticky top-0 z-40 backdrop-blur-md bg-black-card/80 dark:bg-dark-card/80 border-b border-light-border dark:border-dark-border relative">
+<header className="sticky top-0 z-40 backdrop-blur-md bg-light-card/80 dark:bg-dark-card/80 border-b border-light-border dark:border-dark-border relative">
   {/* Botón fijo en la esquina superior izquierda */}
   {isMobile && (
     <button
@@ -59,22 +55,8 @@ export default function SettingsPage() {
     </button>
   )}
 
-  <div className="max-w-4xl mx-auto p-4 md:p-6">
+  <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
     <div>
-      <h1 className="text-2xl font-bold text-light-text dark:text-dark-text">
-        Panel de{' '}
-        <span className="text-light-primary dark:text-dark-primary capitalize">
-          {validRole}
-        </span>
-      </h1>
-      <p className="text-sm text-light-textSecondary dark:text-dark-textSecondary mt-1">
-        {new Date().toLocaleDateString('es-ES', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })}
-      </p>
     </div>
   </div>
 </header>
@@ -85,7 +67,7 @@ export default function SettingsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="p-4 md:p-6"
+            className="px-4 py-6 sm:px-6 lg:px-8"
           >
             <div className="rounded-lg bg-gradient-to-r from-light-primary/10 to-light-primary/5 dark:from-dark-primary/10 dark:to-dark-primary/5 p-6 md:p-10 lg:p-20 border border-light-border dark:border-dark-border">
               <div className="flex flex-wrap items-center gap-2 mb-4">
@@ -99,7 +81,7 @@ export default function SettingsPage() {
           </motion.div>
 
           {/* Main content */}
-          <div className="px-4 md:px-6 pb-6">
+          <div className="px-4 py-6 sm:px-6 lg:px-8">
             <CuadrosSettings role={validRole} />
           </div>
         </div>

@@ -40,7 +40,7 @@ public class PqrEntity implements Serializable {
     @Column(name = "argument", nullable = false, length = 1000000000)
     private String argument;
 
-    @Column(name = "answer", length = 1000000000)
+    @Column(name = "answer", length = 1000000000, nullable = true)
     private String answer;
 
     @Column(name = "state", nullable = false, length = 10)

@@ -31,8 +31,8 @@ export default function Dashboard() {
                 </header>
                 <Barrita />
                 {/*first content */}
-                <div className="flex-1 overflow-auto">
-                    <div className="p-6">
+                <div className="flex-1 overflow-auto px-4 py-6 sm:px-6 lg:px-8">
+                    <div className="max-w-7xl mx-auto">
                         <TaskDashboardHeader textSecondaryClass={textSecondary} textColorClass={textColor} />
                         <TaskManagement searchTermBar={searchTermBar} setSearchTermBar={setSearchTermBar} />
                     </div>

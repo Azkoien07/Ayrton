@@ -1,27 +1,11 @@
 import { Eye, Edit, Trash2, MessageSquare, AlertCircle, FileText } from 'lucide-react';
-
-interface PqrEntity {
-    id: number;
-    typePqr: 'Peticion' | 'Queja' | 'Reclamo';
-    title: string;
-    description: string;
-    argument: string;
-    answer: string;
-    state: boolean;
-    users?: UserEntity[];
-}
-
-interface UserEntity {
-    id: number;
-    name: string;
-    email: string;
-}
+import { Pqr } from '@/app/Types/Pqr'; // Importar la interfaz Pqr
 
 const PqrCard = ({ pqr, onView, onEdit, onDelete }: { 
-    pqr: PqrEntity; 
-    onView: (pqr: PqrEntity) => void;
-    onEdit: (pqr: PqrEntity) => void;
-    onDelete: (id: number) => void;
+    pqr: Pqr; 
+    onView: (pqr: Pqr) => void;
+    onEdit: (pqr: Pqr) => void;
+    onDelete: (id: string, name: string) => void;
 }) => {
     const getTypeColor = (type: string) => {
         switch (type) {
@@ -71,7 +55,7 @@ const PqrCard = ({ pqr, onView, onEdit, onDelete }: {
                         <Edit className="w-4 h-4" />
                     </button>
                     <button
-                        onClick={() => onDelete(pqr.id)}
+                        onClick={() => onDelete(pqr.id, pqr.title)}
                         className="p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-red-600 transition-colors"
                     >
                         <Trash2 className="w-4 h-4" />
@@ -87,12 +71,6 @@ const PqrCard = ({ pqr, onView, onEdit, onDelete }: {
                 {pqr.description}
             </p>
             
-            {pqr.users && pqr.users.length > 0 && (
-                <div className="flex items-center gap-2 text-sm text-light-textSecondary dark:text-dark-textSecondary">
-                    <span>Usuario:</span>
-                    <span className="font-medium">{pqr.users[0].name}</span>
-                </div>
-            )}
         </div>
     );
 };

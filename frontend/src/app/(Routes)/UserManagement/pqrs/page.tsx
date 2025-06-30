@@ -4,34 +4,101 @@ import { Search, Plus, FileText, AlertCircle, MessageSquare } from 'lucide-react
 import PqrCard from '@/app/Components/Pqrs/PqrCard';
 import StatsCard from '@/app/Components/Pqrs/StatsCard';
 import PqrModal from '@/app/Components/Pqrs/PqrModal';
-import { usePqrData } from '@/app/Hooks/usePqrData';
 import { useUser  } from '@context/userContext';
 import Sidebar from '@/app/Components/UI/Sidebar';
 import { useState, useEffect } from 'react';
+import { cn } from '@utilities/utils';
+import usePqrHandlers from '@/app/Julian/handlesPqr';
+import { Pqr } from '@/app/Types/Pqr';
 
 const PqrDashboard = () => {
     const { user } = useUser ();
     const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
     const {
-        filteredPqrs,
-        searchTerm,
-        setSearchTerm,
-        typeFilter,
-        setTypeFilter,
-        stateFilter,
-        setStateFilter,
-        selectedPqr,
-        isModalOpen,
-        setIsModalOpen,
-        stats,
-        handleView,
-        handleEdit,
-        handleDelete,
-    } = usePqrData();
+        data: pqrs,
+        loading,
+        totalItems,
+        page,
+        setPage,
+        handleAddPqr,
+        handleUpdatePqr,
+        handleDeletePqr,
+    } = usePqrHandlers();
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [typeFilter, setTypeFilter] = useState('all');
+    const [stateFilter, setStateFilter] = useState('all');
+    const [selectedPqr, setSelectedPqr] = useState<Pqr | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditMode, setIsEditMode] = useState(false);
+
+    const filteredPqrs = pqrs.filter(pqr => {
+        const matchesSearch = pqr.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              pqr.description.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesType = typeFilter === 'all' || pqr.typePqr === typeFilter;
+        const matchesState = stateFilter === 'all' || 
+                             (stateFilter === 'pending' && pqr.state === false) || // 'PENDING' es false
+                             (stateFilter === 'resolved' && pqr.state === true); // 'RESOLVED' es true
+        return matchesSearch && matchesType && matchesState;
+    });
+
+    const stats = {
+        total: pqrs.length,
+        peticiones: pqrs.filter(pqr => pqr.typePqr === 'Peticion').length,
+        quejas: pqrs.filter(pqr => pqr.typePqr === 'Queja').length,
+        reclamos: pqrs.filter(pqr => pqr.typePqr === 'Reclamo').length,
+        pendientes: pqrs.filter(pqr => pqr.state === false).length, // 'PENDING' es false
+        resueltas: pqrs.filter(pqr => pqr.state === true).length, // 'RESOLVED' es true
+    };
+
+    const handleView = (pqr: Pqr) => {
+        setSelectedPqr(pqr);
+        setIsEditMode(false);
+        setIsModalOpen(true);
+    };
+
+    const handleEdit = (pqr: Pqr) => {
+        setSelectedPqr(pqr);
+        setIsEditMode(true);
+        setIsModalOpen(true);
+    };
+
+    const handleDelete = async (pqrId: string, pqrName: string) => {
+        await handleDeletePqr(pqrId, pqrName);
+    };
+
+    const handleSavePqr = async (formData: any) => {
+        if (isEditMode && selectedPqr) {
+            await handleUpdatePqr({
+                id: selectedPqr.id,
+                input: {
+                    typePqr: formData.typePqr,
+                    title: formData.title,
+                    description: formData.description,
+                    argument: formData.argument,
+                    state: formData.state as boolean,
+                    answer: formData.answer || '', // Asegurarse de enviar answer
+                    userName: formData.userName,
+                    userEmail: formData.userEmail,
+                    userPhone: formData.userPhone,
+                }
+            });
+        } else {
+            await handleAddPqr({
+                typePqr: formData.typePqr,
+                title: formData.title,
+                description: formData.description,
+                argument: formData.argument,
+                userName: formData.userName,
+                userEmail: formData.userEmail,
+                userPhone: formData.userPhone,
+            });
+        }
+        setIsModalOpen(false);
+        setSelectedPqr(null);
+    };
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
-
-    // Cerrar sidebar en móvil cuando se redimensiona a desktop
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
@@ -61,7 +128,12 @@ const PqrDashboard = () => {
             )}
 
             {/* Contenido Principal */}
-            <div className="flex-1 flex flex-col min-w-0 lg:ml-0">
+            <main
+                className={cn(
+                    'flex-1 flex flex-col transition-all duration-500 ease-in-out',
+                    sidebarOpen ? 'lg:ml-[240px]' : 'lg:ml-[72px]'
+                )}
+            >
                 {/* Header Responsive */}
                 <header className="sticky top-0 z-40 backdrop-blur-md bg-light-card/90 dark:bg-dark-card/90 border-b border-light-border dark:border-dark-border">
                     <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 flex items-center justify-between">
@@ -74,15 +146,11 @@ const PqrDashboard = () => {
                             </svg>
                         </button>
                         <h1 className="text-2xl font-bold text-light-text dark:text-dark-text">Gestión de PQRs</h1>
-                        <button className="bg-light-primary dark:bg-dark-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2">
-                            <Plus className="w-4 h-4" />
-                            Nueva PQR
-                        </button>
+
                     </div>
                 </header>
 
-                <div className="p-6 flex-1 overflow-auto">
-                    {/* Estadísticas */}
+                <div className="flex-1 overflow-auto px-4 py-6 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
                         <StatsCard
                             title="Total PQRs"
@@ -188,21 +256,35 @@ const PqrDashboard = () => {
                     )}
                 </div>
                 <PqrModal
-                    formData={selectedPqr || {
+                    formData={selectedPqr ? {
+                        typePqr: selectedPqr.typePqr,
+                        title: selectedPqr.title,
+                        description: selectedPqr.description,
+                        argument: selectedPqr.argument,
+                        userName: selectedPqr.userName,
+                        userEmail: selectedPqr.userEmail,
+                        userPhone: user?.phone || '', // Asegurar que userPhone esté presente
+                        state: selectedPqr.state,
+                        answer: selectedPqr.answer || '',
+                    } : {
                         typePqr: 'Peticion',
                         title: '',
                         description: '',
                         argument: '',
-                        userName: '',
-                        userEmail: '',
-                        userPhone: ''
+                        userName: user?.name || '', 
+                        userEmail: user?.email || '', 
+                        userPhone: user?.phone || '', 
+                        answer: '',
                     }}
                     isOpen={isModalOpen}
                     onClose={() => {
                         setIsModalOpen(false);
+                        setSelectedPqr(null);
                     }}
+                    onSave={handleSavePqr}
+                    isEditMode={isEditMode}
                 />
-            </div>
+            </main>
         </div>
     );
 };

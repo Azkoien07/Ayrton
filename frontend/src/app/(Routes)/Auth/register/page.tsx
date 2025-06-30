@@ -142,7 +142,7 @@ export default function RegisterPage() {
         )}
       </button>
 
-      <div className="absolute w-full max-w-md transform -translate-y-60">
+      <div className="relative w-full max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center mb-6">
           <h1 className="text-7xl font-palmer tracking-wide drop-shadow-md animate__animated animate__fadeIn">
             Ayrton

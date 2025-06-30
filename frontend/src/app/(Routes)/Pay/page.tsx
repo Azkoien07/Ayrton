@@ -51,7 +51,7 @@ const SubscriptionPlansPage = () => {
 
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background">
-            <Sidebar setSidebarOpen={setSidebarOpen} role={validRole} />
+            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} role={validRole} />
 
             <main
                 className={cn(
@@ -63,8 +63,8 @@ const SubscriptionPlansPage = () => {
                 </header>
                 <Barrita />
 
-                <div className="flex-1 overflow-auto">
-                    <div className="p-6">
+                <div className="flex-1 overflow-auto px-4 py-6 sm:px-6 lg:px-8">
+                    <div className="max-w-7xl mx-auto">
                         <SubscriptionHeader textSecondaryClass={textSecondary} textColorClass={textColor} />
 
                         {/* Plans Grid */}

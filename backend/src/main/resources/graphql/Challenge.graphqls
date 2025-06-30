@@ -42,6 +42,7 @@ input ChallengeInput {
     category: Category!
     state: Boolean!
     dificulty: Dificulty!
+    points: Int! # Added points field
 }
 
 input ChallengeUpdateInput {
@@ -50,6 +51,7 @@ input ChallengeUpdateInput {
     category: Category!
     state: Boolean!
     dificulty: Dificulty!
+    points: Int! # Added points field
 }
 
 extend type Query {

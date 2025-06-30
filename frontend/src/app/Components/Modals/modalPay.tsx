@@ -2,18 +2,26 @@
 
 import { motion } from 'framer-motion';
 import { Plan } from '@/app/Types/Plan';
+import { useRouter } from 'next/navigation';
+import { Stripe } from '@stripe/stripe-js';
 
 interface PayModalProps {
     selectedPlan: Plan | null;
     closeModal: () => void;
-    proceedToPayment: () => void;
+    proceedToPayment: (price: number) => void;
     formatPrice: (price: number, currency: string) => string;
 }
 
-const PayModal: React.FC<PayModalProps> = ({ selectedPlan, closeModal, proceedToPayment, formatPrice }) => {
+const PayModal: React.FC<PayModalProps> = ({ selectedPlan, closeModal, formatPrice }) => {
+    const router = useRouter();
+
     if (!selectedPlan) {
         return null;
     }
+
+    const handleProceedToPayment = () => {
+        router.push(`/Stripe?price=${selectedPlan.price}`);
+    };
 
     return (
         <motion.div
@@ -68,7 +76,7 @@ const PayModal: React.FC<PayModalProps> = ({ selectedPlan, closeModal, proceedTo
                         </div>
                     </div>
 
-                    {/* Key Features */}
+
                     <div className="mb-6">
                         <h4 className="font-semibold text-light-text dark:text-dark-text mb-3">
                             Características principales:
@@ -89,7 +97,7 @@ const PayModal: React.FC<PayModalProps> = ({ selectedPlan, closeModal, proceedTo
                         </ul>
                     </div>
 
-                    {/* Action Buttons */}
+
                     <div className="flex space-x-3">
                         <button
                             onClick={closeModal}
@@ -98,14 +106,13 @@ const PayModal: React.FC<PayModalProps> = ({ selectedPlan, closeModal, proceedTo
                             Cancelar
                         </button>
                         <button
-                            onClick={proceedToPayment}
+                            onClick={handleProceedToPayment}
                             className="flex-1 py-3 px-4 rounded-lg bg-gradient-to-r from-light-primary to-light-secondary dark:from-dark-primary dark:to-dark-secondary text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
                         >
                             Proceder al Pago
                         </button>
                     </div>
 
-                    {/* Trust Indicators */}
                     <div className="mt-6 pt-4 border-t border-light-border dark:border-dark-border">
                         <div className="flex items-center justify-center space-x-4 text-xs text-light-textSecondary dark:text-dark-textSecondary">
                             <span className="flex items-center">

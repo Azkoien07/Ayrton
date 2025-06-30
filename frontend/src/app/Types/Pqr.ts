@@ -1,11 +1,25 @@
+export interface Pqr {
+    userEmail: string;
+    userName: string;
+    id: string;
+    typePqr: 'Peticion' | 'Queja' | 'Reclamo';
+    title: string;
+    description: string;
+    argument: string;
+    state: boolean; // Coincide con GraphQL
+    answer?: string; // Optional, para PQRs resueltas, coincide con GraphQL
+}
+
 export interface PqrFormData {
-    typePqr: 'Peticion' | 'Queja' | 'Reclamo' | '';
+    typePqr: 'Peticion' | 'Queja' | 'Reclamo';
     title: string;
     description: string;
     argument: string;
     userName: string;
     userEmail: string;
     userPhone: string;
+    state?: boolean; // Añadido para el modal de edición
+    answer?: string; // Añadido para el modal de edición
 }
 
 export interface FormErrors {
@@ -16,6 +30,8 @@ export interface FormErrors {
     userName?: string;
     userEmail?: string;
     userPhone?: string;
+    state?: string;
+    answer?: string;
 }
 
 export interface PqrTypeConfig {

@@ -1,5 +1,6 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { cn } from '@utilities/utils';
 import { Search, Plus, Trophy, TrendingUp, Users, Activity, Filter, X } from 'lucide-react';
 import Sidebar from '@/app/Components/UI/Sidebar';
 import { useRankingData } from "@/app/Hooks/RankingData";
@@ -22,6 +23,18 @@ export default function PageRanking() {
     const [showFilters, setShowFilters] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
+    // Cerrar sidebar en móvil cuando se redimensiona a desktop
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setSidebarOpen(false);
+            }
+        };
+        
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const handleSearch = (value: string) => {
         setSearchTerm(value);
         searchRankings(value);
@@ -29,7 +42,7 @@ export default function PageRanking() {
 
     if (error) {
         return (
-            <div className="flex h-screen bg-gray-100 dark:bg-dark-background">
+            <div className="flex h-screen bg-gray-100 dark:bg-dark-background overflow-hidden">
                 <Sidebar role="admin" sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
                 <div className="flex-1 flex items-center justify-center">
                     <div className="text-center">
@@ -42,11 +55,33 @@ export default function PageRanking() {
     }
 
     return (
-        <div className="flex h-screen bg-gray-100 dark:bg-dark-background">
+        <div className="flex h-screen bg-gray-100 dark:bg-dark-background overflow-hidden">
             <Sidebar role="admin" sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-            <div className="flex-1 flex flex-col overflow-hidden">
+
+            {/* Overlay para móviles */}
+            {sidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
+
+            <main
+                className={cn(
+                    'flex-1 flex flex-col transition-all duration-500 ease-in-out',
+                    sidebarOpen ? 'lg:ml-[240px]' : 'lg:ml-[72px]'
+                )}
+            >
                 {/* Header */}
-                <header className="flex items-center justify-between p-6 bg-white dark:bg-dark-card border-b border-light-border dark:border-dark-border">
+                <header className="sticky top-0 z-40 backdrop-blur-md bg-white/90 dark:bg-dark-card/90 border-b border-light-border dark:border-dark-border flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+                    <button
+                        className="lg:hidden p-2 rounded-md text-light-text dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        onClick={() => setSidebarOpen(!sidebarOpen)}
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
                     <div>
                         <h1 className="text-2xl font-semibold text-light-text dark:text-dark-text">Ranking de Usuarios</h1>
                         <p className="text-sm text-light-textSecondary dark:text-dark-textSecondary mt-1">
@@ -137,7 +172,7 @@ export default function PageRanking() {
                 )}
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto p-6">
+                <main className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
                     {loading ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {[...Array(6)].map((_, i) => (
@@ -164,7 +199,7 @@ export default function PageRanking() {
                         </div>
                     )}
                 </main>
-            </div>
+            </main>
         </div>
     );
 }
