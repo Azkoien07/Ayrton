@@ -24,7 +24,7 @@ export default function RankingCard({ ranking }: RankingCardProps) {
     };
 
     return (
-        <div className="bg-white dark:bg-dark-card rounded-lg shadow-md p-6 border border-light-border dark:border-dark-border hover:shadow-lg transition-shadow">
+        <div className="bg-white dark:bg-dark-card rounded-lg shadow-md p-4 sm:p-6 border border-light-border dark:border-dark-border hover:shadow-lg transition-shadow">
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
                     {ranking.userAvatar ? (
@@ -39,7 +39,7 @@ export default function RankingCard({ ranking }: RankingCardProps) {
                         </div>
                     )}
                     <div>
-                        <h2 className="text-lg font-semibold text-light-text dark:text-dark-text">
+                        <h2 className="text-lg sm:text-xl font-semibold text-light-text dark:text-dark-text">
                             {ranking.userName}
                         </h2>
                         <p className="text-sm text-light-textSecondary dark:text-dark-textSecondary">

@@ -10,13 +10,14 @@ import {
     FiUsers,
     FiClipboard,
     FiVoicemail,
+    FiX,
 } from "react-icons/fi";
 
 const adminNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/Admin", color: "from-light-primary to-light-secondary" },
     { name: "Transactions", icon: <FiCreditCard />, href: "/Transactions", color: "from-light-warning to-orange-500" },
     { name: "User Management", icon: <FiUsers />, href: "/UserManagement/pqrs", color: "from-blue-500 to-blue-600" },
-    {name: "Ranking", icon:<FiUser/>, href:"/UserManagement/RankingUsers",color:"from-purple-500 to-purple-600"},
+    { name: "Ranking", icon: <FiUser />, href: "/UserManagement/RankingUsers", color: "from-purple-500 to-purple-600" },
     { name: "Settings", icon: <FiSettings />, href: "/UserManagement/Settings", color: "from-slate-500 to-slate-600" },
 ];
 
@@ -39,26 +40,44 @@ export default function Sidebar({
     sidebarOpen: propSidebarOpen,
     setSidebarOpen: propSetSidebarOpen,
     onProfileClick,
-    role, 
+    role,
 }: SidebarProps) {
-
-    const [internalSidebarOpen, setInternalSidebarOpen] = useState(true);
+    const [internalSidebarOpen, setInternalSidebarOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+    const [isManualToggle, setIsManualToggle] = useState(false);
+    const [active, setActive] = useState("/dashboard");
+    const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
     const sidebarOpen = propSidebarOpen !== undefined ? propSidebarOpen : internalSidebarOpen;
     const setSidebarOpen = propSetSidebarOpen || setInternalSidebarOpen;
 
-    const [isManualToggle, setIsManualToggle] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            const mobile = window.innerWidth < 1024;
+            setIsMobile(mobile);
+            if (mobile && propSidebarOpen === undefined) {
+                setInternalSidebarOpen(false);
+            }
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, [propSidebarOpen]);
 
     const toggleSideBarCollapseHandler = (event: React.MouseEvent) => {
         event.stopPropagation();
         setIsManualToggle(true);
         setSidebarOpen((prev) => !prev);
-
         setTimeout(() => setIsManualToggle(false), 3000);
-    }
+    };
 
-    const [active, setActive] = useState("/dashboard");
-    const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+    const closeSidebar = () => {
+        if (isMobile) {
+            setSidebarOpen(false);
+        }
+    };
 
     const handleProfileClick = () => {
         if (onProfileClick) {
@@ -66,284 +85,315 @@ export default function Sidebar({
         } else {
             window.location.href = '/UserManagement/ProfileUser';
         }
+        closeSidebar();
+    };
+
+    const handleNavClick = (href: string) => {
+        setActive(href);
+        closeSidebar();
     };
 
     const displayedNavItems = (role || "").toLowerCase() === "admin" ? adminNavItems : userNavItems;
 
+
+    const sidebarWidth = {
+        mobile: sidebarOpen ? "280px" : "0px",
+        desktop: sidebarOpen ? "250px" : "72px"
+    };
+
+    const currentWidth = isMobile ? sidebarWidth.mobile : sidebarWidth.desktop;
+
     return (
-        <motion.aside
-            onHoverStart={() => !isManualToggle && setSidebarOpen(true)}
-            onHoverEnd={() => !isManualToggle && setSidebarOpen(false)}
-            animate={{
-                width: sidebarOpen ? 250 : 90,
-                boxShadow: sidebarOpen
-                    ? "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
-                    : "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
-            }}
-            transition={{
-                type: "spring",
-                stiffness: 400,
-                damping: 40,
-                mass: 0.8
-            }}
-            className="fixed top-0 left-0 h-screen z-50
-                bg-white dark:bg-dark-card
-                border-r border-light-border dark:border-dark-border
-                backdrop-blur-xl bg-opacity-95 dark:bg-opacity-95
-                flex flex-col overflow-hidden"
-        >
-            <motion.div
-                className="flex items-center justify-between h-20 border-b border-light-border dark:border-dark-border px-4 relative"
-                whileHover={{ scale: 1.02 }}
+        <>
+            {/* Overlay para móvil */}
+            <AnimatePresence>
+                {isMobile && sidebarOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setSidebarOpen(false)}
+                        className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+                    />
+                )}
+            </AnimatePresence>
+
+            <motion.aside
+                onHoverStart={() => !isMobile && !isManualToggle && setSidebarOpen(true)}
+                onHoverEnd={() => !isMobile && !isManualToggle && setSidebarOpen(false)}
+                animate={{
+                    width: currentWidth,
+                    x: isMobile && !sidebarOpen ? "-100%" : "0%",
+                    boxShadow: sidebarOpen
+                        ? "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+                        : "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+                }}
+                transition={{
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 40,
+                    mass: 0.8
+                }}
+                className={`
+                    ${isMobile ? 'fixed' : 'fixed lg:relative'} 
+                    top-0 left-0 h-screen z-50
+                    bg-white dark:bg-dark-card
+                    border-r border-light-border dark:border-dark-border
+                    backdrop-blur-xl bg-opacity-95 dark:bg-opacity-95
+                    flex flex-col overflow-hidden
+                    ${isMobile ? 'w-70' : ''}
+                `}
             >
-                <div className="flex items-center">
-                    {sidebarOpen && (
-                        <motion.h1
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            className="text-xl font-bold text-light-text dark:text-dark-text"
-                        >
-                            Ayrton
-                        </motion.h1>
-                    )}
-                </div>
-
-                {/* Botón de toggle siempre visible */}
-                <motion.button
-                    className="w-8 h-8 bg-light-accentSoft dark:bg-dark-accentSoft 
-                               border border-light-border dark:border-dark-border
-                               rounded-lg flex items-center justify-center shadow-sm
-                               hover:bg-light-accent dark:hover:bg-dark-accent 
-                               hover:text-white transition-all duration-200"
-                    onClick={toggleSideBarCollapseHandler}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    title={sidebarOpen ? "Cerrar sidebar" : "Abrir sidebar"}
+                {/* Header */}
+                <motion.div
+                    className="flex items-center justify-between h-16 sm:h-20 border-b border-light-border dark:border-dark-border px-3 sm:px-4 relative"
+                    whileHover={{ scale: isMobile ? 1 : 1.02 }}
                 >
-                   <motion.div
-                        animate={{ rotate: sidebarOpen ? 180 : 0 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        <FiChevronRight className="w-4 h-4 text-light-textSecondary dark:text-dark-textSecondary" />
-                    </motion.div>
-                </motion.button>
-            </motion.div>
-
-            {/* Navigation */}
-            <nav className="flex flex-col mt-8 gap-3 px-4 flex-grow">
-                {displayedNavItems.map(({ name, icon, href, color }, index) => {
-                    const isActive = active === href;
-                    const isHovered = hoveredItem === href;
-                    return (
-                        <motion.div
-                            key={href}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                        >
-                            <motion.a
-                                href={href}
-                                onClick={() => setActive(href)}
-                                onHoverStart={() => setHoveredItem(href)}
-                                onHoverEnd={() => setHoveredItem(null)}
-                                className={`
-                                    flex items-center gap-4 rounded-xl px-4 py-3.5 cursor-pointer select-none
-                                    relative overflow-hidden group transition-all duration-300
-                                    ${isActive
-                                        ? "bg-light-primary dark:bg-dark-primary text-white shadow-lg shadow-light-primary/20 dark:shadow-dark-primary/20"
-                                        : "text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text hover:bg-light-accentSoft dark:hover:bg-dark-accentSoft"
-                                    }
-                                `}
-                                whileHover={{
-                                    scale: 1.02,
-                                    x: 4
-                                }}
-                                whileTap={{ scale: 0.98 }}
-                                layout
+                    <div className="flex items-center min-w-0 flex-1">
+                        {(sidebarOpen || isMobile) && (
+                            <motion.h1
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                className="text-lg sm:text-xl font-bold text-light-text dark:text-dark-text truncate"
                             >
-                                {/* Gradient background for active state */}
-                                {isActive && (
-                                    <motion.div
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        className={`absolute inset-0 bg-gradient-to-r ${color} opacity-90 rounded-xl`}
-                                        layoutId="activeBackground"
-                                    />
-                                )}
-
-                                {/* Icon with enhanced styling */}
-                                <motion.div
-                                    className={`
-                                        relative z-10 text-xl p-1 rounded-lg
-                                        ${isActive
-                                            ? "text-white"
-                                            : isHovered
-                                                ? "text-light-primary dark:text-dark-primary"
-                                                : ""
-                                        }
-                                    `}
-                                    whileHover={{ rotate: 5 }}
-                                >
-                                    {icon}
-                                </motion.div>
-
-                                {/* Text with smooth animation */}
-                                <AnimatePresence>
-                                    {sidebarOpen && (
-                                        <motion.span
-                                            initial={{ opacity: 0, x: -10 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            exit={{ opacity: 0, x: -10 }}
-                                            transition={{ duration: 0.2 }}
-                                            className={`
-                                                whitespace-nowrap font-semibold text-base relative z-10
-                                                ${isActive ? "text-white" : ""}
-                                            `}
-                                        >
-                                            {name}
-                                        </motion.span>
-                                    )}
-                                </AnimatePresence>
-
-                                {/* Hover indicator for collapsed state */}
-                                {!sidebarOpen && isHovered && (
-                                    <motion.div
-                                        initial={{ opacity: 0, x: -10 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -10 }}
-                                        className="absolute left-16 bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border
-                                            px-3 py-2 rounded-lg shadow-lg text-sm font-medium whitespace-nowrap z-50
-                                            text-light-text dark:text-dark-text"
-                                    >
-                                        {name}
-                                        <div className="absolute left-0 top-1/2 transform -translate-x-1 -translate-y-1/2 
-                                            w-2 h-2 bg-light-card dark:bg-dark-card border-l border-b border-light-border dark:border-dark-border
-                                            rotate-45" />
-                                    </motion.div>
-                                )}
-                            </motion.a>
-                        </motion.div>
-                    );
-                })}
-            </nav>
-
-            {/* User Profile Section */}
-            <motion.div
-                className="px-4 py-6 border-t border-light-border dark:border-dark-border mt-auto"
-            >
-                <motion.button
-                    onClick={handleProfileClick}
-                    className="flex items-center gap-3 relative w-full p-2 rounded-xl cursor-pointer
-                        hover:bg-light-accentSoft dark:hover:bg-dark-accentSoft 
-                        focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent
-                        transition-all duration-200 group"
-                    whileHover={{
-                        scale: 1.02,
-                        backgroundColor: "rgba(var(--light-accentSoft), 0.5)"
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                >
-                    <div className="relative">
-                        <motion.img
-                            src="https://i.pravatar.cc/40"
-                            alt="User avatar"
-                            className="rounded-full w-11 h-11 border-2 border-light-accent dark:border-dark-accent object-cover
-                                group-hover:border-light-primary dark:group-hover:border-dark-primary transition-colors"
-                            whileHover={{ scale: 1.1 }}
-                        />
-                        <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-light-success rounded-full border-2 border-white dark:border-dark-card" />
-
-                        {!sidebarOpen && (
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                className="absolute -top-1 -right-1 w-4 h-4 bg-light-primary dark:bg-dark-primary 
-                                    rounded-full flex items-center justify-center"
-                            >
-                                <FiUser className="w-2 h-2" />
-                            </motion.div>
+                                Ayrton
+                            </motion.h1>
                         )}
                     </div>
 
-                    <AnimatePresence>
-                        {sidebarOpen && (
-                            <motion.div
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -10 }}
-                                className="flex flex-col justify-center flex-1 min-w-0"
-                            >
-                                <span className="text-sm font-bold text-light-text dark:text-dark-text truncate
-                                    group-hover:text-light-primary dark:group-hover:text-dark-primary transition-colors">
-                                    John Doe
-                                </span>
-                                <span className="text-xs text-light-textSecondary dark:text-dark-textSecondary truncate">
-                                    john@example.com
-                                </span>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+                    {/* Botón de toggle/close */}
+                    <motion.button
+                        className="w-8 h-8 sm:w-9 sm:h-9 bg-light-accentSoft dark:bg-dark-accentSoft 
+                                   border border-light-border dark:border-dark-border
+                                   rounded-lg flex items-center justify-center shadow-sm
+                                   hover:bg-light-accent dark:hover:bg-dark-accent 
+                                   hover:text-white transition-all duration-200 flex-shrink-0"
+                        onClick={toggleSideBarCollapseHandler}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        title={isMobile ? "Cerrar menú" : (sidebarOpen ? "Cerrar sidebar" : "Abrir sidebar")}
+                    >
+                        <motion.div
+                            animate={{ rotate: isMobile ? 0 : (sidebarOpen ? 180 : 0) }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            {isMobile ? (
+                                <FiX className="w-4 h-4 sm:w-5 sm:h-5 text-light-textSecondary dark:text-dark-textSecondary" />
+                            ) : (
+                                <FiChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-light-textSecondary dark:text-dark-textSecondary" />
+                            )}
+                        </motion.div>
+                    </motion.button>
+                </motion.div>
 
-                    <AnimatePresence>
-                        {sidebarOpen && (
+                {/* Navigation */}
+                <nav className="flex flex-col mt-4 sm:mt-6 lg:mt-8 gap-2 sm:gap-3 px-3 sm:px-4 flex-grow overflow-y-auto">
+                    {displayedNavItems.map(({ name, icon, href, color }, index) => {
+                        const isActive = active === href;
+                        const isHovered = hoveredItem === href;
+                        const showText = sidebarOpen || isMobile;
+                        
+                        return (
                             <motion.div
+                                key={href}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                            >
+                                <motion.a
+                                    href={href}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleNavClick(href);
+                                        window.location.href = href;
+                                    }}
+                                    onHoverStart={() => setHoveredItem(href)}
+                                    onHoverEnd={() => setHoveredItem(null)}
+                                    className={`
+                                        flex items-center gap-3 sm:gap-4 rounded-lg sm:rounded-xl px-3 sm:px-4 py-3 sm:py-3.5 cursor-pointer select-none
+                                        relative overflow-hidden group transition-all duration-300
+                                        ${isActive
+                                            ? "bg-light-primary dark:bg-dark-primary text-white shadow-lg shadow-light-primary/20 dark:shadow-dark-primary/20"
+                                            : "text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text hover:bg-light-accentSoft dark:hover:bg-dark-accentSoft"
+                                        }
+                                    `}
+                                    whileHover={{
+                                        scale: 1.02,
+                                        x: isMobile ? 0 : 4
+                                    }}
+                                    whileTap={{ scale: 0.98 }}
+                                    layout
+                                >
+                                    {/* Gradient background for active state */}
+                                    {isActive && (
+                                        <motion.div
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            className={`absolute inset-0 bg-gradient-to-r ${color} opacity-90 rounded-lg sm:rounded-xl`}
+                                            layoutId="activeBackground"
+                                        />
+                                    )}
+
+                                    {/* Icon */}
+                                    <motion.div
+                                        className={`
+                                            relative z-10 text-lg sm:text-xl p-1 rounded-lg flex-shrink-0
+                                            ${isActive
+                                                ? "text-white"
+                                                : isHovered
+                                                    ? "text-light-primary dark:text-dark-primary"
+                                                    : ""
+                                            }
+                                        `}
+                                        whileHover={{ rotate: isMobile ? 0 : 5 }}
+                                    >
+                                        {icon}
+                                    </motion.div>
+
+                                    {/* Text */}
+                                    <AnimatePresence>
+                                        {showText && (
+                                            <motion.span
+                                                initial={{ opacity: 0, x: -10 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                exit={{ opacity: 0, x: -10 }}
+                                                transition={{ duration: 0.2 }}
+                                                className={`
+                                                    whitespace-nowrap font-medium sm:font-semibold text-sm sm:text-base relative z-10 min-w-0 flex-1
+                                                    ${isActive ? "text-white" : ""}
+                                                `}
+                                            >
+                                                {name}
+                                            </motion.span>
+                                        )}
+                                    </AnimatePresence>
+
+                                    {/* Tooltip para desktop colapsado */}
+                                    {!isMobile && !sidebarOpen && isHovered && (
+                                        <motion.div
+                                            initial={{ opacity: 0, x: -10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -10 }}
+                                            className="absolute left-16 lg:left-20 bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border
+                                                px-3 py-2 rounded-lg shadow-lg text-sm font-medium whitespace-nowrap z-50
+                                                text-light-text dark:text-dark-text"
+                                        >
+                                            {name}
+                                            <div className="absolute left-0 top-1/2 transform -translate-x-1 -translate-y-1/2 
+                                                w-2 h-2 bg-light-card dark:bg-dark-card border-l border-b border-light-border dark:border-dark-border
+                                                rotate-45" />
+                                        </motion.div>
+                                    )}
+                                </motion.a>
+                            </motion.div>
+                        );
+                    })}
+                </nav>
+
+                {/* User Profile Section */}
+                <motion.div
+                    className="px-3 sm:px-4 py-4 sm:py-6 border-t border-light-border dark:border-dark-border mt-auto"
+                >
+                    <motion.button
+                        onClick={handleProfileClick}
+                        className="flex items-center gap-2 sm:gap-3 relative w-full p-2 rounded-lg sm:rounded-xl cursor-pointer
+                            hover:bg-light-accentSoft dark:hover:bg-dark-accentSoft 
+                            focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent
+                            transition-all duration-200 group"
+                        whileHover={{
+                            scale: 1.02,
+                            backgroundColor: "rgba(var(--light-accentSoft), 0.5)"
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                    >
+                        <div className="relative flex-shrink-0">
+                            <motion.img
+                                src="https://i.pravatar.cc/40"
+                                alt="User avatar"
+                                className="rounded-full w-9 h-9 sm:w-11 sm:h-11 border-2 border-light-accent dark:border-dark-accent object-cover
+                                    group-hover:border-light-primary dark:group-hover:border-dark-primary transition-colors"
+                                whileHover={{ scale: isMobile ? 1 : 1.1 }}
+                            />
+                            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-light-success rounded-full border-2 border-white dark:border-dark-card" />
+
+                            {!isMobile && !sidebarOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    className="absolute -top-1 -right-1 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-light-primary dark:bg-dark-primary 
+                                        rounded-full flex items-center justify-center"
+                                >
+                                    <FiUser className="w-2 h-2" />
+                                </motion.div>
+                            )}
+                        </div>
+
+                        <AnimatePresence>
+                            {(sidebarOpen || isMobile) && (
+                                <motion.div
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -10 }}
+                                    className="flex flex-col justify-center flex-1 min-w-0"
+                                >
+                                    <span className="text-xs sm:text-sm font-bold text-light-text dark:text-dark-text truncate
+                                        group-hover:text-light-primary dark:group-hover:text-dark-primary transition-colors">
+                                        John Doe
+                                    </span>
+                                    <span className="text-xs text-light-textSecondary dark:text-dark-textSecondary truncate">
+                                        john@example.com
+                                    </span>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <AnimatePresence>
+                            {(sidebarOpen || isMobile) && (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
+                                    className="text-light-textSecondary dark:text-dark-textSecondary 
+                                        group-hover:text-light-primary dark:group-hover:text-dark-primary 
+                                        transition-colors flex-shrink-0"
+                                >
+                                    <FiUser className="w-4 h-4" />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </motion.button>
+
+                    {/* Botón de logout */}
+                    <AnimatePresence>
+                        {(sidebarOpen || isMobile) && (
+                            <motion.button
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.8 }}
-                                className="text-light-textSecondary dark:text-dark-textSecondary 
-                                    group-hover:text-light-primary dark:group-hover:text-dark-primary 
-                                    transition-colors"
+                                whileHover={{
+                                    scale: 1.05,
+                                    color: "rgb(239, 68, 68)"
+                                }}
+                                whileTap={{ scale: 0.9 }}
+                                className="w-full mt-2 sm:mt-3 flex items-center justify-center gap-2 py-2 px-3 sm:px-4 rounded-lg
+                                    text-light-textSecondary dark:text-dark-textSecondary 
+                                    hover:text-light-error dark:hover:text-dark-error 
+                                    hover:bg-light-error/10 dark:hover:bg-dark-error/10
+                                    transition-all duration-200 text-xs sm:text-sm font-medium"
+                                title="Cerrar sesión"
+                                onClick={() => {
+                                    closeSidebar();
+                                    window.location.href = "/";
+                                }}
                             >
-                                <FiUser className="w-4 h-4" />
-                            </motion.div>
+                                <FiLogOut className="w-4 h-4" />
+                                <span>Cerrar sesión</span>
+                            </motion.button>
                         )}
                     </AnimatePresence>
-
-                    {/* Tooltip para el estado colapsado */}
-                    {!sidebarOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 0, x: -10 }}
-                            whileHover={{ opacity: 1, x: 0 }}
-                            className="absolute left-16 bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border
-                                px-3 py-2 rounded-lg shadow-lg text-sm font-medium whitespace-nowrap z-50
-                                text-light-text dark:text-dark-text pointer-events-none"
-                        >
-                            Ver perfil
-                            <div className="absolute left-0 top-1/2 transform -translate-x-1 -translate-y-1/2 
-                                w-2 h-2 bg-light-card dark:bg-dark-card border-l border-b border-light-border dark:border-dark-border
-                                rotate-45" />
-                        </motion.div>
-                    )}
-                </motion.button>
-
-                {/* Botón de logout separado */}
-                <AnimatePresence>
-                    {sidebarOpen && (
-                        <motion.button
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            whileHover={{
-                                scale: 1.05,
-                                color: "rgb(239, 68, 68)"
-                            }}
-                            whileTap={{ scale: 0.9 }}
-                            className="w-full mt-3 flex items-center justify-center gap-2 py-2 px-4 rounded-lg
-                                text-light-textSecondary dark:text-dark-textSecondary 
-                                hover:text-light-error dark:hover:text-dark-error 
-                                hover:bg-light-error/10 dark:hover:bg-dark-error/10
-                                transition-all duration-200 text-sm font-medium"
-                            title="Cerrar sesión"
-                            onClick={() => { window.location.href = "/"; }}
-                        >
-                            <FiLogOut className="w-4 h-4" />
-                            <span >Cerrar sesión</span>
-                        </motion.button>
-                    )}
-                </AnimatePresence>
-            </motion.div>
-        </motion.aside>
+                </motion.div>
+            </motion.aside>
+        </>
     );
 }

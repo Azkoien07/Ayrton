@@ -8,7 +8,7 @@ interface StatCardProps {
 
 export default function StatCard({ icon, title, value }: StatCardProps) {
     return (
-        <div className="bg-white dark:bg-dark-card rounded-lg p-4 border border-light-border dark:border-dark-border">
+        <div className="bg-white dark:bg-dark-card rounded-lg p-4 sm:p-6 border border-light-border dark:border-dark-border">
             <div className="flex items-center space-x-3">
                 {icon}
                 <div>

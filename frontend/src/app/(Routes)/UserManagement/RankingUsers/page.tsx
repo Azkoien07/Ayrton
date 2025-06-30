@@ -1,8 +1,8 @@
-"use client"
+"use client";
 import { useState } from 'react';
 import { Search, Plus, Trophy, TrendingUp, Users, Activity, Filter, X } from 'lucide-react';
 import Sidebar from '@/app/Components/UI/Sidebar';
-import { useRankingData, RankingEntity, ChallengeEntity } from "@/app/Hooks/RankingData";
+import { useRankingData } from "@/app/Hooks/RankingData";
 import StatCard from '@/app/Components/RankingUsers/StatCard';
 import RankingCard from '@/app/Components/RankingUsers/RankingCard';
 import SkeletonCard from '@/app/Components/RankingUsers/SkeletonCard';
@@ -15,15 +15,12 @@ export default function PageRanking() {
         stats,
         filters,
         searchRankings,
-        filterByLevel,
-        filterByCategory,
-        toggleActiveFilter,
-        clearFilters,
-        getTopRankings
+        clearFilters
     } = useRankingData();
 
     const [searchTerm, setSearchTerm] = useState('');
     const [showFilters, setShowFilters] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const handleSearch = (value: string) => {
         setSearchTerm(value);
@@ -33,7 +30,7 @@ export default function PageRanking() {
     if (error) {
         return (
             <div className="flex h-screen bg-gray-100 dark:bg-dark-background">
-                <Sidebar role="admin" />
+                <Sidebar role="admin" sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
                 <div className="flex-1 flex items-center justify-center">
                     <div className="text-center">
                         <h2 className="text-xl font-semibold text-red-600 mb-2">Error al cargar rankings</h2>
@@ -46,7 +43,7 @@ export default function PageRanking() {
 
     return (
         <div className="flex h-screen bg-gray-100 dark:bg-dark-background">
-            <Sidebar role="admin" />
+            <Sidebar role="admin" sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
             <div className="flex-1 flex flex-col overflow-hidden">
                 {/* Header */}
                 <header className="flex items-center justify-between p-6 bg-white dark:bg-dark-card border-b border-light-border dark:border-dark-border">
@@ -87,7 +84,7 @@ export default function PageRanking() {
 
                 {/* Stats Cards */}
                 <div className="p-6 bg-white dark:bg-dark-card border-b border-light-border dark:border-dark-border">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <StatCard
                             icon={<Users className="text-blue-500" size={24} />}
                             title="Total Usuarios"

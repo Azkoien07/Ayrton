@@ -2,15 +2,8 @@
 
 import { useState } from 'react';
 import { Send, FileText, AlertCircle, MessageSquare, ArrowLeft, CheckCircle, User, Mail, Phone } from 'lucide-react';
-import { useApolloClient, NormalizedCacheObject } from '@apollo/client';
-import { addPqr } from '@/app/Services/pqrService';
-import { PqrInput } from '@/generated/graphql';
-import Sidebar from '@/app/Components/UI/Sidebar';
-import PqrTypeSelection from '@/app/Components/Pqrs/PqrTypeSelection';
-import PqrModal from '@/app/Components/Pqrs/PqrModal';
-import ContactInfoForm from '@/app/Components/Pqrs/ContactInfoForm';
-import { usePathname } from 'next/navigation';
 
+// Tipos TypeScript
 interface PqrFormData {
     typePqr: 'Peticion' | 'Queja' | 'Reclamo' | '';
     title: string;
@@ -76,25 +69,35 @@ const CreatePqrForm = () => {
             color: 'border-red-300 bg-red-50 text-red-700 dark:border-red-600 dark:bg-red-900/20 dark:text-red-300'
         }
     ];
+
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
+
+        // Validación del tipo de PQR
         if (!formData.typePqr) {
             newErrors.typePqr = 'Debe seleccionar un tipo de PQR';
         }
+
+        // Validación del título
         if (!formData.title.trim()) {
             newErrors.title = 'El título es obligatorio';
         } else if (formData.title.length > 50) {
             newErrors.title = 'El título no puede exceder 50 caracteres';
         }
 
+        // Validación de la descripción
         if (!formData.description.trim()) {
             newErrors.description = 'La descripción es obligatoria';
         } else if (formData.description.length > 1000) {
             newErrors.description = 'La descripción no puede exceder 1000 caracteres';
         }
+
+        // Validación del argumento
         if (!formData.argument.trim()) {
             newErrors.argument = 'El argumento es obligatorio';
         }
+
+        // Validación de información del usuario
         const userErrors: any = {};
         if (!formData.userInfo.name.trim()) {
             userErrors.name = 'El nombre es obligatorio';
@@ -116,23 +119,34 @@ const CreatePqrForm = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const client = useApolloClient();
-
     const handleSubmit = async () => {
+        
         if (!validateForm()) {
             return;
         }
 
         setIsSubmitting(true);
 
+        try {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            console.log('PQR creada:', formData);
+            setIsSubmitted(true);
+        } catch (error) {
+            console.error('Error al crear PQR:', error);
+         
+        } finally {
+            setIsSubmitting(false);
+        }
     };
+
     const handleInputChange = (field: string, value: string) => {
         if (field.includes('.')) {
             const [parent, child] = field.split('.');
             setFormData(prev => ({
                 ...prev,
                 [parent]: {
-                    ...(prev[parent as keyof PqrFormData] as Record<string, any> ?? {}),
+                    ...prev[parent as keyof PqrFormData],
                     [child]: value
                 }
             }));
@@ -143,6 +157,7 @@ const CreatePqrForm = () => {
             }));
         }
     };
+
     const nextStep = () => {
         if (currentStep === 1 && !formData.typePqr) {
             setErrors({ typePqr: 'Debe seleccionar un tipo de PQR' });
@@ -208,92 +223,235 @@ const CreatePqrForm = () => {
             </div>
         );
     }
-    const pathname = usePathname();
+
     return (
-        <div className="min-h-screen bg-light-background dark:bg-dark-background flex">
-            <Sidebar role={''}  />
-            <div className="flex-1 flex flex-col">
-                {/* Header */}
-                <header className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border p-6">
-                    <div className="max-w-4xl mx-auto">
-                        <div className="flex items-center gap-4">
-                            <button
-                                onClick={() => window.history.back()}
-                                className="p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors"
-                            >
-                                <ArrowLeft className="w-5 h-5" />
-                            </button>
-                            <div>
-                                <h1 className="text-2xl font-bold text-light-text dark:text-dark-text">
-                                    Crear Nueva PQR
-                                </h1>
-                                <p className="text-light-textSecondary dark:text-dark-textSecondary">
-                                    Completa el formulario para enviar tu petición, queja o reclamo
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-                <div className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border p-6">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="flex items-center justify-between mb-8">
-                            <div className="flex items-center space-x-40">
-                                {[1, 2, 3].map((step) => (
-                                    <div key={step} className="flex items-center">
-                                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                                            step <= currentStep
-                                                ? 'bg-light-primary dark:bg-dark-primary text-white'
-                                                : 'bg-light-border dark:bg-dark-border text-light-textSecondary dark:text-dark-textSecondary'
-                                        }`}>
-                                            {step}
-                                        </div>
-                                        {step < 3 && (
-                                            <div className={`w-12 h-0.5 ml-2 ${
-                                                step < currentStep
-                                                    ? 'bg-light-primary dark:bg-dark-primary'
-                                                    : 'bg-light-border dark:bg-dark-border'
-                                            }`} />
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="flex justify-between text-sm text-light-textSecondary dark:text-dark-textSecondary">
-                            <span>Tipo de PQR</span>
-                            <span>Información</span>
-                            <span>Datos de Contacto</span>
+        <div className="min-h-screen bg-light-background dark:bg-dark-background">
+            {/* Header */}
+            <header className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border p-6">
+                <div className="max-w-4xl mx-auto">
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => window.history.back()}
+                            className="p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors"
+                        >
+                            <ArrowLeft className="w-5 h-5" />
+                        </button>
+                        <div>
+                            <h1 className="text-2xl font-bold text-light-text dark:text-dark-text">
+                                Crear Nueva PQR
+                            </h1>
+                            <p className="text-light-textSecondary dark:text-dark-textSecondary">
+                                Completa el formulario para enviar tu petición, queja o reclamo
+                            </p>
                         </div>
                     </div>
                 </div>
-                <div className="max-w-4xl mx-auto p-6 flex-grow">
+            </header>
+
+            {/* Progress Bar */}
+            <div className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border p-6">
+                <div className="max-w-4xl mx-auto">
+                    <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-4">
+                            {[1, 2, 3].map((step) => (
+                                <div key={step} className="flex items-center">
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                                        step <= currentStep
+                                            ? 'bg-light-primary dark:bg-dark-primary text-white'
+                                            : 'bg-light-border dark:bg-dark-border text-light-textSecondary dark:text-dark-textSecondary'
+                                    }`}>
+                                        {step}
+                                    </div>
+                                    {step < 3 && (
+                                        <div className={`w-12 h-0.5 ml-2 ${
+                                            step < currentStep
+                                                ? 'bg-light-primary dark:bg-dark-primary'
+                                                : 'bg-light-border dark:bg-dark-border'
+                                        }`} />
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="flex justify-between text-sm text-light-textSecondary dark:text-dark-textSecondary">
+                        <span>Tipo de PQR</span>
+                        <span>Información</span>
+                        <span>Datos de Contacto</span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="max-w-4xl mx-auto p-6">
+                <div>
+                    {/* Paso 1: Selección del tipo de PQR */}
                     {currentStep === 1 && (
-                        <PqrTypeSelection
-                            pqrTypes={pqrTypes}
-                            selectedType={formData.typePqr}
-                            onSelectType={(type) => {
-                                handleInputChange('typePqr', type);
-                                setErrors({});
-                            }}
-                            error={errors.typePqr}
-                        />
+                        <div className="bg-light-surface dark:bg-dark-surface rounded-lg p-8 border border-light-border dark:border-dark-border">
+                            <h2 className="text-xl font-semibold text-light-text dark:text-dark-text mb-6">
+                                Selecciona el tipo de PQR
+                            </h2>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {pqrTypes.map((pqrType) => (
+                                    <div
+                                        key={pqrType.type}
+                                        className={`p-6 rounded-lg border-2 cursor-pointer transition-all ${
+                                            formData.typePqr === pqrType.type
+                                                ? pqrType.color
+                                                : 'border-light-border dark:border-dark-border bg-light-background dark:bg-dark-background hover:border-light-primary dark:hover:border-dark-primary'
+                                        }`}
+                                        onClick={() => {
+                                            handleInputChange('typePqr', pqrType.type);
+                                            setErrors({});
+                                        }}
+                                    >
+                                        <div className="flex flex-col items-center text-center">
+                                            <div className="mb-4">{pqrType.icon}</div>
+                                            <h3 className="text-lg font-semibold mb-2">{pqrType.title}</h3>
+                                            <p className="text-sm">{pqrType.description}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            
+                            {errors.typePqr && (
+                                <p className="text-red-500 text-sm mt-4">{errors.typePqr}</p>
+                            )}
+                        </div>
                     )}
+
+                    {/* Paso 2: Información de la PQR */}
                     {currentStep === 2 && (
-                        <PqrModal
-                            pqr={null}
-                            isOpen={true}
-                            onClose={() => {}}
-                        />
+                        <div className="bg-light-surface dark:bg-dark-surface rounded-lg p-8 border border-light-border dark:border-dark-border">
+                            <h2 className="text-xl font-semibold text-light-text dark:text-dark-text mb-6">
+                                Información de la {formData.typePqr}
+                            </h2>
+
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
+                                        Título *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="w-full px-4 py-3 bg-light-background dark:bg-dark-background border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary focus:border-transparent text-light-text dark:text-dark-text"
+                                        placeholder="Ingresa un título descriptivo"
+                                        value={formData.title}
+                                        onChange={(e) => handleInputChange('title', e.target.value)}
+                                        maxLength={50}
+                                    />
+                                    <div className="flex justify-between mt-1">
+                                        {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
+                                        <p className="text-light-textSecondary dark:text-dark-textSecondary text-sm ml-auto">
+                                            {formData.title.length}/50
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
+                                        Descripción *
+                                    </label>
+                                    <textarea
+                                        className="w-full px-4 py-3 bg-light-background dark:bg-dark-background border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary focus:border-transparent text-light-text dark:text-dark-text"
+                                        placeholder="Describe brevemente tu solicitud"
+                                        rows={4}
+                                        value={formData.description}
+                                        onChange={(e) => handleInputChange('description', e.target.value)}
+                                        maxLength={1000}
+                                    />
+                                    <div className="flex justify-between mt-1">
+                                        {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+                                        <p className="text-light-textSecondary dark:text-dark-textSecondary text-sm ml-auto">
+                                            {formData.description.length}/1000
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
+                                        Argumento detallado *
+                                    </label>
+                                    <textarea
+                                        className="w-full px-4 py-3 bg-light-background dark:bg-dark-background border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary focus:border-transparent text-light-text dark:text-dark-text"
+                                        placeholder="Explica detalladamente los hechos, circunstancias y fundamentos de tu solicitud"
+                                        rows={6}
+                                        value={formData.argument}
+                                        onChange={(e) => handleInputChange('argument', e.target.value)}
+                                    />
+                                    {errors.argument && <p className="text-red-500 text-sm mt-1">{errors.argument}</p>}
+                                </div>
+                            </div>
+                        </div>
                     )}
+
+                    {/* Paso 3: Datos de contacto */}
                     {currentStep === 3 && (
-                        <ContactInfoForm
-                            userInfo={formData.userInfo}
-                            typePqr={formData.typePqr}
-                            title={formData.title}
-                            description={formData.description}
-                            onInputChange={handleInputChange}
-                            errors={errors}
-                        />
+                        <div className="bg-light-surface dark:bg-dark-surface rounded-lg p-8 border border-light-border dark:border-dark-border">
+                            <h2 className="text-xl font-semibold text-light-text dark:text-dark-text mb-6">
+                                Datos de Contacto
+                            </h2>
+
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
+                                        <User className="w-4 h-4 inline mr-1" />
+                                        Nombre completo *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="w-full px-4 py-3 bg-light-background dark:bg-dark-background border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary focus:border-transparent text-light-text dark:text-dark-text"
+                                        placeholder="Ingresa tu nombre completo"
+                                        value={formData.userInfo.name}
+                                        onChange={(e) => handleInputChange('userInfo.name', e.target.value)}
+                                    />
+                                    {errors.userInfo?.name && <p className="text-red-500 text-sm mt-1">{errors.userInfo.name}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
+                                        <Mail className="w-4 h-4 inline mr-1" />
+                                        Correo electrónico *
+                                    </label>
+                                    <input
+                                        type="email"
+                                        className="w-full px-4 py-3 bg-light-background dark:bg-dark-background border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary focus:border-transparent text-light-text dark:text-dark-text"
+                                        placeholder="correo@ejemplo.com"
+                                        value={formData.userInfo.email}
+                                        onChange={(e) => handleInputChange('userInfo.email', e.target.value)}
+                                    />
+                                    {errors.userInfo?.email && <p className="text-red-500 text-sm mt-1">{errors.userInfo.email}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
+                                        <Phone className="w-4 h-4 inline mr-1" />
+                                        Teléfono *
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        className="w-full px-4 py-3 bg-light-background dark:bg-dark-background border border-light-border dark:border-dark-border rounded-lg focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary focus:border-transparent text-light-text dark:text-dark-text"
+                                        placeholder="+57 300 123 4567"
+                                        value={formData.userInfo.phone}
+                                        onChange={(e) => handleInputChange('userInfo.phone', e.target.value)}
+                                    />
+                                    {errors.userInfo?.phone && <p className="text-red-500 text-sm mt-1">{errors.userInfo.phone}</p>}
+                                </div>
+
+                                <div className="bg-light-background dark:bg-dark-background p-4 rounded-lg">
+                                    <h3 className="font-medium text-light-text dark:text-dark-text mb-2">
+                                        Resumen de tu {formData.typePqr}
+                                    </h3>
+                                    <div className="space-y-2 text-sm text-light-textSecondary dark:text-dark-textSecondary">
+                                        <div><strong>Tipo:</strong> {formData.typePqr}</div>
+                                        <div><strong>Título:</strong> {formData.title}</div>
+                                        <div><strong>Descripción:</strong> {formData.description}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     )}
+
+                    {/* Botones de navegación */}
                     <div className="flex justify-between mt-8">
                         <button
                             type="button"

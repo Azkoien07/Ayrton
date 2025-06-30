@@ -5,11 +5,12 @@ import PqrCard from '@/app/Components/Pqrs/PqrCard';
 import StatsCard from '@/app/Components/Pqrs/StatsCard';
 import PqrModal from '@/app/Components/Pqrs/PqrModal';
 import { usePqrData } from '@/app/Hooks/usePqrData';
-import { useUser } from '@context/userContext';
+import { useUser  } from '@context/userContext';
 import Sidebar from '@/app/Components/UI/Sidebar';
+import { useState, useEffect } from 'react';
 
 const PqrDashboard = () => {
-    const { user } = useUser();
+    const { user } = useUser ();
     const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
     const {
         filteredPqrs,
@@ -28,20 +29,51 @@ const PqrDashboard = () => {
         handleDelete,
     } = usePqrData();
 
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    // Cerrar sidebar en móvil cuando se redimensiona a desktop
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setSidebarOpen(false);
+            }
+        };
+        
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
-        <div className="min-h-screen bg-light-background dark:bg-dark-background">
-            <Sidebar role={validRole} />
-            <div className="ml-[250px]"> {/* Ajusta el margen izquierdo para el sidebar */}
-                <header className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border p-6">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-2xl font-bold text-light-text dark:text-dark-text">
-                                Gestión de PQRs
-                            </h1>
-                            <p className="text-light-textSecondary dark:text-dark-textSecondary">
-                                Administra peticiones, quejas y reclamos
-                            </p>
-                        </div>
+        <div className="flex h-screen bg-light-background dark:bg-dark-background overflow-hidden">
+            {/* Sidebar */}
+            <Sidebar
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                role={validRole}
+            />
+
+            {/* Overlay para móviles */}
+            {sidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
+
+            {/* Contenido Principal */}
+            <div className="flex-1 flex flex-col min-w-0 lg:ml-0">
+                {/* Header Responsive */}
+                <header className="sticky top-0 z-40 backdrop-blur-md bg-light-card/90 dark:bg-dark-card/90 border-b border-light-border dark:border-dark-border">
+                    <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 flex items-center justify-between">
+                        <button
+                            className="lg:hidden p-2 rounded-md text-light-text dark:text-dark-text hover:bg-light-background dark:hover:bg-dark-background transition-colors"
+                            onClick={() => setSidebarOpen(!sidebarOpen)}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                        <h1 className="text-2xl font-bold text-light-text dark:text-dark-text">Gestión de PQRs</h1>
                         <button className="bg-light-primary dark:bg-dark-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2">
                             <Plus className="w-4 h-4" />
                             Nueva PQR
@@ -49,7 +81,7 @@ const PqrDashboard = () => {
                     </div>
                 </header>
 
-                <div className="p-6">
+                <div className="p-6 flex-1 overflow-auto">
                     {/* Estadísticas */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
                         <StatsCard
@@ -130,6 +162,7 @@ const PqrDashboard = () => {
                             </div>
                         </div>
                     </div>
+
                     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                         {filteredPqrs.map((pqr) => (
                             <PqrCard
