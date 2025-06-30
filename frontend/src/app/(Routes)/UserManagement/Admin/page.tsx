@@ -1,17 +1,25 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { cn } from '@utilities/utils';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
 import { useUser } from '@context/userContext';
 import Sidebar from '@components/UI/Sidebar';
 import UserContentAdmin from '@components/content/UserContentAdmin';
+import { fetchUsers } from '@slice/userSlice'
+import { UseDispatch } from 'react-redux';
+import type { AppDispatch, RootState } from "@/app/Redux/store";
 
 const Dashboard = ({ role }: DashboardProps) => {
+    const dispatch = useDispatch<AppDispatch>();
     const { user } = useUser();
     const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
     const [selected, setSelected] = useState(roleOptions[validRole as keyof typeof roleOptions][0]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const users = useSelector((state: RootState) => state.user.data);
+    const [page, setPage] = useState(0);
+    const itemsPerPage = 5;
 
     const sections = roleOptions[validRole as keyof typeof roleOptions];
 
@@ -33,6 +41,12 @@ const Dashboard = ({ role }: DashboardProps) => {
         { label: 'Tareas Pendientes', value: '23', trend: '-5%', color: 'text-light-warning dark:text-dark-warning' },
         { label: 'Sistema', value: '99.9%', trend: '0%', color: 'text-light-success dark:text-dark-success' }
     ];
+
+
+    useEffect(() => {
+        dispatch(fetchUsers({ page, size: itemsPerPage }));
+    }, [dispatch, page, itemsPerPage]);
+
 
     return (
         <div className="flex h-screen bg-light-background dark:bg-dark-background overflow-hidden">
@@ -190,14 +204,12 @@ const Dashboard = ({ role }: DashboardProps) => {
                                         Gestiona y configura {selected.toLowerCase()}
                                     </p>
                                 </div>
-                                
-                                <div className="min-h-[200px] sm:min-h-[300px]">
-                                    <UserContentAdmin role={validRole} />
+                                <div className="min-h-[300px]">
+                                    <UserContentAdmin role={validRole} users={users} />
 
-                                    {/* Contenido Placeholder */}
-                                    <div className="flex flex-col items-center justify-center py-8 sm:py-12 text-center">
-                                        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-light-primary/10 dark:bg-dark-primary/10 rounded-full flex items-center justify-center mb-3 sm:mb-4">
-                                            <div className="w-5 h-5 sm:w-6 sm:h-6 bg-light-primary dark:bg-dark-primary rounded-full opacity-60"></div>
+                                    <div className="flex flex-col items-center justify-center py-12 text-center">
+                                        <div className="w-12 h-12 bg-light-primary/10 dark:bg-dark-primary/10 rounded-full flex items-center justify-center mb-4">
+                                            <div className="w-6 h-6 bg-light-primary dark:bg-dark-primary rounded-full opacity-60"></div>
                                         </div>
                                         <h3 className="text-base sm:text-lg font-semibold text-light-text dark:text-dark-text mb-2">
                                             {selected}

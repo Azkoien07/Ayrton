@@ -349,12 +349,13 @@ export type Pqr = {
 };
 
 export type PqrInput = {
-  answer: Scalars['String']['input'];
   argument: Scalars['String']['input'];
   description: Scalars['String']['input'];
-  state: Scalars['Boolean']['input'];
   title: Scalars['String']['input'];
   typePqr: TypePqr;
+  userEmail: Scalars['String']['input'];
+  userName: Scalars['String']['input'];
+  userPhone: Scalars['String']['input'];
 };
 
 export type PqrPage = {
@@ -381,6 +382,9 @@ export type PqrUpdateInput = {
   state: Scalars['Boolean']['input'];
   title: Scalars['String']['input'];
   typePqr: TypePqr;
+  userEmail: Scalars['String']['input'];
+  userName: Scalars['String']['input'];
+  userPhone: Scalars['String']['input'];
 };
 
 export enum Priority {

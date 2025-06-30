@@ -1,80 +1,120 @@
 import React from 'react';
+import { PqrFormData, FormErrors } from '@Types/Pqr';
 
-interface PqrEntity {
-    id: number;
-    typePqr: 'Peticion' | 'Queja' | 'Reclamo';
-    title: string;
-    description: string;
-    argument: string;
-    answer: string;
-    state: boolean;
-    users?: UserEntity[];
+interface PqrModalProps {
+    formData: PqrFormData;
+    onInputChange: (field: string, value: string) => void;
+    errors: FormErrors;
 }
 
-interface UserEntity {
-    id: number;
-    name: string;
-    email: string;
-}
-
-const PqrModal = ({ pqr, isOpen, onClose }: { 
-    pqr: PqrEntity | null; 
-    isOpen: boolean; 
-    onClose: () => void;
-}) => {
-    if (!isOpen || !pqr) return null;
-
+const PqrModal: React.FC<PqrModalProps> = ({ formData, onInputChange, errors }) => {
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-light-surface dark:bg-dark-surface rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                <div className="p-6 border-b border-light-border dark:border-dark-border">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-bold text-light-text dark:text-dark-text">
-                            Detalles de {pqr.typePqr}
-                        </h2>
-                        <button
-                            onClick={onClose}
-                            className="text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text"
-                        >
-                            ✕
-                        </button>
-                    </div>
-                </div>
-                
-                <div className="p-6 space-y-6">
+        <div className="max-w-2xl mx-auto">
+            <div className="bg-light-surface dark:bg-dark-surface rounded-lg p-6 border border-light-border dark:border-dark-border">
+                <h2 className="text-xl font-bold text-light-text dark:text-dark-text mb-6">
+                    Información de la {formData.typePqr}
+                </h2>
+
+                <div className="space-y-6">
+                    {/* Título */}
                     <div>
-                        <h3 className="font-semibold text-light-text dark:text-dark-text mb-2">Título</h3>
-                        <p className="text-light-textSecondary dark:text-dark-textSecondary">{pqr.title}</p>
-                    </div>
-                    
-                    <div>
-                        <h3 className="font-semibold text-light-text dark:text-dark-text mb-2">Descripción</h3>
-                        <p className="text-light-textSecondary dark:text-dark-textSecondary">{pqr.description}</p>
-                    </div>
-                    
-                    <div>
-                        <h3 className="font-semibold text-light-text dark:text-dark-text mb-2">Argumento</h3>
-                        <p className="text-light-textSecondary dark:text-dark-textSecondary whitespace-pre-wrap">{pqr.argument}</p>
-                    </div>
-                    
-                    {pqr.answer && (
-                        <div>
-                            <h3 className="font-semibold text-light-text dark:text-dark-text mb-2">Respuesta</h3>
-                            <div className="bg-light-background dark:bg-dark-background p-4 rounded-lg">
-                                <p className="text-light-textSecondary dark:text-dark-textSecondary whitespace-pre-wrap">{pqr.answer}</p>
-                            </div>
+                        <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
+                            Título *
+                        </label>
+                        <input
+                            type="text"
+                            value={formData.title}
+                            onChange={(e) => onInputChange('title', e.target.value)}
+                            maxLength={50}
+                            className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors ${errors.title
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
+                            placeholder="Ingresa un título descriptivo para tu solicitud"
+                        />
+                        <div className="flex justify-between items-center mt-1">
+                            {errors.title && (
+                                <span className="text-red-500 text-sm">{errors.title}</span>
+                            )}
+                            <span className="text-xs text-light-textSecondary dark:text-dark-textSecondary ml-auto">
+                                {formData.title.length}/50
+                            </span>
                         </div>
-                    )}
-                    
-                    {pqr.users && pqr.users.length > 0 && (
-                        <div>
-                            <h3 className="font-semibold text-light-text dark:text-dark-text mb-2">Usuario</h3>
-                            <div className="flex items-center gap-4">
-                                <span className="text-light-textSecondary dark:text-dark-textSecondary">{pqr.users[0].name}</span>
-                                <span className="text-light-textSecondary dark:text-dark-textSecondary">{pqr.users[0].email}</span>
-                            </div>
+                    </div>
+
+                    {/* Descripción */}
+                    <div>
+                        <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
+                            Descripción *
+                        </label>
+                        <textarea
+                            value={formData.description}
+                            onChange={(e) => onInputChange('description', e.target.value)}
+                            maxLength={1000}
+                            rows={4}
+                            className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors.description
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
+                            placeholder="Describe brevemente tu solicitud"
+                        />
+                        <div className="flex justify-between items-center mt-1">
+                            {errors.description && (
+                                <span className="text-red-500 text-sm">{errors.description}</span>
+                            )}
+                            <span className="text-xs text-light-textSecondary dark:text-dark-textSecondary ml-auto">
+                                {formData.description.length}/1000
+                            </span>
                         </div>
-                    )}
+                    </div>
+
+                    {/* Argumento */}
+                    <div>
+                        <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
+                            Argumento detallado *
+                        </label>
+                        <textarea
+                            value={formData.argument}
+                            onChange={(e) => onInputChange('argument', e.target.value)}
+                            rows={6}
+                            className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors.argument
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
+                            placeholder="Explica en detalle tu solicitud, incluyendo todos los elementos relevantes..."
+                        />
+                        {errors.argument && (
+                            <span className="text-red-500 text-sm mt-1 block">{errors.argument}</span>
+                        )}
+                    </div>
+
+                    {/* Información adicional según el tipo */}
+                    <div className="bg-light-background dark:bg-dark-background p-4 rounded-lg">
+                        <h3 className="text-sm font-medium text-light-text dark:text-dark-text mb-2">
+                            Información adicional para {formData.typePqr?.toLowerCase()}s:
+                        </h3>
+                        {formData.typePqr === 'Peticion' && (
+                            <p className="text-xs text-light-textSecondary dark:text-dark-textSecondary">
+                                • Especifica claramente lo que solicitas<br />
+                                • Incluye fechas relevantes si aplica<br />
+                                • Menciona documentos de soporte necesarios
+                            </p>
+                        )}
+                        {formData.typePqr === 'Queja' && (
+                            <p className="text-xs text-light-textSecondary dark:text-dark-textSecondary">
+                                • Describe la situación que te inconforma<br />
+                                • Incluye fechas y lugares específicos<br />
+                                • Menciona personas involucradas si es relevante
+                            </p>
+                        )}
+                        {formData.typePqr === 'Reclamo' && (
+                            <p className="text-xs text-light-textSecondary dark:text-dark-textSecondary">
+                                • Explica el problema o irregularidad<br />
+                                • Incluye evidencias o documentos relacionados<br />
+                                • Especifica la solución que esperas
+                            </p>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

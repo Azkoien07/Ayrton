@@ -1,10 +1,10 @@
 'use client'
-import { PqrEntity } from "@/app/Types/PqrEntity";
+import { PqrInput } from "@/generated/graphql";
 import { Search, Filter, Plus, Eye, Edit, Trash2, MessageSquare, AlertCircle, FileText } from 'lucide-react';
-const PqrCard = ({ pqr, onView, onEdit, onDelete }: { 
-    pqr: PqrEntity; 
-    onView: (pqr: PqrEntity) => void;
-    onEdit: (pqr: PqrEntity) => void;
+const PqrCard = ({ pqr, onView, onEdit, onDelete }: {
+    pqr: PqrInput;
+    onView: (pqr: PqrInput) => void;
+    onEdit: (pqr: PqrInput) => void;
     onDelete: (id: number) => void;
 }) => {
     const getTypeColor = (type: string) => {
@@ -33,11 +33,10 @@ const PqrCard = ({ pqr, onView, onEdit, onDelete }: {
                         {getTypeIcon(pqr.typePqr)}
                         {pqr.typePqr}
                     </span>
-                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                        pqr.state 
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' 
-                            : 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300'
-                    }`}>
+                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${pqr.state
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+                        : 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300'
+                        }`}>
                         {pqr.state ? 'Resuelta' : 'Pendiente'}
                     </span>
                 </div>
@@ -62,15 +61,15 @@ const PqrCard = ({ pqr, onView, onEdit, onDelete }: {
                     </button>
                 </div>
             </div>
-            
+
             <h3 className="text-lg font-semibold text-light-text dark:text-dark-text mb-2">
                 {pqr.title}
             </h3>
-            
+
             <p className="text-light-textSecondary dark:text-dark-textSecondary mb-4 line-clamp-2">
                 {pqr.description}
             </p>
-            
+
             {pqr.users && pqr.users.length > 0 && (
                 <div className="flex items-center gap-2 text-sm text-light-textSecondary dark:text-dark-textSecondary">
                     <span>Usuario:</span>
