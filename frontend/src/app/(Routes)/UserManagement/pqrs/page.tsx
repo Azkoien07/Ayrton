@@ -1,6 +1,6 @@
 'use client';
 
-import { Search, Plus, FileText, AlertCircle, MessageSquare } from 'lucide-react';
+import { Search, Plus, FileText, AlertCircle, MessageSquare, ArrowLeft, Menu, X } from 'lucide-react';
 import PqrCard from '@/app/Components/Pqrs/PqrCard';
 import StatsCard from '@/app/Components/Pqrs/StatsCard';
 import PqrModal from '@/app/Components/Pqrs/PqrModal';
@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { cn } from '@utilities/utils';
 import usePqrHandlers from '@/app/Julian/handlesPqr';
 import { Pqr } from '@/app/Types/Pqr';
+import { TypePqr } from '@/generated/graphql';
 
 const PqrDashboard = () => {
     const { user } = useUser ();
@@ -31,6 +32,7 @@ const PqrDashboard = () => {
     const [selectedPqr, setSelectedPqr] = useState<Pqr | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
+    const [isClient, setIsClient] = useState(false);
 
     const filteredPqrs = pqrs.filter(pqr => {
         const matchesSearch = pqr.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -100,6 +102,7 @@ const PqrDashboard = () => {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     useEffect(() => {
+        setIsClient(true);
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
                 setSidebarOpen(false);
@@ -110,43 +113,64 @@ const PqrDashboard = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    return (
-        <div className="flex h-screen bg-light-background dark:bg-dark-background overflow-hidden">
-            {/* Sidebar */}
-            <Sidebar
-                sidebarOpen={sidebarOpen}
-                setSidebarOpen={setSidebarOpen}
-                role={validRole}
-            />
+    const handleGoBack = () => {
+        window.history.back();
+    };
 
-            {/* Overlay para móviles */}
+    return (
+        <div className="min-h-screen bg-light-background dark:bg-dark-background flex">
+            {/* Sidebar Desktop */}
+            <div className="hidden lg:block">
+                <Sidebar role={validRole} />
+            </div>
+
+            {/* Mobile Sidebar Overlay */}
             {sidebarOpen && (
-                <div
-                    className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-                    onClick={() => setSidebarOpen(false)}
-                />
+                <div className="fixed inset-0 z-50 lg:hidden">
+                    <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setSidebarOpen(false)} />
+                    <div className="relative w-64">
+                        <Sidebar role={validRole} />
+                        <button
+                            onClick={() => setSidebarOpen(false)}
+                            className="absolute top-4 right-4 p-2 text-white hover:bg-white/10 rounded-lg"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
+                </div>
             )}
 
-            {/* Contenido Principal */}
-            <main
-                className={cn(
-                    'flex-1 flex flex-col transition-all duration-500 ease-in-out',
-                    sidebarOpen ? 'lg:ml-[240px]' : 'lg:ml-[72px]'
-                )}
-            >
-                {/* Header Responsive */}
-                <header className="sticky top-0 z-40 backdrop-blur-md bg-light-card/90 dark:bg-dark-card/90 border-b border-light-border dark:border-dark-border">
-                    <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4 flex items-center justify-between">
-                        <button
-                            className="lg:hidden p-2 rounded-md text-light-text dark:text-dark-text hover:bg-light-background dark:hover:bg-dark-background transition-colors"
-                            onClick={() => setSidebarOpen(!sidebarOpen)}
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                        </button>
-                        <h1 className="text-2xl font-bold text-light-text dark:text-dark-text">Gestión de PQRs</h1>
+            <div className="flex-1 flex flex-col min-w-0">
+                {/* Header */}
+                <header className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border">
+                    <div className="px-4 py-4 sm:px-6 sm:py-6">
+                        <div className="max-w-none lg:max-w-6xl xl:max-w-7xl mx-auto">
+                            <div className="flex items-center gap-3 sm:gap-4">
+                                {/* Mobile menu button */}
+                                <button
+                                    onClick={() => setSidebarOpen(true)}
+                                    className="lg:hidden p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors rounded-lg hover:bg-light-border dark:hover:bg-dark-border"
+                                >
+                                    <Menu className="w-5 h-5" />
+                                </button>
 
+                                <button
+                                    onClick={handleGoBack}
+                                    className="p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors rounded-lg hover:bg-light-border dark:hover:bg-dark-border"
+                                >
+                                    <ArrowLeft className="w-5 h-5" />
+                                </button>
+
+                                <div className="min-w-0 flex-1">
+                                    <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-light-text dark:text-dark-text truncate">
+                                        Gestión de PQRs
+                                    </h1>
+                                    <p className="text-xs sm:text-sm lg:text-base text-light-textSecondary dark:text-dark-textSecondary mt-1 hidden sm:block">
+                                        Administra y consulta todas las peticiones, quejas y reclamos.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </header>
 
@@ -267,7 +291,7 @@ const PqrDashboard = () => {
                         state: selectedPqr.state,
                         answer: selectedPqr.answer || '',
                     } : {
-                        typePqr: 'Peticion',
+                        typePqr: TypePqr.Peticion,
                         title: '',
                         description: '',
                         argument: '',
@@ -284,7 +308,7 @@ const PqrDashboard = () => {
                     onSave={handleSavePqr}
                     isEditMode={isEditMode}
                 />
-            </main>
+            </div>
         </div>
     );
 };

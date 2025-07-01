@@ -25,8 +25,8 @@ const PqrUserPage = () => {
     useEffect(() => {
         setIsClient(true);
         if (showPqrPanel) {
-            dispatch(fetchPqrs({ page: 0, size: 5 })); // Fetch PQRs when panel is shown
-        }
+            dispatch(fetchPqrs({ page: 0, size: 5 })); 
+         }
     }, [dispatch, showPqrPanel]);
 
     const handleSubmissionSuccess = (typePqr: TypePqr | undefined) => {

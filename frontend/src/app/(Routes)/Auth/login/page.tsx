@@ -16,6 +16,9 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const updateRegisterForm = (field: keyof typeof registerForm, value: string) => {
@@ -46,7 +49,7 @@ export default function LoginPage() {
     const count = 50;
     for (let i = 0; i < count; i++) {
       const particle = document.createElement("div");
-      particle.className = "absolute rounded-full opacity-70";
+      particle.className = "absolute rounded-full opacity-30";
 
       const size = Math.random() * 6 + 3;
       particle.style.width = `${size}px`;
@@ -54,16 +57,9 @@ export default function LoginPage() {
       particle.style.left = `${Math.random() * 100}%`;
       particle.style.top = `${Math.random() * 100}%`;
 
-      const hue = theme === "dark" ? 220 : 280;
-      const sat = `${Math.random() * 40 + 60}%`;
-      const light =
-        theme === "dark"
-          ? `${Math.random() * 30 + 60}%`
-          : `${Math.random() * 20 + 40}%`;
-
-      particle.style.backgroundColor = `hsl(${hue}, ${sat}, ${light})`;
-      particle.style.animation = `float ${Math.random() * 10 + 10
-        }s linear infinite`;
+      // Using new accent colors
+      particle.style.backgroundColor = '#8CA1C7';
+      particle.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
       particle.style.animationDelay = `${Math.random() * 5}s`;
 
       container.appendChild(particle);
@@ -84,10 +80,9 @@ export default function LoginPage() {
     return () => {
       document.head.removeChild(styleSheet);
     };
-  }, [theme]);
+  }, []);
 
   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
-
 
   // Handlers for login and register
   const handleLoginUser = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -106,7 +101,6 @@ export default function LoginPage() {
 
       toast.success("¡Inicio de sesión exitoso!");
 
-      // Redirección según rol
       const redirectPath =
         data.role && data.role.includes("Admin")
           ? "/UserManagement/Admin"
@@ -122,7 +116,6 @@ export default function LoginPage() {
       toast.error(`Error al iniciar sesión: ${message}`);
     }
   };
-
 
   const handleRegisterUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -156,89 +149,46 @@ export default function LoginPage() {
     }
   };
 
-
-  const bgColor = theme === "dark" ? "bg-[#1C1C1C]" : "bg-[#F4F4F4]";
-  const textColor = theme === "dark" ? "text-[#EAEAEA]" : "text-[#2B2D42]";
-  const textSecondary = theme === "dark" ? "text-[#B0B0B0]" : "text-[#4E5D6D]";
-  const cardBg = theme === "dark" ? "bg-[#2C2C2C]" : "bg-[#FFFFFF]";
-  const primaryColor =
-    theme === "dark"
-      ? "bg-[#4C8A8B] hover:bg-[#3e7071]"
-      : "bg-[#1A5A4D] hover:bg-[#134239]";
-  const accentColor = theme === "dark" ? "text-[#4C8A8B]" : "text-[#1A5A4D]";
-  const borderColor =
-    theme === "dark" ? "border-[#3A3A3A]" : "border-[#E0E0E0]";
-  const inputBg = theme === "dark" ? "bg-[#3A3A3A]" : "bg-[#F9F9F9]";
-  const inputFocus =
-    theme === "dark" ? "focus:ring-[#4C8A8B]" : "focus:ring-[#1A5A4D]";
-
   return (
-    <div
-      className={`min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-500 ${bgColor} ${textColor}`}
-    >
+    <div className="min-h-screen flex items-start justify-center pt-22 relative overflow-hidden transition-colors duration-500 bg-[#F9FAFB] text-[#374151] px-4 sm:px-6 lg:px-8">
       <div
         ref={particlesContainerRef}
         className="absolute inset-0 overflow-hidden pointer-events-none"
       />
 
-      <button
-        onClick={toggleTheme}
-        className={`absolute top-6 right-6 p-3 rounded-full shadow-lg z-50 transition-all ${theme === "dark" ? "bg-[#2C2C2C]" : "bg-white"
-          }`}
-      >
-        {theme === "dark" ? (
-          <svg
-            className="w-5 h-5 text-[#E5F7F6]"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414z" />
-          </svg>
-        ) : (
-          <svg
-            className="w-5 h-5 text-[#1A5A4D]"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-          </svg>
-        )}
-      </button>
-
-      <div className="relative w-full max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center mb-6">
-          <h1 className="text-7xl font-palmer tracking-wide drop-shadow-md animate__animated animate__fadeIn">
+      <div className="relative w-full max-w-md mx-auto py-4">
+        <div className="text-center mb-8">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-palmer tracking-wide drop-shadow-sm animate__animated animate__fadeIn text-[#3A5A8F] -translate-y-19">
             Ayrton
           </h1>
-          <p
-            className={`${textSecondary} mt-3 animate__animated animate__fadeIn animate__delay-1s text-sm`}
-          >
+          <p className="text-[#6B7280] mt-3 animate__animated animate__fadeIn animate__delay-1s text-sm sm:text-base -translate-y-18">
             Organiza tus tareas y equipos con elegancia
           </p>
         </div>
 
         <div
-          className={`relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] ${isFlipped ? "[transform:rotateY(180deg)]" : ""
-            }`}
+          className={`relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] ${
+            isFlipped ? "[transform:rotateY(180deg)]" : ""
+          }`}
         >
-          {/* Login */}
+          {/* Login Form */}
           <div className="absolute w-full [backface-visibility:hidden]">
             <form
               onSubmit={handleLoginUser}
-              className={`${cardBg} shadow-2xl rounded-xl p-10 flex flex-col gap-6 transition-transform duration-500 transform border ${borderColor}`}
+              className="bg-white shadow-xl rounded-2xl p-6 sm:p-8 lg:p-10 flex flex-col gap-6 transition-transform duration-500 transform border border-[#D1D5DB]"
             >
-              <h2 className="text-2xl font-semibold text-center mb-2">
+              <h2 className="text-xl sm:text-2xl font-semibold text-center mb-2 text-[#374151]">
                 Iniciar Sesión
               </h2>
 
               <div className="space-y-2">
-                <label className={`block text-sm ${textSecondary}`}>
+                <label className="block text-sm text-[#6B7280] font-medium">
                   Correo electrónico
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg
-                      className={`h-5 w-5 ${textSecondary}`}
+                      className="h-5 w-5 text-[#6B7280]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -257,19 +207,19 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className={`pl-10 w-full px-4 py-3 rounded-lg ${inputBg} border ${borderColor} focus:outline-none focus:ring-2 ${inputFocus} transition-colors`}
+                    className="pl-10 w-full px-4 py-3 rounded-xl bg-[#F9FAFB] border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:ring-[#3A5A8F] focus:border-transparent transition-all duration-200"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className={`block text-sm ${textSecondary}`}>
+                <label className="block text-sm text-[#6B7280] font-medium">
                   Contraseña
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg
-                      className={`h-5 w-5 ${textSecondary}`}
+                      className="h-5 w-5 text-[#6B7280]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -283,20 +233,36 @@ export default function LoginPage() {
                     </svg>
                   </div>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className={`pl-10 w-full px-4 py-3 rounded-lg ${inputBg} border ${borderColor} focus:outline-none focus:ring-2 ${inputFocus} transition-colors`}
+                    className="pl-10 pr-10 w-full px-4 py-3 rounded-xl bg-[#F9FAFB] border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:ring-[#3A5A8F] focus:border-transparent transition-all duration-200"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    {showPassword ? (
+                      <svg className="h-5 w-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+                      </svg>
+                    ) : (
+                      <svg className="h-5 w-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    )}
+                  </button>
                 </div>
               </div>
 
               <div className="text-right">
                 <a
                   href="#"
-                  className={`text-sm ${accentColor} hover:underline`}
+                  className="text-sm text-[#5879B5] hover:text-[#3A5A8F] hover:underline transition-colors"
                 >
                   ¿Olvidaste tu contraseña?
                 </a>
@@ -305,8 +271,9 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`${primaryColor} text-white py-3 rounded-lg transition-colors shadow-md font-medium ${loading ? "opacity-80" : ""
-                  }`}
+                className={`bg-[#3A5A8F] hover:bg-[#2D4A7C] text-white py-3 rounded-xl transition-colors shadow-lg font-medium ${
+                  loading ? "opacity-80" : ""
+                }`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
@@ -337,12 +304,12 @@ export default function LoginPage() {
                 )}
               </button>
 
-              <p className={`text-center ${textSecondary}`}>
+              <p className="text-center text-[#6B7280]">
                 ¿No tienes cuenta?{" "}
                 <button
                   type="button"
                   onClick={() => setIsFlipped(true)}
-                  className={`${accentColor} hover:underline font-medium`}
+                  className="text-[#5879B5] hover:text-[#3A5A8F] hover:underline font-medium transition-colors"
                 >
                   Regístrate
                 </button>
@@ -350,24 +317,24 @@ export default function LoginPage() {
             </form>
           </div>
 
-          {/* Register */}
+          {/* Register Form */}
           <div className="absolute w-full [transform:rotateY(180deg)] [backface-visibility:hidden]">
             <form
               onSubmit={handleRegisterUser}
-              className={`${cardBg} shadow-2xl rounded-xl p-10 flex flex-col gap-6 transition-transform duration-500 transform border ${borderColor}`}
+              className="bg-white shadow-xl rounded-2xl p-4 sm:p-5 lg:p-6 flex flex-col gap-3 transition-transform duration-500 transform border border-[#D1D5DB] max-h-[90vh] overflow-y-auto"
             >
-              <h2 className="text-2xl font-semibold text-center mb-2">
+              <h2 className="text-xl sm:text-2xl font-semibold text-center mb-2 text-[#374151]">
                 Crear Cuenta
               </h2>
 
               <div className="space-y-2">
-                <label className={`block text-sm ${textSecondary}`}>
+                <label className="block text-sm text-[#6B7280] font-medium">
                   Nombre completo
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg
-                      className={`h-5 w-5 ${textSecondary}`}
+                      className="h-5 w-5 text-[#6B7280]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -386,19 +353,19 @@ export default function LoginPage() {
                     value={registerForm.name}
                     onChange={(e) => updateRegisterForm("name", e.target.value)}
                     required
-                    className={`pl-10 w-full px-4 py-3 rounded-lg ${inputBg} border ${borderColor} focus:outline-none focus:ring-2 ${inputFocus} transition-colors`}
+                    className="pl-10 w-full px-4 py-3 rounded-xl bg-[#F9FAFB] border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:ring-[#3A5A8F] focus:border-transparent transition-all duration-200"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className={`block text-sm ${textSecondary}`}>
+                <label className="block text-sm text-[#6B7280] font-medium">
                   Correo electrónico
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg
-                      className={`h-5 w-5 ${textSecondary}`}
+                      className="h-5 w-5 text-[#6B7280]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -419,19 +386,19 @@ export default function LoginPage() {
                       updateRegisterForm("email", e.target.value)
                     }
                     required
-                    className={`pl-10 w-full px-4 py-3 rounded-lg ${inputBg} border ${borderColor} focus:outline-none focus:ring-2 ${inputFocus} transition-colors`}
+                    className="pl-10 w-full px-4 py-3 rounded-xl bg-[#F9FAFB] border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:ring-[#3A5A8F] focus:border-transparent transition-all duration-200"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className={`block text-sm ${textSecondary}`}>
+                <label className="block text-sm text-[#6B7280] font-medium">
                   Contraseña
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg
-                      className={`h-5 w-5 ${textSecondary}`}
+                      className="h-5 w-5 text-[#6B7280]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -445,26 +412,42 @@ export default function LoginPage() {
                     </svg>
                   </div>
                   <input
-                    type="password"
+                    type={showRegisterPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={registerForm.password}
                     onChange={(e) =>
                       updateRegisterForm("password", e.target.value)
                     }
                     required
-                    className={`pl-10 w-full px-4 py-3 rounded-lg ${inputBg} border ${borderColor} focus:outline-none focus:ring-2 ${inputFocus} transition-colors`}
+                    className="pl-10 pr-10 w-full px-4 py-3 rounded-xl bg-[#F9FAFB] border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:ring-[#3A5A8F] focus:border-transparent transition-all duration-200"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    {showRegisterPassword ? (
+                      <svg className="h-5 w-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+                      </svg>
+                    ) : (
+                      <svg className="h-5 w-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    )}
+                  </button>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className={`block text-sm ${textSecondary}`}>
+                <label className="block text-sm text-[#6B7280] font-medium">
                   Confirmar contraseña
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg
-                      className={`h-5 w-5 ${textSecondary}`}
+                      className="h-5 w-5 text-[#6B7280]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -478,23 +461,40 @@ export default function LoginPage() {
                     </svg>
                   </div>
                   <input
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
                     placeholder="••••••••"
                     value={registerForm.confirmPassword}
                     onChange={(e) =>
                       updateRegisterForm("confirmPassword", e.target.value)
                     }
                     required
-                    className={`pl-10 w-full px-4 py-3 rounded-lg ${inputBg} border ${borderColor} focus:outline-none focus:ring-2 ${inputFocus} transition-colors`}
+                    className="pl-10 pr-10 w-full px-4 py-3 rounded-xl bg-[#F9FAFB] border border-[#D1D5DB] focus:outline-none focus:ring-2 focus:ring-[#3A5A8F] focus:border-transparent transition-all duration-200"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  >
+                    {showConfirmPassword ? (
+                      <svg className="h-5 w-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+                      </svg>
+                    ) : (
+                      <svg className="h-5 w-5 text-[#6B7280]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    )}
+                  </button>
                 </div>
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className={`${primaryColor} text-white py-3 rounded-lg transition-colors shadow-md font-medium ${loading ? "opacity-80" : ""
-                  }`}
+                className={`bg-[#3A5A8F] hover:bg-[#2D4A7C] text-white py-3 rounded-xl transition-colors shadow-lg font-medium ${
+                  loading ? "opacity-80" : ""
+                }`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
@@ -525,12 +525,12 @@ export default function LoginPage() {
                 )}
               </button>
 
-              <p className={`text-center ${textSecondary}`}>
+              <p className="text-center text-[#6B7280]">
                 ¿Ya tienes cuenta?{" "}
                 <button
                   type="button"
                   onClick={() => setIsFlipped(false)}
-                  className={`${accentColor} hover:underline font-medium`}
+                  className="text-[#5879B5] hover:text-[#3A5A8F] hover:underline font-medium transition-colors"
                 >
                   Inicia sesión
                 </button>

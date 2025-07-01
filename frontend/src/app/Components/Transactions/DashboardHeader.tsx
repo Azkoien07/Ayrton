@@ -6,10 +6,9 @@ interface DashboardHeaderProps {
     validRole: string;
     fetchPayments: () => void;
     fetchVouchers: () => void;
-    sidebarOpen: boolean;
 }
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({ validRole, fetchPayments, fetchVouchers, sidebarOpen }) => {
+const DashboardHeader: React.FC<DashboardHeaderProps> = ({ validRole, fetchPayments, fetchVouchers }) => {
     return (
         <header className="sticky top-0 z-40 backdrop-blur-md bg-light-card/80 dark:bg-dark-card/80 border-b border-light-border dark:border-dark-border">
             <div className="px-4 py-4">

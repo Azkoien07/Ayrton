@@ -7,7 +7,7 @@ import {
 } from "react-icons/fi";
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/Redux/store';
-type UserRole = 'admin' | 'user' | 'superadmin' | null;
+export type UserRole = 'admin' | 'user' | 'superadmin' | null;
 const adminNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/Admin", color: "from-light-primary to-light-secondary", description: "Panel de control administrativo" },
     { name: "Transactions", icon: <FiCreditCard />, href: "/Transactions", color: "from-light-warning to-orange-500", description: "Gestión de transacciones" },

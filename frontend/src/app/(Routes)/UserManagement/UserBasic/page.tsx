@@ -4,10 +4,9 @@ import { useState, useEffect } from 'react';
 import { cn } from '@utilities/utils';
 import { roleOptions } from '@Types/dashboard';
 import { motion } from 'framer-motion';
-import { FileText, Calendar, User, Settings } from 'lucide-react';
-import { useUser } from '@context/userContext';
+import { FileText, Calendar, User, Settings, ArrowLeft, Menu, X } from 'lucide-react';
+import { useUser  } from '@context/userContext';
 import Sidebar from '@components/UI/Sidebar';
-import Barrita from '@components/Header';
 import NewPageModal from '@components/Modals/NewPageModal';
 import ViewEditPageModal from '@components/Modals/ViewEditPageModal';
 import UserPagesCarousel from '@components/UserPagesCarousel';
@@ -25,10 +24,11 @@ type UserPage = {
 };
 
 const UserBasicContent = () => {
-    const { user } = useUser();
+    const { user } = useUser ();
     const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
     const [selected, setSelected] = useState(roleOptions[validRole as keyof typeof roleOptions][0]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isClient, setIsClient] = useState(false);
     const [greeting, setGreeting] = useState('');
     const [currentSlide, setCurrentSlide] = useState(0);
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -121,6 +121,7 @@ const UserBasicContent = () => {
     };
 
     useEffect(() => {
+        setIsClient(true);
         const updateGreeting = () => {
             const timeGreeting = getTimeBasedGreeting();
             setGreeting(timeGreeting.greeting);
@@ -130,6 +131,10 @@ const UserBasicContent = () => {
         const interval = setInterval(updateGreeting, 60000);
         return () => clearInterval(interval);
     }, []);
+
+    const handleGoBack = () => {
+        window.history.back();
+    };
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -222,15 +227,65 @@ const UserBasicContent = () => {
     };
 
     return (
-        <div className="flex h-screen bg-light-background dark:bg-dark-background">
-            <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} role={validRole} />
+        <div className="min-h-screen bg-light-background dark:bg-dark-background flex">
+            {/* Sidebar Desktop */}
+            <div className="hidden lg:block">
+                <Sidebar role={validRole} />
+            </div>
 
-            <main className={cn('flex-1 flex flex-col transition-all duration-500 ease-in-out', sidebarOpen ? 'ml-[240px]' : 'ml-[72px]')}>
-                <header className="sticky top-0 z-40 backdrop-blur-md bg-light-card/80 dark:bg-dark-card/80 border-b border-light-border dark:border-dark-border" />
-                <Barrita />
+            {/* Mobile Sidebar Overlay */}
+            {sidebarOpen && (
+                <div className="fixed inset-0 z-50 lg:hidden">
+                    <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setSidebarOpen(false)} />
+                    <div className="relative w-64">
+                        <Sidebar role={validRole} />
+                        <button
+                            onClick={() => setSidebarOpen(false)}
+                            className="absolute top-4 right-4 p-2 text-white hover:bg-white/10 rounded-lg"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            <div className="flex-1 flex flex-col min-w-0">
+                {/* Header */}
+                <header className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border">
+                    <div className="px-4 py-4 sm:px-6 sm:py-6">
+                        <div className="max-w-none lg:max-w-6xl xl:max-w-7xl mx-auto">
+                            <div className="flex items-center gap-3 sm:gap-4">
+                                {/* Mobile menu button */}
+                                <button
+                                    onClick={() => setSidebarOpen(true)}
+                                    className="lg:hidden p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors rounded-lg hover:bg-light-border dark:hover:bg-dark-border"
+                                >
+                                    <Menu className="w-5 h-5" />
+                                </button>
+
+                                <button
+                                    onClick={handleGoBack}
+                                    className="p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors rounded-lg hover:bg-light-border dark:hover:bg-dark-border"
+                                >
+                                    <ArrowLeft className="w-5 h-5" />
+                                </button>
+
+                                <div className="min-w-0 flex-1">
+                                    <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-light-text dark:text-dark-text truncate">
+                                        Panel de Usuario
+                                    </h1>
+                                    <p className="text-xs sm:text-sm lg:text-base text-light-textSecondary dark:text-dark-textSecondary mt-1 hidden sm:block">
+                                        {getTimeBasedGreeting().description}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
                 <div className="flex-1 overflow-auto px-4 py-6 sm:px-6 lg:px-8">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="max-w-7xl mx-auto">
-                        <div className="rounded-lg bg-gradient-to-r from-light-primary/10 to-light-primary/5 dark:from-dark-primary/10 dark:to-dark-primary/5 p-10 lg:p-20 border border-light-border dark:border-dark-border">
+                        <div className="rounded-lg bg-gradient-to-r from-light-primary/10 to-light-primary/5 dark:from-dark-primary/10 dark:to-dark-primary/5 p-10 lg:p-20 border border-light-border dark:border-dark-border shadow-lg">
                             <div className="flex items-center space-x-2 mb-4">
                                 <span className="text-light-textSecondary dark:text-dark-textSecondary text-3xl font-light">{greeting}</span>
                                 <span className="text-light-text dark:text-dark-text text-3xl font-bold">Panel</span>
@@ -256,7 +311,7 @@ const UserBasicContent = () => {
                         />
                     </motion.div>
                 </div>
-            </main>
+            </div> {/* Cierre del div que envuelve header y contenido */}
 
             <ViewEditPageModal
                 isOpen={isViewModalOpen}

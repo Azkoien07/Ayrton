@@ -1,17 +1,19 @@
+import { TypePqr } from '@/generated/graphql';
+
 export interface Pqr {
     userEmail: string;
     userName: string;
     id: string;
-    typePqr: 'Peticion' | 'Queja' | 'Reclamo';
+    typePqr: TypePqr;
     title: string;
     description: string;
     argument: string;
     state: boolean; // Coincide con GraphQL
-    answer?: string; // Optional, para PQRs resueltas, coincide con GraphQL
+    answer: string; // Ahora es obligatorio para coincidir con GraphQL
 }
 
 export interface PqrFormData {
-    typePqr: 'Peticion' | 'Queja' | 'Reclamo';
+    typePqr: TypePqr;
     title: string;
     description: string;
     argument: string;
@@ -35,7 +37,7 @@ export interface FormErrors {
 }
 
 export interface PqrTypeConfig {
-    type: 'Peticion' | 'Queja' | 'Reclamo';
+    type: TypePqr;
     title: string;
     description: string;
     iconName: 'FileText' | 'AlertCircle' | 'MessageSquare';
@@ -44,21 +46,21 @@ export interface PqrTypeConfig {
 
 export const pqrTypesConfig: PqrTypeConfig[] = [
     {
-        type: 'Peticion',
+        type: TypePqr.Peticion,
         title: 'Petición',
         description: 'Solicitud de información, servicios o trámites',
         iconName: 'FileText',
         color: 'border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-600 dark:bg-blue-900/20 dark:text-blue-300'
     },
     {
-        type: 'Queja',
+        type: TypePqr.Queja,
         title: 'Queja',
         description: 'Manifestación de inconformidad por un servicio',
         iconName: 'AlertCircle',
         color: 'border-yellow-300 bg-yellow-50 text-yellow-700 dark:border-yellow-600 dark:bg-yellow-900/20 dark:text-yellow-300'
     },
     {
-        type: 'Reclamo',
+        type: TypePqr.Reclamo,
         title: 'Reclamo',
         description: 'Exigencia de reparación o compensación por un daño',
         iconName: 'MessageSquare',

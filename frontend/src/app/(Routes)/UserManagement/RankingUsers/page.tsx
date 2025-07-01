@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { cn } from '@utilities/utils';
-import { Search, Plus, Trophy, TrendingUp, Users, Activity, Filter, X } from 'lucide-react';
+import { Search, Plus, Trophy, TrendingUp, Users, Activity, Filter, ArrowLeft, Menu, X } from 'lucide-react';
 import Sidebar from '@/app/Components/UI/Sidebar';
 import { useRankingData } from "@/app/Hooks/RankingData";
 import StatCard from '@/app/Components/RankingUsers/StatCard';
@@ -22,9 +22,10 @@ export default function PageRanking() {
     const [searchTerm, setSearchTerm] = useState('');
     const [showFilters, setShowFilters] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isClient, setIsClient] = useState(false);
 
-    // Cerrar sidebar en móvil cuando se redimensiona a desktop
     useEffect(() => {
+        setIsClient(true);
         const handleResize = () => {
             if (window.innerWidth >= 1024) {
                 setSidebarOpen(false);
@@ -34,6 +35,10 @@ export default function PageRanking() {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
+
+    const handleGoBack = () => {
+        window.history.back();
+    };
 
     const handleSearch = (value: string) => {
         setSearchTerm(value);
@@ -55,65 +60,61 @@ export default function PageRanking() {
     }
 
     return (
-        <div className="flex h-screen bg-gray-100 dark:bg-dark-background overflow-hidden">
-            <Sidebar role="admin" sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <div className="min-h-screen bg-light-background dark:bg-dark-background flex">
+            {/* Sidebar Desktop */}
+            <div className="hidden lg:block">
+                <Sidebar role="admin" />
+            </div>
 
-            {/* Overlay para móviles */}
+            {/* Mobile Sidebar Overlay */}
             {sidebarOpen && (
-                <div
-                    className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
-                    onClick={() => setSidebarOpen(false)}
-                />
+                <div className="fixed inset-0 z-50 lg:hidden">
+                    <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setSidebarOpen(false)} />
+                    <div className="relative w-64">
+                        <Sidebar role="admin" />
+                        <button
+                            onClick={() => setSidebarOpen(false)}
+                            className="absolute top-4 right-4 p-2 text-white hover:bg-white/10 rounded-lg"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
+                </div>
             )}
 
-            <main
-                className={cn(
-                    'flex-1 flex flex-col transition-all duration-500 ease-in-out',
-                    sidebarOpen ? 'lg:ml-[240px]' : 'lg:ml-[72px]'
-                )}
-            >
+            <div className="flex-1 flex flex-col min-w-0">
                 {/* Header */}
-                <header className="sticky top-0 z-40 backdrop-blur-md bg-white/90 dark:bg-dark-card/90 border-b border-light-border dark:border-dark-border flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-                    <button
-                        className="lg:hidden p-2 rounded-md text-light-text dark:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                        onClick={() => setSidebarOpen(!sidebarOpen)}
-                    >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                    <div>
-                        <h1 className="text-2xl font-semibold text-light-text dark:text-dark-text">Ranking de Usuarios</h1>
-                        <p className="text-sm text-light-textSecondary dark:text-dark-textSecondary mt-1">
-                            {stats.totalUsers} usuarios • {stats.activeUsers} activos
-                        </p>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-light-textSecondary dark:text-dark-textSecondary" size={20} />
-                            <input
-                                type="text"
-                                placeholder="Buscar usuario..."
-                                value={searchTerm}
-                                onChange={(e) => handleSearch(e.target.value)}
-                                className="pl-10 pr-4 py-2 rounded-lg border border-light-border dark:border-dark-border bg-light-card dark:bg-dark-background text-light-text dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary"
-                            />
+                <header className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border">
+                    <div className="px-4 py-4 sm:px-6 sm:py-6">
+                        <div className="max-w-none lg:max-w-6xl xl:max-w-7xl mx-auto">
+                            <div className="flex items-center gap-3 sm:gap-4">
+                                {/* Mobile menu button */}
+                                <button
+                                    onClick={() => setSidebarOpen(true)}
+                                    className="lg:hidden p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors rounded-lg hover:bg-light-border dark:hover:bg-dark-border"
+                                >
+                                    <Menu className="w-5 h-5" />
+                                </button>
+
+                                <button
+                                    onClick={handleGoBack}
+                                    className="p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors rounded-lg hover:bg-light-border dark:hover:bg-dark-border"
+                                >
+                                    <ArrowLeft className="w-5 h-5" />
+                                </button>
+
+                                <div className="min-w-0 flex-1">
+                                    <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-light-text dark:text-dark-text truncate">
+                                        Ranking de Usuarios
+                                    </h1>
+                                    <p className="text-xs sm:text-sm lg:text-base text-light-textSecondary dark:text-dark-textSecondary mt-1 hidden sm:block">
+                                        {stats.totalUsers} usuarios • {stats.activeUsers} activos
+                                    </p>
+                                </div>
+                                {/* Mover los botones de búsqueda y filtro fuera del header si es necesario */}
+                                {/* Por ahora, los eliminaré del header para replicar el layout de PqrUserPage */}
+                            </div>
                         </div>
-                        <button
-                            onClick={() => setShowFilters(!showFilters)}
-                            className={`flex items-center px-4 py-2 rounded-lg border transition-colors ${
-                                showFilters 
-                                    ? 'bg-light-primary text-white' 
-                                    : 'border-light-border dark:border-dark-border bg-white dark:bg-dark-card text-light-text dark:text-dark-text hover:bg-gray-50 dark:hover:bg-gray-800'
-                            }`}
-                        >
-                            <Filter size={20} className="mr-2" />
-                            Filtros
-                        </button>
-                        <button className="flex items-center px-4 py-2 bg-light-primary text-white rounded-lg shadow-md hover:bg-light-primary-dark transition-colors">
-                            <Plus size={20} className="mr-2" />
-                            Nuevo Ranking
-                        </button>
                     </div>
                 </header>
 
@@ -199,7 +200,7 @@ export default function PageRanking() {
                         </div>
                     )}
                 </main>
-            </main>
+            </div>
         </div>
     );
 }
