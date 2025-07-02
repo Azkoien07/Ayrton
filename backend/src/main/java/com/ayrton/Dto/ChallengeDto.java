@@ -31,6 +31,9 @@ public class ChallengeDto {
     @NotNull(message = "La dificultad del desafio no puede ser nula")
     private ChallengeEntity.Dificulty dificulty;
 
+    @NotNull(message = "Los puntos del desafio no pueden ser nulos")
+    private Integer points;
+
     // Relations
     @NotNull(message = "La tarea asociada al desafío no puede ser nula.")
     private TaskDto task;

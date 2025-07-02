@@ -1,7 +1,6 @@
 'use client';
 import { Eye, User, Calendar, Phone, Mail } from 'lucide-react';
-import { UserItem } from '@Types/slices/user'; // o desde donde lo tengas
-import { DashboardProps } from '@Types/dashboard';
+import { UserItem } from '@Types/slices/user';
 
 interface UserContentAdminProps {
   role: string;

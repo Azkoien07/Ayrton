@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { cn } from '@utilities/utils';
 import { roleOptions } from '@Types/dashboard';
 import { motion } from 'framer-motion';
 import { FileText, Calendar, User, Settings, ArrowLeft, Menu, X } from 'lucide-react';
-import { useUser  } from '@context/userContext';
+import { useUser } from '@context/userContext';
 import Sidebar from '@components/UI/Sidebar';
 import NewPageModal from '@components/Modals/NewPageModal';
 import ViewEditPageModal from '@components/Modals/ViewEditPageModal';
@@ -24,7 +23,7 @@ type UserPage = {
 };
 
 const UserBasicContent = () => {
-    const { user } = useUser ();
+    const { user } = useUser();
     const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
     const [selected, setSelected] = useState(roleOptions[validRole as keyof typeof roleOptions][0]);
     const [sidebarOpen, setSidebarOpen] = useState(false);

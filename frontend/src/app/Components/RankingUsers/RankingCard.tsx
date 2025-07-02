@@ -1,6 +1,5 @@
 import React from 'react';
 import { RankingEntity, ChallengeEntity } from "@/app/Hooks/RankingData";
-import { X } from 'lucide-react';
 
 interface RankingCardProps {
     ranking: RankingEntity;
@@ -51,11 +50,10 @@ export default function RankingCard({ ranking }: RankingCardProps) {
                     <div className="text-2xl font-bold text-light-primary">
                         {getPositionBadge(ranking.position)}
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        ranking.isActive 
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' 
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${ranking.isActive
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
                             : 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'
-                    }`}>
+                        }`}>
                         {ranking.isActive ? 'Activo' : 'Inactivo'}
                     </span>
                 </div>

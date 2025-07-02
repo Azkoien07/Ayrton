@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 
 interface AuthState {
@@ -119,4 +119,5 @@ const authSlice = createSlice({
 });
 
 export const { logout, loadUserFromStorage } = authSlice.actions;
+
 export default authSlice.reducer;

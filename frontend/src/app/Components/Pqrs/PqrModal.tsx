@@ -6,8 +6,8 @@ interface PqrModalProps {
     formData: PqrFormData;
     isOpen: boolean;
     onClose: () => void;
-    onSave: (formData: PqrFormData) => Promise<void>; // Añadido prop onSave
-    isEditMode: boolean; // Añadido prop isEditMode
+    onSave: (formData: PqrFormData) => Promise<void>;
+    isEditMode: boolean;
 }
 
 const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, isEditMode }) => {
@@ -76,8 +76,8 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                                 value={currentFormData.typePqr || ''} // Asegura que el valor sea una cadena vacía si es null/undefined
                                 onChange={(e) => handleInputChange('typePqr', e.target.value as 'Peticion' | 'Queja' | 'Reclamo')}
                                 className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors ${errors?.typePqr
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
                                     } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
                             >
                                 <option value="">Selecciona un tipo</option>
@@ -103,8 +103,8 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                                 onChange={(e) => handleInputChange('title', e.target.value)}
                                 maxLength={50}
                                 className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors ${errors?.title
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
                                     } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
                                 placeholder="Ingresa un título descriptivo para tu solicitud"
                             />
@@ -115,8 +115,8 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                                 onChange={(e) => handleInputChange('title', e.target.value)}
                                 maxLength={50}
                                 className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors ${errors?.title
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
                                     } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
                                 placeholder="Ingresa un título descriptivo para tu solicitud"
                             />
@@ -143,8 +143,8 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                                 maxLength={1000}
                                 rows={4}
                                 className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.description
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
                                     } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
                                 placeholder="Describe brevemente tu solicitud"
                             />
@@ -155,8 +155,8 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                                 maxLength={1000}
                                 rows={4}
                                 className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.description
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
                                     } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
                                 placeholder="Describe brevemente tu solicitud"
                             />
@@ -182,8 +182,8 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                                 onChange={(e) => handleInputChange('argument', e.target.value)}
                                 rows={6}
                                 className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.argument
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
                                     } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
                                 placeholder="Explica en detalle tu solicitud, incluyendo todos los elementos relevantes..."
                             />
@@ -193,8 +193,8 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                                 onChange={(e) => handleInputChange('argument', e.target.value)}
                                 rows={6}
                                 className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.argument
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
                                     } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
                                 placeholder="Explica en detalle tu solicitud, incluyendo todos los elementos relevantes..."
                             />
@@ -257,8 +257,8 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                                     value={currentFormData.state ? 'RESOLVED' : 'PENDING'}
                                     onChange={(e) => handleInputChange('state', e.target.value === 'RESOLVED')}
                                     className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors ${errors?.state
-                                            ? 'border-red-500 focus:border-red-500'
-                                            : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                        ? 'border-red-500 focus:border-red-500'
+                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
                                         } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
                                 >
                                     <option value="PENDING">Pendiente</option>
@@ -268,7 +268,7 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                                     <span className="text-red-500 text-sm mt-1 block">{errors.state}</span>
                                 )}
                             </div>
-                            {currentFormData.state && ( 
+                            {currentFormData.state && (
                                 <div>
                                     <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
                                         Respuesta
@@ -278,8 +278,8 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                                         onChange={(e) => handleInputChange('answer', e.target.value)}
                                         rows={4}
                                         className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.answer
-                                                ? 'border-red-500 focus:border-red-500'
-                                                : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                            ? 'border-red-500 focus:border-red-500'
+                                            : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
                                             } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
                                         placeholder="Ingresa la respuesta a la PQR"
                                     />

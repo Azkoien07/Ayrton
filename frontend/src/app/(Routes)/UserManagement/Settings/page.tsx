@@ -1,21 +1,15 @@
 'use client'
-import { roleOptions } from '@Types/dashboard';
+import { useState, useEffect } from 'react';
 import { ArrowLeft, Menu, X } from 'lucide-react';
-import { cn } from '@utilities/utils';
 import { motion } from 'framer-motion';
 import { useUser } from '@context/userContext';
 import Sidebar from '@components/UI/Sidebar';
-import { useState, useEffect } from 'react';
 import CuadrosSettings from '@components/cuadrosSettings';
-
-type SettingsPageProps = {
-  role: string;
-};
 
 export default function SettingsPage() {
   const { user } = useUser();
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [isClient, setIsClient] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
 

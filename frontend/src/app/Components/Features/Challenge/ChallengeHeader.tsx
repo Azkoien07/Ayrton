@@ -1,6 +1,5 @@
 import React from 'react';
 import { Trophy, Target, Zap, CheckCircle } from 'lucide-react';
-import { ChallengeItem } from '@Types/slices/challenge';
 
 interface ChallengeHeaderProps {
     userDataPlaceholder: {
@@ -27,7 +26,7 @@ export default function ChallengeHeader({ userDataPlaceholder }: ChallengeHeader
                         <div className="text-light-accentSoft">Posición Global</div>
                     </div>
                 </div>
-                
+
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                     <div className="bg-white/10 rounded-lg p-4">
                         <Trophy className="w-6 h-6 mb-2" />

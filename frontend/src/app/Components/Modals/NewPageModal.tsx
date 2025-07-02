@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Plus, X, Save, FileText, Calendar, User, Settings } from 'lucide-react';
+import { Plus, X, Save } from 'lucide-react';
 import { cn } from '@utilities/utils';
 
 interface NewPageModalProps {
@@ -95,8 +95,8 @@ const NewPageModal: React.FC<NewPageModalProps> = ({
                                                 : "bg-light-background dark:bg-dark-background border-light-border dark:border-dark-border hover:border-light-primary dark:hover:border-dark-primary"
                                         )}
                                     >
-                                        <IconComponent 
-                                            size={18} 
+                                        <IconComponent
+                                            size={18}
                                             className={cn(
                                                 newPageType === type.value
                                                     ? "text-light-primary dark:text-dark-primary"

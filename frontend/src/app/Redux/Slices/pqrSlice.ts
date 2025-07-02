@@ -1,6 +1,6 @@
 import { client } from '@lib/apollo-client';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Pqr } from '@/app/Types/Pqr'; // Importar Pqr en lugar de PqrItem
+import { Pqr } from '@/app/Types/Pqr';
 import { createInitialPaginatedState, RejectedPayload, GenericPaginatedState } from '@Types/generics/generic';
 import { GET_ALL_PQRS, GET_PQR_BY_ID, ADD_PQR, UPDATE_PQR, DELETE_PQR } from '@graphql/Pqrs/pqrsGraph';
 import {
@@ -14,7 +14,7 @@ import {
     UpdatePqrMutationVariables,
     DeletePqrMutation,
     DeletePqrMutationVariables,
-    Pqr as GraphQLPqrType // Renombrar para evitar conflicto con la interfaz Pqr local
+    Pqr as GraphQLPqrType
 } from "@/generated/graphql";
 
 // Función de transformación actualizada para mapear a la interfaz Pqr
@@ -27,13 +27,13 @@ const transformGraphQLToPqr = (graphqlData: GraphQLPqrType): Pqr => {
         argument: graphqlData.argument,
         answer: graphqlData.answer,
         state: graphqlData.state,
-        userEmail: '', 
-        userName: '',  
+        userEmail: '',
+        userName: '',
     };
 };
 
 
-interface PqrState extends GenericPaginatedState<Pqr> { 
+interface PqrState extends GenericPaginatedState<Pqr> {
     selectedItem: Pqr | null;
 }
 
@@ -127,8 +127,8 @@ export const updatePqr = createAsyncThunk<
 );
 
 export const deletePqr = createAsyncThunk<
-    string, 
-    string, 
+    string,
+    string,
     { rejectValue: RejectedPayload }
 >(
     'pqr/delete',

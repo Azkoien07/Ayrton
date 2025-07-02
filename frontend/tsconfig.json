@@ -62,7 +62,10 @@
       ],
       "@hooks/*": [
         "./src/app/Hooks/*"
-      ]
+      ],
+      "@store/*": [
+        "./src/app/Redux/*"
+      ],
     }
   },
   "include": [

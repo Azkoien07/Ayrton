@@ -25,6 +25,7 @@ const transformGraphQLToChallengeItem = (graphqlData: GraphQLChallengeType): Cha
         category: graphqlData.category,
         state: graphqlData.state,
         dificulty: graphqlData.dificulty,
+        points: graphqlData.points
     };
 };
 

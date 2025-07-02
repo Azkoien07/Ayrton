@@ -39,13 +39,6 @@ public class AuthController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = jwtUtil.generateToken(userDetails.getUsername(), userDetails.getAuthorities());
 
-        // Get user role
-        String role = userDetails.getAuthorities().stream()
-                .findFirst()
-                .map(GrantedAuthority::getAuthority)
-                .map(s -> s.replace("ROLE_", ""))
-                .orElse("USER");
-
-        return new AuthResponseDto(token, role);
+        return new AuthResponseDto(token);
     }
 }

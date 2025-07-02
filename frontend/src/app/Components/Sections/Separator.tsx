@@ -1,4 +1,3 @@
-// components/Separator.tsx
 import React from 'react';
 
 const Separator = () => {

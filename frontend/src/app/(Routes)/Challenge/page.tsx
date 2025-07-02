@@ -2,14 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Menu, X } from 'lucide-react';
-import Sidebar from '@components/UI/Sidebar';
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { fetchChallenges, addChallenge, updateChallenge, deleteChallenge } from '@slice/challengeSlice';
-import type { AppDispatch, RootState } from "@/app/Redux/store";
+import type { AppDispatch, RootState } from "@store/store";
 import { Category, Dificulty } from "@/generated/graphql";
 import { ChallengeItem } from '@Types/slices/challenge';
-
+import Sidebar from '@components/UI/Sidebar';
 import ChallengeHeader from '@components/Features/Challenge/ChallengeHeader';
 import ChallengeNavigationTabs from '@components/Features/Challenge/ChallengeNavigationTabs';
 import ChallengeCreateButton from '@components/Features/Challenge/ChallengeCreateButton';
@@ -50,9 +49,9 @@ export default function UserChallengeDashboard() {
             category: newChallenge.category,
             dificulty: newChallenge.dificulty,
             points: newChallenge.points,
-            state: false, 
+            state: false,
         };
-        
+
         const result = await dispatch(addChallenge(input));
         if (addChallenge.fulfilled.match(result)) {
             toast.success("Desafío creado exitosamente");
@@ -64,7 +63,7 @@ export default function UserChallengeDashboard() {
                 dificulty: Dificulty.Baja,
                 points: 50,
             });
-            dispatch(fetchChallenges({ page: 0, size: 100 })); 
+            dispatch(fetchChallenges({ page: 0, size: 100 }));
         } else {
             toast.error("Error al crear el desafío");
         }
@@ -82,7 +81,7 @@ export default function UserChallengeDashboard() {
         const result = await dispatch(updateChallenge({ id: challenge.id, input }));
         if (updateChallenge.fulfilled.match(result)) {
             toast.success("Desafío actualizado exitosamente");
-            dispatch(fetchChallenges({ page: 0, size: 100 })); 
+            dispatch(fetchChallenges({ page: 0, size: 100 }));
         } else {
             toast.error("Error al actualizar el desafío");
         }
@@ -92,7 +91,7 @@ export default function UserChallengeDashboard() {
         const result = await dispatch(deleteChallenge(id));
         if (deleteChallenge.fulfilled.match(result)) {
             toast.success(`Desafío ${name} eliminado exitosamente`);
-            dispatch(fetchChallenges({ page: 0, size: 100 })); 
+            dispatch(fetchChallenges({ page: 0, size: 100 }));
         } else {
             toast.error("Error al eliminar el desafío");
         }
@@ -116,8 +115,8 @@ export default function UserChallengeDashboard() {
         }
     };
 
-    const activeChallenges = challenges.filter(c => c.state === false); 
-    const completedChallenges = challenges.filter(c => c.state === true); 
+    const activeChallenges = challenges.filter(c => c.state === false);
+    const completedChallenges = challenges.filter(c => c.state === true);
 
 
     const handleGoBack = () => {

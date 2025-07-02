@@ -7,5 +7,5 @@ export interface ChallengeItem {
     category: Category;
     state: boolean;
     dificulty: Dificulty;
-    points: number; // Added points property
+    points: number;
 }

@@ -29,6 +29,7 @@ export type Challenge = {
   dificulty: Dificulty;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  points: Scalars['Int']['output'];
   state: Scalars['Boolean']['output'];
 };
 
@@ -731,14 +732,14 @@ export type GetAllChallengesQueryVariables = Exact<{
 }>;
 
 
-export type GetAllChallengesQuery = { allChallenges?: { code?: string | null, date?: string | null, message?: string | null, currentPage?: number | null, totalPages?: number | null, totalItems?: number | null, data?: Array<{ id: string, name: string, description: string, category: Category, state: boolean, dificulty: Dificulty } | null> | null } | null };
+export type GetAllChallengesQuery = { allChallenges?: { code?: string | null, date?: string | null, message?: string | null, currentPage?: number | null, totalPages?: number | null, totalItems?: number | null, data?: Array<{ id: string, name: string, description: string, category: Category, state: boolean, dificulty: Dificulty, points: number } | null> | null } | null };
 
 export type GetChallengeByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetChallengeByIdQuery = { challengeById?: { code?: string | null, date?: string | null, message?: string | null, data?: { id: string, name: string, description: string, category: Category, state: boolean, dificulty: Dificulty } | null } | null };
+export type GetChallengeByIdQuery = { challengeById?: { code?: string | null, date?: string | null, message?: string | null, data?: { id: string, name: string, description: string, category: Category, state: boolean, dificulty: Dificulty, points: number } | null } | null };
 
 export type AddChallengeMutationVariables = Exact<{
   input: ChallengeInput;
@@ -1079,6 +1080,7 @@ export const GetAllChallengesDocument = gql`
       category
       state
       dificulty
+      points
     }
     currentPage
     totalPages
@@ -1133,6 +1135,7 @@ export const GetChallengeByIdDocument = gql`
       category
       state
       dificulty
+      points
     }
   }
 }

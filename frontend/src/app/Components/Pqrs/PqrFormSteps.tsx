@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Send, FileText, AlertCircle, MessageSquare } from 'lucide-react';
+import { AddPqrMutationVariables, PqrInput, TypePqr } from '@/generated/graphql';
+import { FormErrors, pqrTypesConfig } from '@Types/Pqr';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '@store/store';
+import { addPqr } from '@slice/pqrSlice';
+import { toast } from 'sonner';
 import PqrTypeSelection from '@components/Pqrs/PqrTypeSelection';
 import PqrModal from '@components/Pqrs/PqrModal';
 import ContactInfoForm from '@components/Pqrs/ContactInfoForm';
-import { FormErrors, pqrTypesConfig } from '@Types/Pqr';
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState, AppDispatch } from '@/app/Redux/store';
-import { addPqr } from '@slice/pqrSlice';
-import { AddPqrMutationVariables, PqrInput, TypePqr } from '@/generated/graphql';
-import { toast } from 'sonner';
 
 interface PqrFormStepsProps {
     onSubmissionSuccess: (typePqr: TypePqr | undefined) => void;

@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { StripeElements, Stripe, PaymentIntent } from '@stripe/stripe-js';
+import { Stripe } from '@stripe/stripe-js';
 
 interface PaymentButtonProps {
     loading: boolean;

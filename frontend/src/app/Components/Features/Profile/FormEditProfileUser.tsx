@@ -3,21 +3,20 @@
 import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import {
-  User, Mail, Phone, FileText, UserCheck,
-  Shield, MapPin, Briefcase
+  User, Mail, UserCheck,
+  Shield
 } from 'lucide-react';
 
 import ProfileAvatar from './ProfileAvatar';
 import FormField from './FormField';
 import Notification from '../../Notification';
-import { useUser  } from '@context/userContext';
-import Sidebar from '../../UI/Sidebar';
+import { useUser } from '@context/userContext';
 import ProfileActions from './ProfileActions';
 
 const ProfileData = { name: '', email: '', username: '', password: '', profileImage: '' };
 
 const FormEditProfile: React.FC = () => {
-  const { user } = useUser ();
+  const { user } = useUser();
   const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
   const [profileData, setProfileData] = useState({ ...ProfileData });
   const [isEditing, setIsEditing] = useState(false);
@@ -58,7 +57,7 @@ const FormEditProfile: React.FC = () => {
           <motion.div className="bg-light-card rounded-xl shadow-lg overflow-hidden" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <div className="px-4 md:px-6 py-4 border-b border-light-border flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-3">
-                <User  className="text-light-primary" size={24} />
+                <User className="text-light-primary" size={24} />
                 <h2 className="text-lg md:text-xl font-semibold text-light-text">Información Personal</h2>
               </div>
               <ProfileActions isEditing={isEditing} isSaving={isSaving} onEdit={() => setIsEditing(true)} onSave={handleSave} onCancel={handleCancel} />
@@ -76,7 +75,7 @@ const FormEditProfile: React.FC = () => {
 
                 <div className="flex-1 space-y-4 md:space-y-6">
                   <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
-                    <FormField label="Nombre Completo" value={profileData.name} onChange={(v) => updateField('name', v)} icon={User } error={validationErrors.name} disabled={!isEditing} placeholder="Ingresa tu nombre completo" />
+                    <FormField label="Nombre Completo" value={profileData.name} onChange={(v) => updateField('name', v)} icon={User} error={validationErrors.name} disabled={!isEditing} placeholder="Ingresa tu nombre completo" />
                     <FormField label="Nombre de Usuario" value={profileData.username} onChange={(v) => updateField('username', v)} icon={UserCheck} error={validationErrors.username} disabled={!isEditing} placeholder="Ej: juanperez" />
                     <FormField label="Email" value={profileData.email} onChange={(v) => updateField('email', v)} type="email" icon={Mail} error={validationErrors.email} disabled={!isEditing} placeholder="tu@email.com" />
                   </motion.div>

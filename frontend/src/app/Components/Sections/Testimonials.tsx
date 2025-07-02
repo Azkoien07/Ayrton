@@ -30,12 +30,6 @@ const testimonials = [
 const Testimonials = () => {
     return (
         <section className="relative px-6 py-24 overflow-hidden" style={{ backgroundColor: '#F9FAFB' }}>
-           
-            
-          
-            
-          
-          
             <div className="relative max-w-7xl mx-auto">
                 {/* Header */}
                 <motion.div
@@ -55,8 +49,8 @@ const Testimonials = () => {
                     >
                         <Quote className="text-white text-2xl" />
                     </motion.div>
-                    
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ 
+
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{
                         background: 'linear-gradient(135deg, #374151, #3A5A8F, #5879B5)',
                         WebkitBackgroundClip: 'text',
                         backgroundClip: 'text',
@@ -64,7 +58,7 @@ const Testimonials = () => {
                     }}>
                         Lo que dicen nuestros usuarios
                     </h2>
-                    
+
                     <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: "100px" }}
@@ -73,9 +67,9 @@ const Testimonials = () => {
                         className="h-1 mx-auto rounded-full"
                         style={{ background: 'linear-gradient(90deg, #3A5A8F, #5879B5)' }}
                     ></motion.div>
-                    
-                    <p className="text-xl mt-6 max-w-3xl mx-auto leading-relaxed" style={{ 
-                        color: '#6B7280' 
+
+                    <p className="text-xl mt-6 max-w-3xl mx-auto leading-relaxed" style={{
+                        color: '#6B7280'
                     }}>
                         Descubre cómo hemos transformado la experiencia digital de empresas y profesionales
                     </p>
@@ -90,7 +84,7 @@ const Testimonials = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: index * 0.15 }}
-                            whileHover={{ 
+                            whileHover={{
                                 y: -10,
                                 transition: { duration: 0.3 }
                             }}
@@ -98,20 +92,20 @@ const Testimonials = () => {
                         >
                             {/* Card Background with Glassmorphism */}
                             <div className="absolute inset-0 backdrop-blur-xl rounded-3xl shadow-xl group-hover:shadow-2xl transition-all duration-300"
-                                style={{ 
+                                style={{
                                     backgroundColor: 'rgba(255, 255, 255, 0.9)',
                                     borderColor: '#D1D5DB'
                                 }}></div>
                             <div className="absolute inset-0 backdrop-blur-xl rounded-3xl shadow-xl group-hover:shadow-2xl transition-all duration-300 dark:block hidden"
-                                style={{ 
+                                style={{
                                     backgroundColor: 'rgba(31, 34, 51, 0.9)',
                                     borderColor: '#374151'
                                 }}></div>
-                            
+
                             {/* Gradient Border Effect */}
                             <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"
                                 style={{ background: 'linear-gradient(135deg, #8CA1C7, #5879B5, #3A5A8F)' }}></div>
-                            
+
                             <div className="relative p-8 h-full flex flex-col">
                                 {/* Quote Icon */}
                                 <motion.div
@@ -139,8 +133,8 @@ const Testimonials = () => {
                                 </div>
 
                                 {/* Testimonial Text */}
-                                <blockquote className="text-lg leading-relaxed mb-8 flex-grow italic" style={{ 
-                                    color: '#374151' 
+                                <blockquote className="text-lg leading-relaxed mb-8 flex-grow italic" style={{
+                                    color: '#374151'
                                 }}>
                                     "{testimonial.feedback}"
                                 </blockquote>
@@ -152,8 +146,8 @@ const Testimonials = () => {
                                         transition={{ duration: 0.3 }}
                                         className="relative"
                                     >
-                                        <div className="w-14 h-14 rounded-full p-0.5" style={{ 
-                                            background: 'linear-gradient(135deg, #8CA1C7, #5879B5)' 
+                                        <div className="w-14 h-14 rounded-full p-0.5" style={{
+                                            background: 'linear-gradient(135deg, #8CA1C7, #5879B5)'
                                         }}>
                                             <img
                                                 src={testimonial.avatar}
@@ -161,12 +155,12 @@ const Testimonials = () => {
                                                 className="w-full h-full rounded-full object-cover"
                                             />
                                         </div>
-                                        <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2" style={{ 
+                                        <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2" style={{
                                             backgroundColor: '#22C55E',
                                             borderColor: '#FFFFFF'
                                         }}></div>
                                     </motion.div>
-                                    
+
                                     <div className="ml-4">
                                         <h3 className="font-bold text-lg" style={{ color: '#374151' }}>
                                             {testimonial.name}
@@ -193,7 +187,7 @@ const Testimonials = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className="inline-flex items-center px-8 py-4 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
-                        style={{ 
+                        style={{
                             background: 'linear-gradient(135deg, #3A5A8F, #5879B5)'
                         }}
                     >

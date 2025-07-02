@@ -20,14 +20,14 @@ export default function PagoPage() {
     }, []);
 
     const handleGoBack = () => {
-        router.push('/Pay'); // Volver a la página de planes de suscripción
+        router.push('/Pay');
     };
 
     return (
         <div className="min-h-screen bg-light-background dark:bg-dark-background flex">
             {/* Sidebar Desktop */}
             <div className="hidden lg:block">
-                <Sidebar role={'user'} /> {/* Asumiendo rol de usuario para esta página */}
+                <Sidebar role={'user'} />
             </div>
 
             {/* Mobile Sidebar Overlay */}

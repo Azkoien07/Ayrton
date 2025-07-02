@@ -3,7 +3,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { X, Save, Edit3, Eye, Calendar } from 'lucide-react';
-import { cn } from '@utilities/utils';
 
 interface UserPage {
     id: number;
@@ -134,10 +133,10 @@ const ViewEditPageModal: React.FC<ViewEditPageModalProps> = ({
                     <div className="flex items-center space-x-6 text-sm text-light-textSecondary dark:text-dark-textSecondary">
                         <div className="flex items-center space-x-2">
                             <Calendar size={16} />
-                            <span>Creado: {currentPage.createdAt.toLocaleDateString('es-ES', { 
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric' 
+                            <span>Creado: {currentPage.createdAt.toLocaleDateString('es-ES', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
                             })}</span>
                         </div>
                         <div className="flex items-center space-x-2">

@@ -18,13 +18,7 @@ import {
 } from 'lucide-react';
 
 export default function CuadrosSettings({ role }: DashboardProps) {
-    const validRole = roleOptions[role as keyof typeof roleOptions] ? role : 'admin';
-    const [selected, setSelected] = useState(roleOptions[validRole as keyof typeof roleOptions][0]);
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [filterStatus, setFilterStatus] = useState('all');
 
-    const sections = roleOptions[validRole as keyof typeof roleOptions];
     const settingsCards = [
         {
             id: 1,

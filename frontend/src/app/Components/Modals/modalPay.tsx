@@ -3,8 +3,6 @@
 import { motion } from 'framer-motion';
 import { Plan } from '@/app/Types/Plan';
 import { useRouter } from 'next/navigation';
-import { Stripe } from '@stripe/stripe-js';
-
 interface PayModalProps {
     selectedPlan: Plan | null;
     closeModal: () => void;

@@ -3,13 +3,15 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import { login } from "@services/authService";
+import { login } from "@slice/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "@store/store";
 import { addUser } from '@slice/userSlice'
-import type { AppDispatch, RootState } from "@/app/Redux/store";
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
   const { loading } = useSelector(
     (state: RootState) => state.task
   );
@@ -88,32 +90,21 @@ export default function LoginPage() {
   const handleLoginUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    try {
-      const data = await login(email, password);
+    const resultAction = await dispatch(login({ email, password }));
 
-      if (!data?.token || !data?.role) {
-        toast.error("Datos de sesión inválidos.");
-        return;
-      }
+    if (login.fulfilled.match(resultAction)) {
+      toast.success('¡Inicio de sesión exitoso!');
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userRole", data.role);
-
-      toast.success("¡Inicio de sesión exitoso!");
+      const role = resultAction.payload.role;
 
       const redirectPath =
-        data.role && data.role.includes("Admin")
-          ? "/UserManagement/Admin"
-          : "/UserManagement/UserBasic";
+        role === 'admin'
+          ? '/UserManagement/Admin'
+          : '/UserManagement/UserBasic';
 
-      window.location.href = redirectPath;
-    } catch (error: any) {
-      const message =
-        error?.response?.data?.message ||
-        error?.message ||
-        "Error desconocido al iniciar sesión";
-
-      toast.error(`Error al iniciar sesión: ${message}`);
+      router.push(redirectPath);
+    } else {
+      toast.error(`Error al iniciar sesión: ${resultAction.payload}`);
     }
   };
 
@@ -167,9 +158,8 @@ export default function LoginPage() {
         </div>
 
         <div
-          className={`relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] ${
-            isFlipped ? "[transform:rotateY(180deg)]" : ""
-          }`}
+          className={`relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] ${isFlipped ? "[transform:rotateY(180deg)]" : ""
+            }`}
         >
           {/* Login Form */}
           <div className="absolute w-full [backface-visibility:hidden]">
@@ -271,9 +261,8 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`bg-[#3A5A8F] hover:bg-[#2D4A7C] text-white py-3 rounded-xl transition-colors shadow-lg font-medium ${
-                  loading ? "opacity-80" : ""
-                }`}
+                className={`bg-[#3A5A8F] hover:bg-[#2D4A7C] text-white py-3 rounded-xl transition-colors shadow-lg font-medium ${loading ? "opacity-80" : ""
+                  }`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
@@ -492,9 +481,8 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`bg-[#3A5A8F] hover:bg-[#2D4A7C] text-white py-3 rounded-xl transition-colors shadow-lg font-medium ${
-                  loading ? "opacity-80" : ""
-                }`}
+                className={`bg-[#3A5A8F] hover:bg-[#2D4A7C] text-white py-3 rounded-xl transition-colors shadow-lg font-medium ${loading ? "opacity-80" : ""
+                  }`}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">

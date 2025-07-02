@@ -2,10 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Menu, X } from 'lucide-react';
+import { useUser } from '@context/userContext';
 import FormEditProfile from '@components/Features/Profile/FormEditProfileUser';
 import Sidebar from '@components/UI/Sidebar';
-import { cn } from '@utilities/utils';
-import { useUser } from '@context/userContext';
 
 const ProfileUser: React.FC = () => {
   const { user } = useUser();

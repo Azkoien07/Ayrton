@@ -1,7 +1,4 @@
 import React from 'react';
-import { cn } from '@utilities/utils';
-import { DashboardProps } from '@Types/dashboard';
-
 interface DashboardHeaderProps {
     validRole: string;
     fetchPayments: () => void;
@@ -21,15 +18,15 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ validRole, fetchPayme
                             </span>
                         </h1>
                         <p className="text-sm text-light-textSecondary dark:text-dark-textSecondary mt-1">
-                            {new Date().toLocaleDateString('es-ES', { 
-                                weekday: 'long', 
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric' 
+                            {new Date().toLocaleDateString('es-ES', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
                             })}
                         </p>
                     </div>
-                    <button 
+                    <button
                         onClick={() => { fetchPayments(); fetchVouchers(); }}
                         className="bg-light-primary dark:bg-dark-primary text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
                     >

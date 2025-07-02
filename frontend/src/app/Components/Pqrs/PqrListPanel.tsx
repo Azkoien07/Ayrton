@@ -1,6 +1,6 @@
 import React from 'react';
 import { FileText, AlertCircle, MessageSquare, Calendar, User, Eye } from 'lucide-react';
-import { Pqr } from '@/generated/graphql'; // Assuming Pqr type is available from generated graphql
+import { Pqr } from '@/generated/graphql';
 
 interface PqrListPanelProps {
     data: Pqr[] | null | undefined;
@@ -66,8 +66,8 @@ const PqrListPanel: React.FC<PqrListPanelProps> = ({ data, loading, setShowPqrPa
                                                 <div className="flex items-center gap-3 mb-2">
                                                     <div className="p-2 bg-light-primary/10 dark:bg-dark-primary/10 rounded-lg">
                                                         {pqr.typePqr === 'PETICION' ? <FileText className="w-4 h-4 text-light-primary dark:text-dark-primary" /> :
-                                                         pqr.typePqr === 'QUEJA' ? <AlertCircle className="w-4 h-4 text-light-primary dark:text-dark-primary" /> :
-                                                         <MessageSquare className="w-4 h-4 text-light-primary dark:text-dark-primary" />}
+                                                            pqr.typePqr === 'QUEJA' ? <AlertCircle className="w-4 h-4 text-light-primary dark:text-dark-primary" /> :
+                                                                <MessageSquare className="w-4 h-4 text-light-primary dark:text-dark-primary" />}
                                                     </div>
                                                     <div>
                                                         <h3 className="font-semibold text-light-text dark:text-dark-text">
