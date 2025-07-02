@@ -15,14 +15,16 @@ interface PqrFormStepsProps {
 }
 
 const PqrFormSteps: React.FC<PqrFormStepsProps> = ({ onSubmissionSuccess }) => {
-    const [formData, setFormData] = useState<PqrInput>({
+    const [formData, setFormData] = useState<PqrFormData>({
         typePqr: TypePqr.Peticion,
         title: '',
         description: '',
         argument: '',
         userName: '',
         userEmail: '',
-        userPhone: ''
+        userPhone: '',
+        state: false, // Inicializar con un valor predeterminado
+        answer: '' // Inicializar con un valor predeterminado
     });
 
     const dispatch = useDispatch<AppDispatch>();
@@ -133,7 +135,7 @@ const PqrFormSteps: React.FC<PqrFormStepsProps> = ({ onSubmissionSuccess }) => {
         }
     };
 
-    const handleInputChange = (field: string, value: string) => {
+    const handleInputChange = (field: keyof PqrFormData, value: string | boolean) => {
         setFormData(prev => ({
             ...prev,
             [field]: value

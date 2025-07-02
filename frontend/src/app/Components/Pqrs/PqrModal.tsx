@@ -4,10 +4,12 @@ import { X } from 'lucide-react';
 
 interface PqrModalProps {
     formData: PqrFormData;
-    isOpen: boolean;
-    onClose: () => void;
-    onSave: (formData: PqrFormData) => Promise<void>; // Añadido prop onSave
-    isEditMode: boolean; // Añadido prop isEditMode
+    isOpen?: boolean;
+    onClose?: () => void;
+    onSave?: (formData: PqrFormData) => Promise<void>;
+    isEditMode?: boolean;
+    onInputChange?: (field: keyof PqrFormData, value: string | boolean) => void;
+    errors?: FormErrors;
 }
 
 const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, isEditMode }) => {
@@ -19,8 +21,6 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
         setErrors({});
     }, [formData, isOpen]);
 
-    if (!isOpen) return null;
-
     const handleInputChange = (field: keyof PqrFormData, value: string | boolean) => {
         setCurrentFormData(prev => ({ ...prev, [field]: value }));
         setErrors(prev => ({ ...prev, [field]: undefined }));
@@ -28,8 +28,7 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
 
     const validateForm = () => {
         const newErrors: FormErrors = {};
-        // typePqr ya no puede ser una cadena vacía según la interfaz PqrFormData
-        // La validación se mantiene para asegurar que no se envíe un valor no deseado
+
         if (!currentFormData.typePqr) newErrors.typePqr = 'El tipo de PQR es requerido.';
         if (!currentFormData.title) newErrors.title = 'El título es requerido.';
         if (!currentFormData.description) newErrors.description = 'La descripción es requerida.';
@@ -47,80 +46,47 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
     };
 
     const handleSubmit = async () => {
-        if (validateForm()) {
+        if (validateForm() && onSave) { 
             await onSave(currentFormData);
         }
     };
 
+    if (isOpen === false && isEditMode === false) return null;
+
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-            <div className="relative bg-light-surface dark:bg-dark-surface rounded-lg p-6 border border-light-border dark:border-dark-border w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                <button
-                    onClick={onClose}
-                    className="absolute top-4 right-4 p-2 rounded-full text-light-textSecondary dark:text-dark-textSecondary hover:bg-light-border dark:hover:bg-dark-border transition-colors"
-                >
-                    <X className="w-5 h-5" />
-                </button>
+        <div className={isOpen ? "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4" : ""}>
+            {/* Eliminé max-h-[90vh] overflow-y-auto y ajusté el ancho máximo */}
+            <div className={`relative bg-light-surface dark:bg-dark-surface rounded-lg p-6 border border-light-border dark:border-dark-border w-full max-w-4xl ${isOpen ? "" : "static"}`}>
+                {isOpen && ( 
+                    <button
+                        onClick={onClose}
+                        className="absolute top-4 right-4 p-2 rounded-full text-light-textSecondary dark:text-dark-textSecondary hover:bg-light-border dark:hover:bg-dark-border transition-colors"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                )}
                 <h2 className="text-xl font-bold text-light-text dark:text-dark-text mb-6">
                     {isEditMode ? `Editar PQR: ${currentFormData.title}` : `Nueva PQR: ${currentFormData.typePqr}`}
                 </h2>
 
-                <div className="space-y-6">
-                    {/* Tipo de PQR (solo editable en modo de creación) */}
-                    {!isEditMode && (
-                        <div>
-                            <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
-                                Tipo de PQR *
-                            </label>
-                            <select
-                                value={currentFormData.typePqr || ''} // Asegura que el valor sea una cadena vacía si es null/undefined
-                                onChange={(e) => handleInputChange('typePqr', e.target.value as 'Peticion' | 'Queja' | 'Reclamo')}
-                                className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors ${errors?.typePqr
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
-                                    } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
-                            >
-                                <option value="">Selecciona un tipo</option>
-                                <option value="Peticion">Petición</option>
-                                <option value="Queja">Queja</option>
-                                <option value="Reclamo">Reclamo</option>
-                            </select>
-                            {errors?.typePqr && (
-                                <span className="text-red-500 text-sm mt-1 block">{errors.typePqr}</span>
-                            )}
-                        </div>
-                    )}
-
+                {/* Cambié a grid para mejor distribución del espacio */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Título */}
                     <div>
                         <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
                             Título *
                         </label>
-                        {isEditMode ? (
-                            <input
-                                type="text"
-                                value={currentFormData.title}
-                                onChange={(e) => handleInputChange('title', e.target.value)}
-                                maxLength={50}
-                                className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors ${errors?.title
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
-                                    } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
-                                placeholder="Ingresa un título descriptivo para tu solicitud"
-                            />
-                        ) : (
-                            <input
-                                type="text"
-                                value={currentFormData.title}
-                                onChange={(e) => handleInputChange('title', e.target.value)}
-                                maxLength={50}
-                                className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors ${errors?.title
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
-                                    } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
-                                placeholder="Ingresa un título descriptivo para tu solicitud"
-                            />
-                        )}
+                        <input
+                            type="text"
+                            value={currentFormData.title}
+                            onChange={(e) => handleInputChange('title', e.target.value)}
+                            maxLength={50}
+                            className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors ${errors?.title
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
+                            placeholder="Ingresa un título descriptivo para tu solicitud"
+                        />
                         <div className="flex justify-between items-center mt-1">
                             {errors?.title && (
                                 <span className="text-red-500 text-sm">{errors.title}</span>
@@ -136,31 +102,17 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                         <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
                             Descripción *
                         </label>
-                        {isEditMode ? (
-                            <textarea
-                                value={currentFormData.description}
-                                onChange={(e) => handleInputChange('description', e.target.value)}
-                                maxLength={1000}
-                                rows={4}
-                                className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.description
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
-                                    } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
-                                placeholder="Describe brevemente tu solicitud"
-                            />
-                        ) : (
-                            <textarea
-                                value={currentFormData.description}
-                                onChange={(e) => handleInputChange('description', e.target.value)}
-                                maxLength={1000}
-                                rows={4}
-                                className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.description
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
-                                    } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
-                                placeholder="Describe brevemente tu solicitud"
-                            />
-                        )}
+                        <textarea
+                            value={currentFormData.description}
+                            onChange={(e) => handleInputChange('description', e.target.value)}
+                            maxLength={1000}
+                            rows={3}
+                            className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.description
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
+                            placeholder="Describe brevemente tu solicitud"
+                        />
                         <div className="flex justify-between items-center mt-1">
                             {errors?.description && (
                                 <span className="text-red-500 text-sm">{errors.description}</span>
@@ -171,80 +123,25 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                         </div>
                     </div>
 
-                    {/* Argumento */}
-                    <div>
+                    {/* Argumento - span completo */}
+                    <div className="md:col-span-2">
                         <label className="block text-sm font-medium text-light-text dark:text-dark-text mb-2">
                             Argumento detallado *
                         </label>
-                        {isEditMode ? (
-                            <textarea
-                                value={currentFormData.argument}
-                                onChange={(e) => handleInputChange('argument', e.target.value)}
-                                rows={6}
-                                className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.argument
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
-                                    } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
-                                placeholder="Explica en detalle tu solicitud, incluyendo todos los elementos relevantes..."
-                            />
-                        ) : (
-                            <textarea
-                                value={currentFormData.argument}
-                                onChange={(e) => handleInputChange('argument', e.target.value)}
-                                rows={6}
-                                className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.argument
-                                        ? 'border-red-500 focus:border-red-500'
-                                        : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
-                                    } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
-                                placeholder="Explica en detalle tu solicitud, incluyendo todos los elementos relevantes..."
-                            />
-                        )}
+                        <textarea
+                            value={currentFormData.argument}
+                            onChange={(e) => handleInputChange('argument', e.target.value)}
+                            rows={4}
+                            className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.argument
+                                    ? 'border-red-500 focus:border-red-500'
+                                    : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
+                                } focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-light-primary dark:focus:ring-dark-primary`}
+                            placeholder="Explica en detalle tu solicitud, incluyendo todos los elementos relevantes..."
+                        />
                         {errors?.argument && (
                             <span className="text-red-500 text-sm mt-1 block">{errors.argument}</span>
                         )}
                     </div>
-
-                    {/* Campos de usuario (solo editables en modo de creación) */}
-                    {!isEditMode && (
-                        <div>
-                            <p className="text-sm font-medium text-light-textSecondary dark:text-dark-textSecondary mb-2">Información de Contacto:</p>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label className="block text-xs font-medium text-light-text dark:text-dark-text mb-1">Nombre de Usuario:</label>
-                                    <input
-                                        type="text"
-                                        value={currentFormData.userName}
-                                        onChange={(e) => handleInputChange('userName', e.target.value)}
-                                        className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text ${errors?.userName ? 'border-red-500' : 'border-light-border dark:border-dark-border'}`}
-                                        placeholder="Nombre"
-                                    />
-                                    {errors?.userName && <span className="text-red-500 text-xs">{errors.userName}</span>}
-                                </div>
-                                <div>
-                                    <label className="block text-xs font-medium text-light-text dark:text-dark-text mb-1">Email:</label>
-                                    <input
-                                        type="email"
-                                        value={currentFormData.userEmail}
-                                        onChange={(e) => handleInputChange('userEmail', e.target.value)}
-                                        className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text ${errors?.userEmail ? 'border-red-500' : 'border-light-border dark:border-dark-border'}`}
-                                        placeholder="Email"
-                                    />
-                                    {errors?.userEmail && <span className="text-red-500 text-xs">{errors.userEmail}</span>}
-                                </div>
-                                <div>
-                                    <label className="block text-xs font-medium text-light-text dark:text-dark-text mb-1">Teléfono:</label>
-                                    <input
-                                        type="text"
-                                        value={currentFormData.userPhone}
-                                        onChange={(e) => handleInputChange('userPhone', e.target.value)}
-                                        className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text ${errors?.userPhone ? 'border-red-500' : 'border-light-border dark:border-dark-border'}`}
-                                        placeholder="Teléfono"
-                                    />
-                                    {errors?.userPhone && <span className="text-red-500 text-xs">{errors.userPhone}</span>}
-                                </div>
-                            </div>
-                        </div>
-                    )}
 
                     {/* Estado y Respuesta (solo editable en modo de edición) */}
                     {isEditMode && (
@@ -276,7 +173,7 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                                     <textarea
                                         value={currentFormData.answer || ''}
                                         onChange={(e) => handleInputChange('answer', e.target.value)}
-                                        rows={4}
+                                        rows={3}
                                         className={`w-full px-3 py-2 border rounded-lg bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text transition-colors resize-none ${errors?.answer
                                                 ? 'border-red-500 focus:border-red-500'
                                                 : 'border-light-border dark:border-dark-border focus:border-light-primary dark:focus:border-dark-primary'
@@ -291,8 +188,8 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                         </>
                     )}
 
-                    {/* Información adicional según el tipo */}
-                    <div className="bg-light-background dark:bg-dark-background p-4 rounded-lg">
+                    {/* Información adicional según el tipo - span completo */}
+                    <div className="md:col-span-2 bg-light-background dark:bg-dark-background p-4 rounded-lg">
                         <h3 className="text-sm font-medium text-light-text dark:text-dark-text mb-2">
                             Información adicional para {currentFormData.typePqr?.toLowerCase()}s:
                         </h3>
@@ -318,22 +215,9 @@ const PqrModal: React.FC<PqrModalProps> = ({ formData, isOpen, onClose, onSave, 
                             </p>
                         )}
                     </div>
-
-                    <div className="flex justify-end gap-3 mt-6">
-                        <button
-                            onClick={onClose}
-                            className="px-4 py-2 rounded-lg text-light-text dark:text-dark-text border border-light-border dark:border-dark-border hover:bg-light-background dark:hover:bg-dark-background transition-colors"
-                        >
-                            Cancelar
-                        </button>
-                        <button
-                            onClick={handleSubmit}
-                            className="px-4 py-2 rounded-lg bg-light-primary dark:bg-dark-primary text-white hover:opacity-90 transition-opacity"
-                        >
-                            {isEditMode ? 'Guardar Cambios' : 'Crear PQR'}
-                        </button>
-                    </div>
                 </div>
+
+                
             </div>
         </div>
     );

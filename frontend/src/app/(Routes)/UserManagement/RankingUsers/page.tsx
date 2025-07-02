@@ -111,94 +111,98 @@ export default function PageRanking() {
                                         {stats.totalUsers} usuarios • {stats.activeUsers} activos
                                     </p>
                                 </div>
-                                {/* Mover los botones de búsqueda y filtro fuera del header si es necesario */}
-                                {/* Por ahora, los eliminaré del header para replicar el layout de PqrUserPage */}
                             </div>
                         </div>
                     </div>
                 </header>
 
-                {/* Stats Cards */}
-                <div className="p-6 bg-white dark:bg-dark-card border-b border-light-border dark:border-dark-border">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <StatCard
-                            icon={<Users className="text-blue-500" size={24} />}
-                            title="Total Usuarios"
-                            value={stats.totalUsers.toString()}
-                        />
-                        <StatCard
-                            icon={<Activity className="text-green-500" size={24} />}
-                            title="Usuarios Activos"
-                            value={stats.activeUsers.toString()}
-                        />
-                        <StatCard
-                            icon={<TrendingUp className="text-purple-500" size={24} />}
-                            title="Nivel Promedio"
-                            value={stats.averageLevel.toString()}
-                        />
-                        <StatCard
-                            icon={<Trophy className="text-yellow-500" size={24} />}
-                            title="Total Desafíos"
-                            value={stats.totalChallenges.toString()}
-                        />
+                {/* Stats Cards - Ahora dentro del contenedor principal */}
+                <div className="px-4 py-6 sm:px-6 lg:px-8 bg-white dark:bg-dark-card border-b border-light-border dark:border-dark-border">
+                    <div className="max-w-none lg:max-w-6xl xl:max-w-7xl mx-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <StatCard
+                                icon={<Users className="text-blue-500" size={24} />}
+                                title="Total Usuarios"
+                                value={stats.totalUsers.toString()}
+                            />
+                            <StatCard
+                                icon={<Activity className="text-green-500" size={24} />}
+                                title="Usuarios Activos"
+                                value={stats.activeUsers.toString()}
+                            />
+                            <StatCard
+                                icon={<TrendingUp className="text-purple-500" size={24} />}
+                                title="Nivel Promedio"
+                                value={stats.averageLevel.toString()}
+                            />
+                            <StatCard
+                                icon={<Trophy className="text-yellow-500" size={24} />}
+                                title="Total Desafíos"
+                                value={stats.totalChallenges.toString()}
+                            />
+                        </div>
                     </div>
                 </div>
 
                 {/* Filters Panel */}
                 {showFilters && (
-                    <div className="p-4 bg-gray-50 dark:bg-gray-800 border-b border-light-border dark:border-dark-border">
-                        <div className="flex items-center justify-between mb-3">
-                            <h3 className="font-medium text-light-text dark:text-dark-text">Filtros Activos</h3>
-                            <button
-                                onClick={clearFilters}
-                                className="text-sm text-light-primary hover:text-light-primary-dark"
-                            >
-                                Limpiar todo
-                            </button>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                            {Object.entries(filters).map(([key, value]) => (
-                                value !== undefined && (
-                                    <span
-                                        key={key}
-                                        className="inline-flex items-center px-3 py-1 bg-light-primary text-white text-sm rounded-full"
-                                    >
-                                        {key}: {value.toString()}
-                                        <X size={14} className="ml-1 cursor-pointer" />
-                                    </span>
-                                )
-                            ))}
+                    <div className="px-4 py-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800 border-b border-light-border dark:border-dark-border">
+                        <div className="max-w-none lg:max-w-6xl xl:max-w-7xl mx-auto">
+                            <div className="flex items-center justify-between mb-3">
+                                <h3 className="font-medium text-light-text dark:text-dark-text">Filtros Activos</h3>
+                                <button
+                                    onClick={clearFilters}
+                                    className="text-sm text-light-primary hover:text-light-primary-dark"
+                                >
+                                    Limpiar todo
+                                </button>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                                {Object.entries(filters).map(([key, value]) => (
+                                    value !== undefined && (
+                                        <span
+                                            key={key}
+                                            className="inline-flex items-center px-3 py-1 bg-light-primary text-white text-sm rounded-full"
+                                        >
+                                            {key}: {value.toString()}
+                                            <X size={14} className="ml-1 cursor-pointer" />
+                                        </span>
+                                    )
+                                ))}
+                            </div>
                         </div>
                     </div>
                 )}
 
                 {/* Main Content */}
                 <main className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
-                    {loading ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {[...Array(6)].map((_, i) => (
-                                <SkeletonCard key={i} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {rankings.map((ranking) => (
-                                <RankingCard key={ranking.id} ranking={ranking} />
-                            ))}
-                        </div>
-                    )}
+                    <div className="max-w-none lg:max-w-6xl xl:max-w-7xl mx-auto">
+                        {loading ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {[...Array(6)].map((_, i) => (
+                                    <SkeletonCard key={i} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {rankings.map((ranking) => (
+                                    <RankingCard key={ranking.id} ranking={ranking} />
+                                ))}
+                            </div>
+                        )}
 
-                    {!loading && rankings.length === 0 && (
-                        <div className="text-center py-12">
-                            <Trophy className="mx-auto text-gray-400 mb-4" size={48} />
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                                No se encontraron rankings
-                            </h3>
-                            <p className="text-gray-500 dark:text-gray-400">
-                                Prueba ajustando los filtros o creando un nuevo ranking
-                            </p>
-                        </div>
-                    )}
+                        {!loading && rankings.length === 0 && (
+                            <div className="text-center py-12">
+                                <Trophy className="mx-auto text-gray-400 mb-4" size={48} />
+                                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                                    No se encontraron rankings
+                                </h3>
+                                <p className="text-gray-500 dark:text-gray-400">
+                                    Prueba ajustando los filtros o creando un nuevo ranking
+                                </p>
+                            </div>
+                        )}
+                    </div>
                 </main>
             </div>
         </div>

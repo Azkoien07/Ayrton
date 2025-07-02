@@ -108,40 +108,7 @@ export default function PaymentForm({ initialAmount = 0, initialCurrency = 'USD'
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#F9FAFB' }}>
-            {/* Back Button */}
-            <button
-                type="button"
-                onClick={() => window.history.back()}
-                className="fixed top-6 left-6 flex items-center space-x-2 px-4 py-2 rounded-lg border transition-all duration-200 hover:shadow-md z-10"
-                style={{ 
-                    backgroundColor: '#FFFFFF',
-                    borderColor: '#D1D5DB',
-                    color: '#374151'
-                }}
-                onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#E5E9F3';
-                    e.currentTarget.style.borderColor = '#8CA1C7';
-                }}
-                onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#FFFFFF';
-                    e.currentTarget.style.borderColor = '#D1D5DB';
-                }}
-            >
-                <svg 
-                    className="w-4 h-4" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24"
-                >
-                    <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M15 19l-7-7 7-7" 
-                    />
-                </svg>
-                <span className="text-sm font-medium">Volver</span>
-            </button>
+           
             
             <div className="w-full max-w-lg">
                 <form

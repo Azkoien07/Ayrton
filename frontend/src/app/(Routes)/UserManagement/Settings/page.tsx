@@ -14,8 +14,8 @@ type SettingsPageProps = {
 
 export default function SettingsPage() {
   const { user } = useUser();
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [isClient, setIsClient] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
 
@@ -92,20 +92,24 @@ export default function SettingsPage() {
             transition={{ duration: 0.3 }}
             className="px-4 py-6 sm:px-6 lg:px-8"
           >
-            <div className="rounded-lg bg-gradient-to-r from-light-primary/10 to-light-primary/5 dark:from-dark-primary/10 dark:to-dark-primary/5 p-6 md:p-10 lg:p-20 border border-light-border dark:border-dark-border">
-              <div className="flex flex-wrap items-center gap-2 mb-4">
-                <span className="text-light-textSecondary dark:text-dark-textSecondary text-2xl md:text-3xl font-light">Panel</span>
-                <span className="text-light-text dark:text-dark-text text-2xl md:text-3xl font-bold">de configuración</span>
+            <div className="max-w-none lg:max-w-6xl xl:max-w-7xl mx-auto">
+              <div className="rounded-lg bg-gradient-to-r from-light-primary/10 to-light-primary/5 dark:from-dark-primary/10 dark:to-dark-primary/5 p-6 md:p-10 lg:p-20 border border-light-border dark:border-dark-border">
+                <div className="flex flex-wrap items-center gap-2 mb-4">
+                  <span className="text-light-textSecondary dark:text-dark-textSecondary text-2xl md:text-3xl font-light">Panel</span>
+                  <span className="text-light-text dark:text-dark-text text-2xl md:text-3xl font-bold">de configuración</span>
+                </div>
+                <p className="text-light-textSecondary dark:text-dark-textSecondary max-w-2xl mt-2">
+                  Personaliza y configura todos los aspectos de tu sistema desde este panel centralizado.
+                </p>
               </div>
-              <p className="text-light-textSecondary dark:text-dark-textSecondary max-w-2xl mt-2">
-                Personaliza y configura todos los aspectos de tu sistema desde este panel centralizado.
-              </p>
             </div>
           </motion.div>
 
           {/* Main content */}
           <div className="px-4 py-6 sm:px-6 lg:px-8">
-            <CuadrosSettings role={validRole} />
+            <div className="max-w-none lg:max-w-6xl xl:max-w-7xl mx-auto">
+              <CuadrosSettings role={validRole} />
+            </div>
           </div>
         </div>
       </div>
