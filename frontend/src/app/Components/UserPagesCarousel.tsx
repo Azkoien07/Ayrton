@@ -110,8 +110,13 @@ const UserPagesCarousel: React.FC<UserPagesCarouselProps> = ({
                                             </p>
                                             <div className="flex items-center justify-between">
                                                 <span className="text-xs text-light-textSecondary dark:text-dark-textSecondary">
-                                                    {page.createdAt.toLocaleDateString()}
+                                                    {new Intl.DateTimeFormat('es-CO', {
+                                                        day: '2-digit',
+                                                        month: '2-digit',
+                                                        year: 'numeric',
+                                                    }).format(new Date(page.createdAt))}
                                                 </span>
+
                                                 <div className="w-2 h-2 bg-light-success dark:bg-dark-success rounded-full"></div>
                                             </div>
                                         </div>

@@ -9,7 +9,7 @@ import type { AppDispatch, RootState } from "@/app/Redux/store";
 import { useUser } from '@context/userContext';
 import { fetchUsers } from '@slice/userSlice'
 import Sidebar from '@components/UI/Sidebar';
-import UserContentAdmin from '@components/Content/UserContentAdmin';
+import UserContentAdmin from '@components/content/UserContentAdmin';
 
 const Dashboard = ({ role }: DashboardProps) => {
     const dispatch = useDispatch<AppDispatch>();

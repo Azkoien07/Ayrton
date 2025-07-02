@@ -7,6 +7,7 @@ import {
 } from "react-icons/fi";
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/Redux/store';
+import { toast } from "sonner";
 
 export type UserRole = 'admin' | 'user' | 'superadmin' | null;
 const adminNavItems = [
@@ -103,7 +104,11 @@ export default function Sidebar({ sidebarOpen: propSidebarOpen, setSidebarOpen: 
 
     const handleLogout = () => {
         if (window.confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-            window.location.href = "/";
+            localStorage.removeItem("token");
+            toast.success("Sesión cerrada correctamente");
+            setTimeout(() => {
+                window.location.href = "/Auth/login";
+            }, 1200);
         }
     };
 

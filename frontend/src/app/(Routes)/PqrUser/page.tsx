@@ -43,6 +43,7 @@ const PqrUserPage = () => {
         window.history.back();
     };
 
+    console.log({ isClient, isSubmitted, showPqrPanel });
     return (
         <div className="min-h-screen bg-light-background dark:bg-dark-background flex">
             {/* Sidebar Desktop */}

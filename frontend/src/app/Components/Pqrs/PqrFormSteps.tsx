@@ -158,6 +158,8 @@ const PqrFormSteps: React.FC<PqrFormStepsProps> = ({ onSubmissionSuccess }) => {
 
     const stepTitles = ['Tipo de PQR', 'Información', 'Datos de Contacto'];
 
+    console.log('📌 Renderizando PqrFormSteps. Paso actual:', currentStep);
+
     return (
         <>
             {/* Progress Steps */}
@@ -247,13 +249,15 @@ const PqrFormSteps: React.FC<PqrFormStepsProps> = ({ onSubmissionSuccess }) => {
                         )}
 
                         {currentStep === 2 && (
-                            <div className="w-full max-w-none lg:max-w-2xl xl:max-w-3xl mx-auto">
-                                <PqrModal
-                                    formData={formData}
-                                    onInputChange={handleInputChange}
-                                    errors={errors}
-                                />
-                            </div>
+                            <PqrModal
+                                formData={formData}
+                                onInputChange={handleInputChange}
+                                errors={errors}
+                                isOpen={true}
+                                onClose={() => setCurrentStep(1)}
+                                onSave={handleAddPqr}
+                                isEditMode={false}
+                            />
                         )}
 
                         {currentStep === 3 && (

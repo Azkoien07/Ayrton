@@ -4,4 +4,7 @@ export interface PaymentItem {
     id: string;
     purchaseAmount: number;
     paymentMethod: PaymentMethod;
+    voucher?: {
+        code: string;
+    };
 }

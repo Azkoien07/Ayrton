@@ -352,6 +352,7 @@ export type Pqr = {
 };
 
 export type PqrInput = {
+  answer: Scalars['String']['input'];
   argument: Scalars['String']['input'];
   description: Scalars['String']['input'];
   title: Scalars['String']['input'];
@@ -407,6 +408,7 @@ export type Query = {
   allUsers?: Maybe<UserPage>;
   allVouchers?: Maybe<VoucherPage>;
   challengeById?: Maybe<ChallengePageId>;
+  generateReportPDF?: Maybe<Scalars['String']['output']>;
   paymentById?: Maybe<PaymentPageId>;
   planById?: Maybe<PlanPageId>;
   pqrById?: Maybe<PqrPageId>;
