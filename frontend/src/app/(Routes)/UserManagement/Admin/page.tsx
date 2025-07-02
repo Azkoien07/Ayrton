@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Menu, X } from 'lucide-react';
+import { ArrowLeft, Menu, X, Download } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cn } from '@utilities/utils';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
@@ -21,16 +21,9 @@ const Dashboard = ({ role }: DashboardProps) => {
     const [page, setPage] = useState(0);
     const itemsPerPage = 5;
     const [isClient, setIsClient] = useState(false);
+    const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
     const sections = roleOptions[validRole as keyof typeof roleOptions];
-
-    const quickStats = [
-        { label: 'Usuarios Activos', value: '1,247', trend: '+12%', color: 'text-light-success dark:text-dark-success' },
-        { label: 'Ingresos Mes', value: '$45,230', trend: '+8.2%', color: 'text-light-success dark:text-dark-success' },
-        { label: 'Tareas Pendientes', value: '23', trend: '-5%', color: 'text-light-warning dark:text-dark-warning' },
-        { label: 'Sistema', value: '99.9%', trend: '0%', color: 'text-light-success dark:text-dark-success' }
-    ];
-
 
     useEffect(() => {
         setIsClient(true);
@@ -41,15 +34,196 @@ const Dashboard = ({ role }: DashboardProps) => {
         window.history.back();
     };
 
+    const generateUsersPDF = async () => {
+    setIsGeneratingPDF(true);
+    
+    try {
+      
+        const { jsPDF } = await import('jspdf');
+        const doc = new jsPDF();
+        
+    
+        const pageWidth = doc.internal.pageSize.width;
+        const pageHeight = doc.internal.pageSize.height;
+        const margin = 20;
+        let yPosition = 25;
+        
+        
+        const primaryColor: [number, number, number] = [41, 128, 185]; 
+        const secondaryColor: [number, number, number] = [236, 240, 241]; 
+        const accentColor: [number, number, number] = [46, 204, 113];
+        const textColor: [number, number, number] = [44, 62, 80]; 
+   
+       
+        doc.setFillColor(...primaryColor);
+        doc.rect(0, 0, pageWidth, 45, 'F');
+        
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(24);
+        doc.setFont('helvetica', 'bold');
+        doc.text('REPORTE DE USUARIOS', pageWidth / 2, 25, { align: 'center' });
+
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        const currentDate = new Date().toLocaleDateString('es-ES', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            weekday: 'long'
+        });
+        doc.text(`Generado el ${currentDate}`, pageWidth / 2, 35, { align: 'center' });
+        
+        yPosition = 65;
+        
+        doc.setTextColor(...textColor);
+        doc.setFillColor(...secondaryColor);
+        doc.roundedRect(margin, yPosition - 5, pageWidth - (margin * 2), 25, 3, 3, 'F');
+        
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(...primaryColor);
+        doc.text(' RESUMEN ESTADÍSTICO', margin + 10, yPosition + 5);
+        
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...textColor);
+        const totalUsers = users?.length || 0;
+        doc.text(`Total de usuarios registrados: ${totalUsers}`, margin + 10, yPosition + 15);
+        
+        yPosition += 40;
+        
+
+        doc.setFillColor(...primaryColor);
+        doc.rect(margin, yPosition, pageWidth - (margin * 2), 15, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text('ID', margin + 8, yPosition + 10);
+        doc.text('NOMBRE COMPLETO', margin + 35, yPosition + 10);
+        doc.text('CORREO ELECTRÓNICO', margin + 105, yPosition + 10);
+        
+        yPosition += 20;
+        
+        doc.setTextColor(...textColor);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        
+        const drawTableHeader = (y: number) => {
+            doc.setFillColor(...primaryColor);
+            doc.rect(margin, y, pageWidth - (margin * 2), 15, 'F');
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text('ID', margin + 8, y + 10);
+            doc.text('NOMBRE COMPLETO', margin + 35, y + 10);
+            doc.text('CORREO ELECTRÓNICO', margin + 105, y + 10);
+            
+            return y + 20;
+        };
+        
+        if (users && users.length > 0) {
+            users.forEach((user, index) => {
+            
+                if (yPosition > pageHeight - 50) {
+                    doc.addPage();
+                    yPosition = 30;
+                    yPosition = drawTableHeader(yPosition);
+                    doc.setTextColor(...textColor);
+                    doc.setFontSize(10);
+                    doc.setFont('helvetica', 'normal');
+                }
+                
+    
+                if (index % 2 === 0) {
+                    doc.setFillColor(248, 249, 250);
+                    doc.rect(margin, yPosition - 5, pageWidth - (margin * 2), 18, 'F');
+                }
+                
+                
+                doc.setDrawColor(200, 200, 200);
+                doc.setLineWidth(0.1);
+                doc.line(margin, yPosition + 13, pageWidth - margin, yPosition + 13);
+                
+                
+                const userId = user.id?.toString() || '-';
+                const userName = user.name || user.username || 'Sin nombre';
+                const userEmail = user.email || 'Sin email';
+                
+            
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(...primaryColor);
+                doc.text(`#${userId}`, margin + 8, yPosition + 5);
+                
+                
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(...textColor);
+                doc.text(userName.length > 25 ? userName.substring(0, 25) + '...' : userName, margin + 35, yPosition + 5);
+                
+                
+                doc.setTextColor(100, 100, 100);
+                doc.text('✉', margin + 100, yPosition + 5);
+                doc.text(userEmail.length > 35 ? userEmail.substring(0, 35) + '...' : userEmail, margin + 105, yPosition + 5);
+                
+                yPosition += 18;
+            });
+        } else {
+            
+            doc.setFillColor(255, 241, 241);
+            doc.roundedRect(margin, yPosition, pageWidth - (margin * 2), 30, 3, 3, 'F');
+            doc.setTextColor(231, 76, 60);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text('⚠ No hay usuarios disponibles', pageWidth / 2, yPosition + 20, { align: 'center' });
+        }
+        
+        
+        const totalPages = doc.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+            doc.setPage(i);
+            
+            
+            doc.setDrawColor(...primaryColor);
+            doc.setLineWidth(0.5);
+            doc.line(margin, pageHeight - 25, pageWidth - margin, pageHeight - 25);
+            
+    
+            doc.setTextColor(...textColor);
+            doc.setFontSize(8);
+            doc.setFont('helvetica', 'normal');
+            
+            
+            doc.text(`Página ${i} de ${totalPages}`, pageWidth / 2, pageHeight - 15, { align: 'center' });
+            
+        
+            const timestamp = new Date().toLocaleString('es-ES');
+            doc.text(`Generado: ${timestamp}`, margin, pageHeight - 10);
+            
+        
+            doc.text('Sistema de Gestión de Usuarios', pageWidth - margin, pageHeight - 10, { align: 'right' });
+        }
+        
+        const fileName = `reporte_usuarios_${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.save(fileName);
+        
+        
+        console.log(' PDF generado exitosamente:', fileName);
+        
+    } catch (error) {
+        console.error(' Error generando PDF:', error);
+        alert('Error al generar el reporte PDF. Por favor, intenta nuevamente.');
+    } finally {
+        setIsGeneratingPDF(false);
+    }
+};
 
     return (
         <div className="min-h-screen bg-light-background dark:bg-dark-background flex">
-            {/* Sidebar Desktop */}
+            
             <div className="hidden lg:block">
                 <Sidebar role={validRole} />
             </div>
-
-            {/* Mobile Sidebar Overlay */}
             {sidebarOpen && (
                 <div className="fixed inset-0 z-50 lg:hidden">
                     <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setSidebarOpen(false)} />
@@ -110,42 +284,6 @@ const Dashboard = ({ role }: DashboardProps) => {
                 {/* Contenido Principal */}
                 <div className="flex-1 overflow-auto px-4 py-6 sm:px-6 lg:px-8">
                     <div className="max-w-7xl mx-auto space-y-6">
-
-                        {/* Grid de Stats Principales */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {quickStats.map((stat, index) => (
-                                <div key={index}
-                                    className="bg-light-card dark:bg-dark-card rounded-xl p-5 border border-light-border dark:border-dark-border
-                                        hover:shadow-lg hover:shadow-light-primary/5 dark:hover:shadow-dark-primary/5 transition-all duration-300
-                                        hover:border-light-primary/20 dark:hover:border-dark-primary/20"
-                                >
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <p className="text-xs font-medium text-light-textSecondary dark:text-dark-textSecondary uppercase tracking-wide">
-                                                {stat.label}
-                                            </p>
-                                            <p className="text-2xl font-bold text-light-text dark:text-dark-text mt-1">
-                                                {stat.value}
-                                            </p>
-                                        </div>
-                                        <div className={`text-sm font-semibold ${stat.color} bg-opacity-10 px-2 py-1 rounded`}>
-                                            {stat.trend}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-
-
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <div className="bg-light-card dark:bg-dark-card rounded-xl p-4 border border-light-border dark:border-dark-border">
-                                <h3 className="font-semibold text-light-text dark:text-dark-text mb-4">
-                                    Estado del Sistema
-                                </h3>
-
-                            </div>
-                        </div>
-
                         <div className="bg-light-card dark:bg-dark-card rounded-xl border border-light-border dark:border-dark-border">
                             <div className="border-b border-light-border dark:border-dark-border">
                                 <nav className="flex overflow-x-auto">
@@ -166,16 +304,30 @@ const Dashboard = ({ role }: DashboardProps) => {
                                 </nav>
                             </div>
 
-                            {/* Contenido de la Sección Seleccionada */}
                             <div className="p-6">
-                                <div className="mb-4">
-                                    <h2 className="text-xl font-bold text-light-text dark:text-dark-text">
-                                        {selected}
-                                    </h2>
-                                    <p className="text-light-textSecondary dark:text-dark-textSecondary mt-1">
-                                        Gestiona y configura {selected.toLowerCase()}
-                                    </p>
+                                <div className="mb-4 flex items-center justify-between">
+                                    <div>
+                                        <h2 className="text-xl font-bold text-light-text dark:text-dark-text">
+                                            {selected}
+                                        </h2>
+                                        <p className="text-light-textSecondary dark:text-dark-textSecondary mt-1">
+                                            Gestiona y configura {selected.toLowerCase()}
+                                        </p>
+                                    </div>
+                                    {selected.toLowerCase().includes('usuario') && (
+                                        <button
+                                            onClick={generateUsersPDF}
+                                            disabled={isGeneratingPDF}
+                                            className="flex items-center gap-2 px-4 py-2 bg-light-primary dark:bg-dark-primary text-white rounded-lg
+                                                hover:bg-light-secondary dark:hover:bg-dark-secondary transition-colors duration-200
+                                                disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            <Download className="w-4 h-4" />
+                                            {isGeneratingPDF ? 'Generando...' : 'Descargar PDF'}
+                                        </button>
+                                    )}
                                 </div>
+                                
                                 <div className="min-h-[300px]">
                                     <UserContentAdmin role={validRole} users={users} />
 
