@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ApolloWrapper } from './ApolloWrapper';
 import "@styles/globals.css";
-import { UserProvider } from './Context/userContext'; 
+import { UserProvider } from '@context/userContext';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased h-full`}
       >
         <ApolloWrapper>
-          <UserProvider> 
+          <UserProvider>
             <main className="h-full">{children}</main>
           </UserProvider>
         </ApolloWrapper>

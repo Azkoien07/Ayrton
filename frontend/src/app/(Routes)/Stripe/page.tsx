@@ -18,11 +18,32 @@ export default function PagoPage() {
     }, []);
 
     const handleGoBack = () => {
-        router.push('/Pay'); // Volver a la página de planes de suscripción
+        router.push('/Pay');
     };
 
     return (
         <div className="min-h-screen bg-light-background dark:bg-dark-background flex">
+            {/* Sidebar Desktop */}
+            <div className="hidden lg:block">
+                <Sidebar role={'user'} />
+            </div>
+
+            {/* Mobile Sidebar Overlay */}
+            {sidebarOpen && (
+                <div className="fixed inset-0 z-50 lg:hidden">
+                    <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setSidebarOpen(false)} />
+                    <div className="relative w-64">
+                        <Sidebar role={'user'} />
+                        <button
+                            onClick={() => setSidebarOpen(false)}
+                            className="absolute top-4 right-4 p-2 text-white hover:bg-white/10 rounded-lg"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <main className="flex-1 flex flex-col min-w-0">
                 {/* Header */}
                 <header className="bg-light-surface dark:bg-dark-surface border-b border-light-border dark:border-dark-border">

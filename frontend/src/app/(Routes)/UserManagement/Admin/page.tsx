@@ -5,12 +5,11 @@ import { ArrowLeft, Menu, X, Download } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { cn } from '@utilities/utils';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
-import { useUser } from '@context/userContext'; 
+import type { AppDispatch, RootState } from "@/app/Redux/store";
+import { useUser } from '@context/userContext';
+import { fetchUsers } from '@slice/userSlice'
 import Sidebar from '@components/UI/Sidebar';
 import UserContentAdmin from '@components/content/UserContentAdmin';
-import { fetchUsers } from '@slice/userSlice'
-import { UseDispatch } from 'react-redux';
-import type { AppDispatch, RootState } from "@/app/Redux/store";
 
 const Dashboard = ({ role }: DashboardProps) => {
     const dispatch = useDispatch<AppDispatch>();

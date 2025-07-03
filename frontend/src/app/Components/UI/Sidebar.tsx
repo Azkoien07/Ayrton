@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     FiHome, FiSettings, FiCreditCard, FiLogOut, FiChevronRight,
-    FiUser, FiUsers, FiClipboard, FiVoicemail, FiBarChart,
-    FiShield, FiDatabase, FiTrendingUp,FiXOctagon
+    FiUser, FiUsers, FiClipboard, FiVoicemail,
+    FiShield, FiDatabase, FiTrendingUp, FiXOctagon
 } from "react-icons/fi";
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/Redux/store';
+import { toast } from "sonner";
+
 export type UserRole = 'admin' | 'user' | 'superadmin' | null;
 const adminNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/Admin", color: "from-light-primary to-light-secondary", description: "Panel de control administrativo" },
@@ -24,7 +26,7 @@ const userNavItems = [
     { name: "Dashboard", icon: <FiHome />, href: "/UserManagement/UserBasic", color: "from-light-primary to-light-secondary", description: "Mi panel personal" },
     { name: "Tasks", icon: <FiClipboard />, href: "/Tasks", color: "from-green-500 to-green-600", description: "Mis tareas" },
     { name: "Plans", icon: <FiCreditCard />, href: "/Pay", color: "from-light-warning to-orange-500", description: "Planes y pagos" },
-     { name: "Challenges", icon: <FiXOctagon />, href: "/Challenge", color: "from-light-warning to-orange-500", description: "Planes y pagos" },
+    { name: "Challenges", icon: <FiXOctagon />, href: "/Challenge", color: "from-light-warning to-orange-500", description: "Planes y pagos" },
     { name: "Pqrs", icon: <FiVoicemail />, href: "/PqrUser", color: "from-blue-500 to-blue-600", description: "Soporte y PQRS" },
     { name: "Settings", icon: <FiSettings />, href: "/UserManagement/Settings", color: "from-slate-500 to-slate-600", description: "Mi configuración" },
 ];
@@ -102,7 +104,11 @@ export default function Sidebar({ sidebarOpen: propSidebarOpen, setSidebarOpen: 
 
     const handleLogout = () => {
         if (window.confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-            window.location.href = "/";
+            localStorage.removeItem("token");
+            toast.success("Sesión cerrada correctamente");
+            setTimeout(() => {
+                window.location.href = "/Auth/login";
+            }, 1200);
         }
     };
 

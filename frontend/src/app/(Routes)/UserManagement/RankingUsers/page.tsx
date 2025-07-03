@@ -1,12 +1,11 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { cn } from '@utilities/utils';
-import { Search, Plus, Trophy, TrendingUp, Users, Activity, Filter, ArrowLeft, Menu, X } from 'lucide-react';
-import Sidebar from '@/app/Components/UI/Sidebar';
+import { Trophy, TrendingUp, Users, Activity, ArrowLeft, Menu, X } from 'lucide-react';
 import { useRankingData } from "@/app/Hooks/RankingData";
-import StatCard from '@/app/Components/RankingUsers/StatCard';
-import RankingCard from '@/app/Components/RankingUsers/RankingCard';
-import SkeletonCard from '@/app/Components/RankingUsers/SkeletonCard';
+import Sidebar from '@components/UI/Sidebar';
+import StatCard from '@components/RankingUsers/StatCard';
+import RankingCard from '@components/RankingUsers/RankingCard';
+import SkeletonCard from '@components/RankingUsers/SkeletonCard';
 
 export default function PageRanking() {
     const {
@@ -31,7 +30,7 @@ export default function PageRanking() {
                 setSidebarOpen(false);
             }
         };
-        
+
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);

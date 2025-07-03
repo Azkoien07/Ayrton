@@ -31,6 +31,10 @@ dependencies {
 	// GraphQL
 	implementation("org.springframework.boot:spring-boot-starter-graphql")
 
+	// Reportes PDF
+	implementation("com.itextpdf:kernel:7.2.3")
+	implementation("com.itextpdf:layout:7.2.3")
+
 	// Seguridad
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")

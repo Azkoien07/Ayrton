@@ -14,6 +14,7 @@ export const GET_ALL_CHALLENGES = gql`
         category
         state
         dificulty
+        points
       }
       currentPage
       totalPages
@@ -35,6 +36,7 @@ export const GET_CHALLENGE_BY_ID = gql`
         category
         state
         dificulty
+        points
       }
     }
   }

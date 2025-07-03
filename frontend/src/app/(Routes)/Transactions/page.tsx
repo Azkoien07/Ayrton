@@ -3,19 +3,18 @@
 
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Menu, X } from 'lucide-react';
-import { cn } from '@utilities/utils';
+import { UserRole } from '@components/UI/Sidebar';
 import { DashboardProps, roleOptions } from '@Types/dashboard';
+import { useDashboardData } from '@hooks/useDashboardData';
+import { Voucher } from '@/generated/graphql';
 import Sidebar from '@components/UI/Sidebar';
 import DashboardHeader from '@components/Transactions/DashboardHeader';
 import WelcomeSection from '@components/Transactions/WelcomeSection';
 import QuickStatsSection from '@components/Transactions/QuickStatsSection';
 import RecentPaymentsSection from '@components/Transactions/RecentPaymentsSection';
 import VouchersSection from '@components/Transactions/VouchersSection';
-import { useDashboardData } from '@hooks/useDashboardData';
-import { Voucher } from '@/generated/graphql';
-import { UserRole } from '@components/UI/Sidebar'; 
 
-const DashboardContent = ({ 
+const DashboardContent = ({
     validRole,
     fetchPayments,
     fetchVouchers,
@@ -31,22 +30,22 @@ const DashboardContent = ({
     dateFilter,
     setDateFilter,
     filteredPayments
-}: { 
-    validRole: UserRole; 
+}: {
+    validRole: UserRole;
     fetchPayments: () => void;
     fetchVouchers: () => void;
-    payments: any[]; 
-    vouchers: any[]; 
+    payments: any[];
+    vouchers: any[];
     loading: boolean;
     error: string | null;
-    stats: any; 
+    stats: any;
     searchTerm: string;
     setSearchTerm: (term: string) => void;
     filterMethod: string;
     setFilterMethod: (method: string) => void;
     dateFilter: string;
     setDateFilter: (date: string) => void;
-    filteredPayments: any[]; 
+    filteredPayments: any[];
 }) => {
     if (loading) {
         return (
@@ -91,8 +90,8 @@ const DashboardContent = ({
                 />
 
                 <WelcomeSection />
-                <QuickStatsSection 
-                    stats={stats} 
+                <QuickStatsSection
+                    stats={stats}
                     vouchersLength={vouchers.length}
                 />
                 <RecentPaymentsSection
@@ -104,7 +103,7 @@ const DashboardContent = ({
                     dateFilter={dateFilter}
                     setDateFilter={setDateFilter}
                 />
-                <VouchersSection 
+                <VouchersSection
                     vouchers={(vouchers as unknown as Voucher[])
                         .filter((v) => v.id !== undefined)}
                 />
@@ -200,7 +199,7 @@ const Dashboard = ({ role }: DashboardProps) => {
                     </div>
                 </header>
 
-                <DashboardContent 
+                <DashboardContent
                     validRole={validRole}
                     fetchPayments={fetchPayments}
                     fetchVouchers={fetchVouchers}

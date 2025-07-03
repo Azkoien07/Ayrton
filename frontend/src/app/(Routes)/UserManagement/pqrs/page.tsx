@@ -1,30 +1,38 @@
 'use client';
 
-import { Search, Plus, FileText, AlertCircle, MessageSquare, ArrowLeft, Menu, X } from 'lucide-react';
+import { Search, FileText, AlertCircle, MessageSquare, ArrowLeft, Menu, X, Plus } from 'lucide-react';
 import PqrCard from '@/app/Components/Pqrs/PqrCard';
 import StatsCard from '@/app/Components/Pqrs/StatsCard';
 import PqrModal from '@/app/Components/Pqrs/PqrModal';
-import { useUser  } from '@context/userContext';
+import { useUser } from '@context/userContext';
 import Sidebar from '@/app/Components/UI/Sidebar';
 import { useState, useEffect } from 'react';
-import { cn } from '@utilities/utils';
-import usePqrHandlers from '@/app/Julian/handlesPqr';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from "@/app/Redux/store";
+import {
+    fetchPqrs,
+    addPqr,
+    updatePqr,
+    deletePqr,
+} from '@/app/Redux/Slices/pqrSlice';
 import { Pqr } from '@/app/Types/Pqr';
+import { useRouter } from 'next/navigation';
+import { PqrInput, PqrUpdateInput } from '@/generated/graphql';
 import { TypePqr } from '@/generated/graphql';
 
 const PqrDashboard = () => {
-    const { user } = useUser ();
-    const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
+    const { user } = useUser();
+    const dispatch = useDispatch<AppDispatch>();
     const {
         data: pqrs,
         loading,
+        error,
         totalItems,
-        page,
-        setPage,
-        handleAddPqr,
-        handleUpdatePqr,
-        handleDeletePqr,
-    } = usePqrHandlers();
+        currentPage,
+        totalPages
+    } = useSelector((state: RootState) => state.pqr);
+    const router = useRouter();
+    const validRole = user?.role?.toLowerCase() === 'admin' ? 'admin' : 'user';
 
     const [searchTerm, setSearchTerm] = useState('');
     const [typeFilter, setTypeFilter] = useState('all');
@@ -32,27 +40,47 @@ const PqrDashboard = () => {
     const [selectedPqr, setSelectedPqr] = useState<Pqr | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditMode, setIsEditMode] = useState(false);
+    const [isCreating, setIsCreating] = useState(false);
     const [isClient, setIsClient] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    const filteredPqrs = pqrs.filter(pqr => {
-        const matchesSearch = pqr.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                              pqr.description.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesType = typeFilter === 'all' || pqr.typePqr === typeFilter;
-        const matchesState = stateFilter === 'all' || 
-                             (stateFilter === 'pending' && pqr.state === false) || // 'PENDING' es false
-                             (stateFilter === 'resolved' && pqr.state === true); // 'RESOLVED' es true
-        return matchesSearch && matchesType && matchesState;
-    });
+    useEffect(() => {
+        dispatch(fetchPqrs({ page: 0, size: 5 }));
+    }, [dispatch]);
 
+    // Configurar cliente y resize handler
+    useEffect(() => {
+        setIsClient(true);
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                setSidebarOpen(false);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const filteredPqrs = pqrs.filter((pqr: Pqr) =>
+        (pqr.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            pqr.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        (typeFilter === 'all' || pqr.typePqr === typeFilter) &&
+        (stateFilter === 'all' ||
+            (stateFilter === 'pending' && !pqr.state) ||
+            (stateFilter === 'resolved' && pqr.state))
+    );
+
+    // Calcular estadísticas
     const stats = {
-        total: pqrs.length,
-        peticiones: pqrs.filter(pqr => pqr.typePqr === 'Peticion').length,
-        quejas: pqrs.filter(pqr => pqr.typePqr === 'Queja').length,
-        reclamos: pqrs.filter(pqr => pqr.typePqr === 'Reclamo').length,
-        pendientes: pqrs.filter(pqr => pqr.state === false).length, // 'PENDING' es false
-        resueltas: pqrs.filter(pqr => pqr.state === true).length, // 'RESOLVED' es true
+        total: totalItems,
+        peticiones: pqrs.filter((pqr: Pqr) => pqr.typePqr === TypePqr.Peticion).length,
+        quejas: pqrs.filter((pqr: Pqr) => pqr.typePqr === TypePqr.Queja).length,
+        reclamos: pqrs.filter((pqr: Pqr) => pqr.typePqr === TypePqr.Reclamo).length,
+        pendientes: pqrs.filter((pqr: Pqr) => pqr.state === false).length,
+        resueltas: pqrs.filter((pqr: Pqr) => pqr.state === true).length,
     };
 
+    // Handlers
     const handleView = (pqr: Pqr) => {
         setSelectedPqr(pqr);
         setIsEditMode(false);
@@ -62,60 +90,83 @@ const PqrDashboard = () => {
     const handleEdit = (pqr: Pqr) => {
         setSelectedPqr(pqr);
         setIsEditMode(true);
+        setIsCreating(false);
+        setIsModalOpen(true);
+    };
+
+    const handleCreate = () => {
+        setSelectedPqr(null);
+        setIsEditMode(false);
+        setIsCreating(true);
         setIsModalOpen(true);
     };
 
     const handleDelete = async (pqrId: string, pqrName: string) => {
-        await handleDeletePqr(pqrId, pqrName);
+        if (window.confirm(`¿Estás seguro de que deseas eliminar "${pqrName}"?`)) {
+            try {
+                await dispatch(deletePqr(pqrId)).unwrap();
+                // Opcional: mostrar notificación de éxito
+            } catch (error) {
+                console.error('Error al eliminar PQR:', error);
+                // Opcional: mostrar notificación de error
+            }
+        }
     };
 
     const handleSavePqr = async (formData: any) => {
-        if (isEditMode && selectedPqr) {
-            await handleUpdatePqr({
-                id: selectedPqr.id,
-                input: {
+        try {
+            if (isEditMode && selectedPqr) {
+                const input: PqrUpdateInput = {
                     typePqr: formData.typePqr,
                     title: formData.title,
                     description: formData.description,
                     argument: formData.argument,
-                    state: formData.state as boolean,
-                    answer: formData.answer || '', // Asegurarse de enviar answer
+                    state: formData.state,
+                    answer: formData.answer,
                     userName: formData.userName,
                     userEmail: formData.userEmail,
                     userPhone: formData.userPhone,
-                }
-            });
-        } else {
-            await handleAddPqr({
-                typePqr: formData.typePqr,
-                title: formData.title,
-                description: formData.description,
-                argument: formData.argument,
-                userName: formData.userName,
-                userEmail: formData.userEmail,
-                userPhone: formData.userPhone,
-            });
-        }
-        setIsModalOpen(false);
-        setSelectedPqr(null);
-    };
-
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    useEffect(() => {
-        setIsClient(true);
-        const handleResize = () => {
-            if (window.innerWidth >= 1024) {
-                setSidebarOpen(false);
+                };
+                await dispatch(updatePqr({ id: selectedPqr.id, input })).unwrap();
+            } else if (isCreating) {
+                const input: PqrInput = {
+                    typePqr: formData.typePqr,
+                    title: formData.title,
+                    description: formData.description,
+                    argument: formData.argument,
+                    answer: formData.answer,
+                    userName: formData.userName,
+                    userEmail: formData.userEmail,
+                    userPhone: formData.userPhone,
+                };
+                await dispatch(addPqr(input)).unwrap();
             }
-        };
-        
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    const handleGoBack = () => {
-        window.history.back();
+            setIsModalOpen(false);
+            setSelectedPqr(null);
+            setIsCreating(false);
+            setIsEditMode(false);
+            dispatch(fetchPqrs({ page: currentPage, size: 10 }));
+        } catch (error) {
+            console.error("Error saving PQR:", error);
+        }
     };
+
+    const handlePageChange = (newPage: number) => {
+        dispatch(fetchPqrs({ page: newPage, size: 10 }));
+    };
+
+
+    // Mostrar loading spinner si está cargando
+    if (loading && pqrs.length === 0) {
+        return (
+            <div className="min-h-screen bg-light-background dark:bg-dark-background flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-light-primary dark:border-dark-primary mx-auto mb-4"></div>
+                    <p className="text-light-textSecondary dark:text-dark-textSecondary">Cargando PQRs...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-light-background dark:bg-dark-background flex">
@@ -155,7 +206,7 @@ const PqrDashboard = () => {
                                 </button>
 
                                 <button
-                                    onClick={handleGoBack}
+                                    onClick={() => router.back()}
                                     className="p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors rounded-lg hover:bg-light-border dark:hover:bg-dark-border"
                                 >
                                     <ArrowLeft className="w-5 h-5" />
@@ -175,6 +226,19 @@ const PqrDashboard = () => {
                 </header>
 
                 <div className="flex-1 overflow-auto px-4 py-6 sm:px-6 lg:px-8">
+                    {/* Error message */}
+                    {error && (
+                        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
+                            <div className="flex items-center">
+                                <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 mr-2" />
+                                <p className="text-red-800 dark:text-red-200">
+                                    Error al cargar las PQRs: {typeof error === 'string' ? error : (error?.message || 'Error desconocido')}
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Stats Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
                         <StatsCard
                             title="Total PQRs"
@@ -252,11 +316,19 @@ const PqrDashboard = () => {
                                     <option value="resolved">Resueltas</option>
                                 </select>
                             </div>
+                            <button
+                                onClick={handleCreate}
+                                className="flex items-center gap-2 px-4 py-2 bg-light-primary dark:bg-dark-primary text-white rounded-lg hover:opacity-90 transition-opacity"
+                            >
+                                <Plus className="w-4 h-4" />
+                                <span>Crear PQR</span>
+                            </button>
                         </div>
                     </div>
 
+                    {/* PQR Cards */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                        {filteredPqrs.map((pqr) => (
+                        {filteredPqrs.map((pqr: Pqr) => (
                             <PqrCard
                                 key={pqr.id}
                                 pqr={pqr}
@@ -267,43 +339,82 @@ const PqrDashboard = () => {
                         ))}
                     </div>
 
-                    {filteredPqrs.length === 0 && (
+                    {/* Empty State */}
+                    {filteredPqrs.length === 0 && !loading && (
                         <div className="text-center py-12">
                             <FileText className="w-12 h-12 text-light-textSecondary dark:text-dark-textSecondary mx-auto mb-4" />
                             <h3 className="text-lg font-medium text-light-text dark:text-dark-text mb-2">
                                 No se encontraron PQRs
                             </h3>
                             <p className="text-light-textSecondary dark:text-dark-textSecondary">
-                                Intenta ajustar los filtros de búsqueda
+                                {pqrs.length === 0 ? 'No hay PQRs registradas' : 'Intenta ajustar los filtros de búsqueda'}
                             </p>
                         </div>
                     )}
+
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                        <div className="flex justify-center mt-8">
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    disabled={currentPage <= 1}
+                                    className="px-4 py-2 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-light-border dark:hover:bg-dark-border transition-colors"
+                                >
+                                    Anterior
+                                </button>
+
+                                <span className="px-4 py-2 bg-light-primary dark:bg-dark-primary text-white rounded-lg">
+                                    {currentPage} de {totalPages}
+                                </span>
+
+                                <button
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage >= totalPages}
+                                    className="px-4 py-2 bg-light-surface dark:bg-dark-surface border border-light-border dark:border-dark-border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-light-border dark:hover:bg-dark-border transition-colors"
+                                >
+                                    Siguiente
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Loading overlay for updates */}
+                    {loading && pqrs.length > 0 && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40">
+                            <div className="bg-light-surface dark:bg-dark-surface rounded-lg p-6 flex items-center gap-4">
+                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-light-primary dark:border-dark-primary"></div>
+                                <p className="text-light-text dark:text-dark-text">Procesando...</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
+
+                {/* Modal */}
                 <PqrModal
-                    formData={selectedPqr ? {
-                        typePqr: selectedPqr.typePqr,
-                        title: selectedPqr.title,
-                        description: selectedPqr.description,
-                        argument: selectedPqr.argument,
-                        userName: selectedPqr.userName,
-                        userEmail: selectedPqr.userEmail,
-                        userPhone: user?.phone || '', // Asegurar que userPhone esté presente
-                        state: selectedPqr.state,
-                        answer: selectedPqr.answer || '',
-                    } : {
-                        typePqr: TypePqr.Peticion,
-                        title: '',
-                        description: '',
-                        argument: '',
-                        userName: user?.name || '', 
-                        userEmail: user?.email || '', 
-                        userPhone: user?.phone || '', 
-                        answer: '',
-                    }}
+                    formData={
+                        isEditMode && selectedPqr ? {
+                            ...selectedPqr,
+                            userPhone: selectedPqr.userPhone || user?.phone || '',
+                            answer: selectedPqr.answer || '',
+                        } : {
+                            typePqr: TypePqr.Peticion,
+                            title: '',
+                            description: '',
+                            argument: '',
+                            userName: user?.name || '',
+                            userEmail: user?.email || '',
+                            userPhone: user?.phone || '',
+                            state: false,
+                            answer: '',
+                        }
+                    }
                     isOpen={isModalOpen}
                     onClose={() => {
                         setIsModalOpen(false);
                         setSelectedPqr(null);
+                        setIsCreating(false);
+                        setIsEditMode(false);
                     }}
                     onSave={handleSavePqr}
                     isEditMode={isEditMode}

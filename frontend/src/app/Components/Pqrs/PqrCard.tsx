@@ -1,8 +1,8 @@
 import { Eye, Edit, Trash2, MessageSquare, AlertCircle, FileText } from 'lucide-react';
-import { Pqr } from '@/app/Types/Pqr'; // Importar la interfaz Pqr
+import { Pqr } from '@Types/Pqr';
 
-const PqrCard = ({ pqr, onView, onEdit, onDelete }: { 
-    pqr: Pqr; 
+const PqrCard = ({ pqr, onView, onEdit, onDelete }: {
+    pqr: Pqr;
     onView: (pqr: Pqr) => void;
     onEdit: (pqr: Pqr) => void;
     onDelete: (id: string, name: string) => void;
@@ -33,11 +33,10 @@ const PqrCard = ({ pqr, onView, onEdit, onDelete }: {
                         {getTypeIcon(pqr.typePqr)}
                         {pqr.typePqr}
                     </span>
-                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                        pqr.state 
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' 
+                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${pqr.state
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
                             : 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300'
-                    }`}>
+                        }`}>
                         {pqr.state ? 'Resuelta' : 'Pendiente'}
                     </span>
                 </div>
@@ -62,15 +61,15 @@ const PqrCard = ({ pqr, onView, onEdit, onDelete }: {
                     </button>
                 </div>
             </div>
-            
+
             <h3 className="text-lg font-semibold text-light-text dark:text-dark-text mb-2">
                 {pqr.title}
             </h3>
-            
+
             <p className="text-light-textSecondary dark:text-dark-textSecondary mb-4 line-clamp-2">
                 {pqr.description}
             </p>
-            
+
         </div>
     );
 };

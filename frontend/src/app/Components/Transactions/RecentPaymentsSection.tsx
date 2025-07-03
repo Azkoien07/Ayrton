@@ -1,9 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Search, Eye, Edit, Trash2, CreditCard, DollarSign } from 'lucide-react';
-import { PaymentEntity, UserEntity } from '@Types/typestransations';
-import { VoucherEntity } from '@Types/voucher';
-import { PaymentMethod } from '@/generated/graphql'; // Importar PaymentMethod del archivo generado
+import { PaymentEntity } from '@Types/typestransations';
+import { PaymentMethod } from '@/generated/graphql';
 
 interface RecentPaymentsSectionProps {
     filteredPayments: PaymentEntity[];
@@ -68,7 +67,7 @@ const RecentPaymentsSection: React.FC<RecentPaymentsSectionProps> = ({
                             Nuevo Pago
                         </button>
                     </div>
-                    
+
                     {/* Filtros y búsqueda */}
                     <div className="flex flex-col sm:flex-row gap-4">
                         <div className="relative flex-1">
@@ -103,7 +102,7 @@ const RecentPaymentsSection: React.FC<RecentPaymentsSectionProps> = ({
                         </select>
                     </div>
                 </div>
-                
+
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         <thead className="bg-light-background dark:bg-dark-background">
@@ -134,7 +133,7 @@ const RecentPaymentsSection: React.FC<RecentPaymentsSectionProps> = ({
                                         <td className="p-4">
                                             <div className="flex items-center gap-3">
                                                 <div className="p-2 rounded-lg bg-light-background dark:bg-dark-background">
-                                                {getPaymentMethodIcon(payment.paymentMethod as PaymentMethod)}
+                                                    {getPaymentMethodIcon(payment.paymentMethod as PaymentMethod)}
                                                 </div>
                                                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${getPaymentMethodColor(payment.paymentMethod as PaymentMethod)}`}>
                                                     {payment.paymentMethod}

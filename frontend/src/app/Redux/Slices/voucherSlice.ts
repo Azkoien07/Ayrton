@@ -253,6 +253,5 @@ const voucherSlice = createSlice({
     }
 });
 
-
 export const { } = voucherSlice.actions;
 export default voucherSlice.reducer;

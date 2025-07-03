@@ -29,6 +29,7 @@ export type Challenge = {
   dificulty: Dificulty;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  points: Scalars['Int']['output'];
   state: Scalars['Boolean']['output'];
 };
 
@@ -351,6 +352,7 @@ export type Pqr = {
 };
 
 export type PqrInput = {
+  answer: Scalars['String']['input'];
   argument: Scalars['String']['input'];
   description: Scalars['String']['input'];
   title: Scalars['String']['input'];
@@ -406,6 +408,7 @@ export type Query = {
   allUsers?: Maybe<UserPage>;
   allVouchers?: Maybe<VoucherPage>;
   challengeById?: Maybe<ChallengePageId>;
+  generateReportPDF?: Maybe<Scalars['String']['output']>;
   paymentById?: Maybe<PaymentPageId>;
   planById?: Maybe<PlanPageId>;
   pqrById?: Maybe<PqrPageId>;
@@ -731,14 +734,14 @@ export type GetAllChallengesQueryVariables = Exact<{
 }>;
 
 
-export type GetAllChallengesQuery = { allChallenges?: { code?: string | null, date?: string | null, message?: string | null, currentPage?: number | null, totalPages?: number | null, totalItems?: number | null, data?: Array<{ id: string, name: string, description: string, category: Category, state: boolean, dificulty: Dificulty } | null> | null } | null };
+export type GetAllChallengesQuery = { allChallenges?: { code?: string | null, date?: string | null, message?: string | null, currentPage?: number | null, totalPages?: number | null, totalItems?: number | null, data?: Array<{ id: string, name: string, description: string, category: Category, state: boolean, dificulty: Dificulty, points: number } | null> | null } | null };
 
 export type GetChallengeByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetChallengeByIdQuery = { challengeById?: { code?: string | null, date?: string | null, message?: string | null, data?: { id: string, name: string, description: string, category: Category, state: boolean, dificulty: Dificulty } | null } | null };
+export type GetChallengeByIdQuery = { challengeById?: { code?: string | null, date?: string | null, message?: string | null, data?: { id: string, name: string, description: string, category: Category, state: boolean, dificulty: Dificulty, points: number } | null } | null };
 
 export type AddChallengeMutationVariables = Exact<{
   input: ChallengeInput;
@@ -1079,6 +1082,7 @@ export const GetAllChallengesDocument = gql`
       category
       state
       dificulty
+      points
     }
     currentPage
     totalPages
@@ -1133,6 +1137,7 @@ export const GetChallengeByIdDocument = gql`
       category
       state
       dificulty
+      points
     }
   }
 }

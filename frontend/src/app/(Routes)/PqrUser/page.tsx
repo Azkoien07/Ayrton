@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Menu, X } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState, AppDispatch } from '@store/store';
+import { TypePqr } from '@/generated/graphql';
+import { fetchPqrs } from '@slice/pqrSlice';
 import Sidebar from '@components/UI/Sidebar';
 import PqrSubmissionSuccess from '@components/Pqrs/PqrSubmissionSuccess';
 import PqrListPanel from '@components/Pqrs/PqrListPanel';
 import PqrFormSteps from '@components/Pqrs/PqrFormSteps';
-import { TypePqr } from '@/generated/graphql';
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState, AppDispatch } from '@/app/Redux/store';
-import { fetchPqrs } from '@slice/pqrSlice';
 
 const PqrUserPage = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -25,8 +25,8 @@ const PqrUserPage = () => {
     useEffect(() => {
         setIsClient(true);
         if (showPqrPanel) {
-            dispatch(fetchPqrs({ page: 0, size: 5 })); 
-         }
+            dispatch(fetchPqrs({ page: 0, size: 5 }));
+        }
     }, [dispatch, showPqrPanel]);
 
     const handleSubmissionSuccess = (typePqr: TypePqr | undefined) => {
@@ -43,6 +43,7 @@ const PqrUserPage = () => {
         window.history.back();
     };
 
+    console.log({ isClient, isSubmitted, showPqrPanel });
     return (
         <div className="min-h-screen bg-light-background dark:bg-dark-background flex">
             {/* Sidebar Desktop */}

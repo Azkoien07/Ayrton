@@ -5,6 +5,7 @@ type Challenge {
     category: Category!
     state: Boolean!
     dificulty: Dificulty!
+    points: Int!
 }
 
 enum Category {
@@ -42,7 +43,7 @@ input ChallengeInput {
     category: Category!
     state: Boolean!
     dificulty: Dificulty!
-    points: Int! # Added points field
+    points: Int!
 }
 
 input ChallengeUpdateInput {
@@ -51,7 +52,7 @@ input ChallengeUpdateInput {
     category: Category!
     state: Boolean!
     dificulty: Dificulty!
-    points: Int! # Added points field
+    points: Int!
 }
 
 extend type Query {

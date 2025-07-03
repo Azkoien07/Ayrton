@@ -1,6 +1,7 @@
 import { TypePqr } from '@/generated/graphql';
 
 export interface Pqr {
+    userPhone?: string;
     userEmail: string;
     userName: string;
     id: string;

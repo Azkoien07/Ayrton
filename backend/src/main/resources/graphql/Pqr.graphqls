@@ -36,6 +36,7 @@ input PqrInput {
     title: String!
     description: String!
     argument: String!
+    answer: String!
     userName: String!
     userEmail: String!
     userPhone: String!

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Play, CheckCircle } from 'lucide-react';
 import { ChallengeItem } from '@Types/slices/challenge';
-import { Category, Dificulty } from "@/generated/graphql";
+import { Category } from "@/generated/graphql";
 
 interface ChallengeOverviewProps {
     activeChallenges: ChallengeItem[];
@@ -36,10 +36,10 @@ export default function ChallengeOverview({
                                     <div className="flex justify-between text-sm text-light-textSecondary mb-1">
                                         <span>Progreso</span>
                                         {/* Progress is not directly from DB, assuming 0 for active */}
-                                        <span>0%</span> 
+                                        <span>0%</span>
                                     </div>
                                     <div className="w-full bg-light-border rounded-full h-2">
-                                        <div 
+                                        <div
                                             className="bg-light-primary h-2 rounded-full transition-all"
                                             style={{ width: `0%` }}
                                         ></div>

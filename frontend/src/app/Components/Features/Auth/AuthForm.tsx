@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
-import { login as authServiceLogin } from "@services/authService";
+import { login as authServiceLogin } from "@slice/authSlice";
 import { useUser } from '@context/userContext';
 
 interface AuthFormProps {
@@ -23,40 +23,6 @@ export default function AuthForm({ theme, toggleTheme }: AuthFormProps) {
   });
   const [loading, setLoading] = useState(false);
 
-  const handleLoginSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const data = await authServiceLogin(email, password);
-
-      console.log("Datos de respuesta del backend:", data);
-      const userRole = typeof data.role === 'object' && data.role !== null && 'name' in data.role
-        ? (data.role as { name: string }).name
-        : data.role;
-
-      console.log("Rol del usuario (procesado):", userRole);
-
-      login({
-        id: data.id,
-        email: data.email,
-        role: userRole,
-      });
-
-      toast.success("¡Inicio de sesión exitoso!");
-
-      if (userRole && userRole.toLowerCase() === "admin") {
-        window.location.href = "/UserManagement/Admin";
-      } else {
-        window.location.href = "/UserManagement/UserBasic";
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Credenciales inválidas o error del servidor.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +68,6 @@ export default function AuthForm({ theme, toggleTheme }: AuthFormProps) {
       {/* Login */}
       <div className="absolute w-full [backface-visibility:hidden]">
         <form
-          onSubmit={handleLoginSubmit}
           className={`${cardBg} shadow-2xl rounded-xl p-10 flex flex-col gap-6 transition-transform duration-500 transform border ${borderColor}`}
         >
           <h2 className="text-2xl font-semibold text-center mb-2">

@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Send, FileText, AlertCircle, MessageSquare } from 'lucide-react';
+import { AddPqrMutationVariables, PqrInput, TypePqr } from '@/generated/graphql';
+import { FormErrors, pqrTypesConfig } from '@Types/Pqr';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '@store/store';
+import { addPqr } from '@slice/pqrSlice';
+import { toast } from 'sonner';
 import PqrTypeSelection from '@components/Pqrs/PqrTypeSelection';
 import PqrModal from '@components/Pqrs/PqrModal';
 import ContactInfoForm from '@components/Pqrs/ContactInfoForm';
-import { FormErrors, pqrTypesConfig } from '@Types/Pqr';
-import { useDispatch, useSelector } from 'react-redux';
-import type { RootState, AppDispatch } from '@/app/Redux/store';
-import { addPqr } from '@slice/pqrSlice';
-import { AddPqrMutationVariables, PqrInput, TypePqr } from '@/generated/graphql';
-import { toast } from 'sonner';
 
 interface PqrFormStepsProps {
     onSubmissionSuccess: (typePqr: TypePqr | undefined) => void;
@@ -160,6 +160,8 @@ const PqrFormSteps: React.FC<PqrFormStepsProps> = ({ onSubmissionSuccess }) => {
 
     const stepTitles = ['Tipo de PQR', 'Información', 'Datos de Contacto'];
 
+    console.log('📌 Renderizando PqrFormSteps. Paso actual:', currentStep);
+
     return (
         <>
             {/* Progress Steps */}
@@ -249,13 +251,15 @@ const PqrFormSteps: React.FC<PqrFormStepsProps> = ({ onSubmissionSuccess }) => {
                         )}
 
                         {currentStep === 2 && (
-                            <div className="w-full max-w-none lg:max-w-2xl xl:max-w-3xl mx-auto">
-                                <PqrModal
-                                    formData={formData}
-                                    onInputChange={handleInputChange}
-                                    errors={errors}
-                                />
-                            </div>
+                            <PqrModal
+                                formData={formData}
+                                onInputChange={handleInputChange}
+                                errors={errors}
+                                isOpen={true}
+                                onClose={() => setCurrentStep(1)}
+                                onSave={handleAddPqr}
+                                isEditMode={false}
+                            />
                         )}
 
                         {currentStep === 3 && (

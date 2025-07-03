@@ -5,7 +5,7 @@ import { Provider, useDispatch } from 'react-redux';
 import { ApolloProvider } from '@apollo/client';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { store } from '@/app/Redux/store'
+import { store } from '@store/store'
 import { Toaster } from 'sonner';
 import { client } from '@lib/apollo-client';
 import { loadUserFromStorage } from '@slice/authSlice';
