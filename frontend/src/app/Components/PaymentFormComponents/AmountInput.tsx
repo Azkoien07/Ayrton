@@ -25,7 +25,7 @@ export default function AmountInput({
             <label className="block text-gray-700 dark:text-gray-300 text-sm font-semibold">
                 Monto a pagar
             </label>
-            
+
             {/* Selector de moneda */}
             <div className="flex bg-gray-100 dark:bg-gray-800 rounded-2xl p-1">
                 <button
@@ -61,6 +61,7 @@ export default function AmountInput({
                 </span>
                 <input
                     type="number"
+                    disabled
                     className="w-full pl-8 pr-4 py-4 rounded-2xl border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 text-lg font-semibold focus:outline-none focus:border-blue-500 dark:focus:border-blue-400 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900 transition-all duration-200"
                     value={currency === 'USD' ? amountUSD : amountCOP}
                     min={currency === 'USD' ? 0.01 : 1}
@@ -78,7 +79,7 @@ export default function AmountInput({
                         Equivalencia:
                     </span>
                     <span className="text-blue-800 dark:text-blue-200 font-semibold">
-                        {currency === 'USD' 
+                        {currency === 'USD'
                             ? formatCurrency(amountCOP, 'COP')
                             : formatCurrency(amountUSD, 'USD')
                         }

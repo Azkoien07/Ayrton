@@ -7,8 +7,6 @@ import { createStripePaymentIntent, resetStripePayment } from '@slice/stripePaym
 import { PaymentInput, PaymentMethod } from '@/generated/graphql';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import clsx from 'clsx';
-import PaymentFormHeader from './PaymentFormComponents/PaymentFormHeader';
 import AmountInput from './PaymentFormComponents/AmountInput';
 import PaymentMethodSelector from './PaymentFormComponents/PaymentMethodSelector';
 import CardInfoInput from './PaymentFormComponents/CardInfoInput';
@@ -61,23 +59,30 @@ export default function PaymentForm({ initialAmount = 0, initialCurrency = 'USD'
         if (!stripe || !elements) return;
 
         if (amountUSD <= 0) {
-            toast.error(' El monto debe ser mayor a cero');
+            toast.error('El monto debe ser mayor a cero');
             return;
         }
 
         const input: PaymentInput = {
-            purchaseAmount: amountUSD, 
+            purchaseAmount: amountUSD,
             paymentMethod: method,
         };
 
         const res = await dispatch(createStripePaymentIntent(input));
         if (createStripePaymentIntent.rejected.match(res)) {
-            toast.error(' Error creando PaymentIntent');
+            toast.error('Error creando PaymentIntent');
             return;
         }
 
         if (!clientSecret) {
-            toast.error(' clientSecret no disponible');
+            toast.error('clientSecret no disponible');
+            return;
+        }
+
+        // ✅ DEBUG: Verifica que el clientSecret es el correcto
+        console.log("🔑 clientSecret recibido:", clientSecret);
+        if (clientSecret.startsWith('pk_test_')) {
+            toast.error('Error: clientSecret inválido (parece una API Key pública)');
             return;
         }
 
@@ -88,14 +93,15 @@ export default function PaymentForm({ initialAmount = 0, initialCurrency = 'USD'
         });
 
         if (result.error) {
-            toast.error(` Pago fallido: ${result.error.message}`);
+            toast.error(`Pago fallido: ${result.error.message}`);
         } else if (result.paymentIntent?.status === 'succeeded') {
-            toast.success(' ¡Pago exitoso!');
+            toast.success('¡Pago exitoso!');
             dispatch(resetStripePayment());
             setAmountUSD(0);
             setAmountCOP(0);
         }
     };
+
 
     const formatCurrency = (amount: number, currencyType: 'USD' | 'COP') => {
         return new Intl.NumberFormat('es-CO', {
@@ -108,13 +114,13 @@ export default function PaymentForm({ initialAmount = 0, initialCurrency = 'USD'
 
     return (
         <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: '#F9FAFB' }}>
-           
-            
+
+
             <div className="w-full max-w-lg">
                 <form
                     onSubmit={handleSubmit}
                     className="rounded-2xl shadow-lg border p-8 space-y-6"
-                    style={{ 
+                    style={{
                         backgroundColor: '#FFFFFF',
                         borderColor: '#D1D5DB',
                         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'

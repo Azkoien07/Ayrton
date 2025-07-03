@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Menu, X } from 'lucide-react';
 import PaymentForm from '@components/PaymentForm';
+import Sidebar from '@components/UI/Sidebar';
 import { useSearchParams, useRouter } from 'next/navigation';
 
 export default function PagoPage() {
@@ -12,6 +13,7 @@ export default function PagoPage() {
     const initialAmount = price ? parseFloat(price) : 0;
 
     const [isClient, setIsClient] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
         setIsClient(true);
@@ -31,8 +33,11 @@ export default function PagoPage() {
             {/* Mobile Sidebar Overlay */}
             {sidebarOpen && (
                 <div className="fixed inset-0 z-50 lg:hidden">
-                    <div className="absolute inset-0 bg-black bg-opacity-50" onClick={() => setSidebarOpen(false)} />
-                    <div className="relative w-64">
+                    <div
+                        className="absolute inset-0 bg-black bg-opacity-50"
+                        onClick={() => setSidebarOpen(false)}
+                    />
+                    <div className="relative w-64 bg-light-surface dark:bg-dark-surface">
                         <Sidebar role={'user'} />
                         <button
                             onClick={() => setSidebarOpen(false)}
@@ -50,6 +55,13 @@ export default function PagoPage() {
                     <div className="px-4 py-4 sm:px-6 sm:py-6">
                         <div className="max-w-none lg:max-w-6xl xl:max-w-7xl mx-auto">
                             <div className="flex items-center gap-3 sm:gap-4">
+                                {/* Botón para abrir sidebar en móvil */}
+                                <button
+                                    onClick={() => setSidebarOpen(true)}
+                                    className="lg:hidden p-2 text-light-textSecondary dark:text-dark-textSecondary hover:text-light-text dark:hover:text-dark-text transition-colors rounded-lg hover:bg-light-border dark:hover:bg-dark-border"
+                                >
+                                    <Menu className="w-5 h-5" />
+                                </button>
 
                                 <button
                                     onClick={handleGoBack}

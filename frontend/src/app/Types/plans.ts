@@ -31,7 +31,7 @@ export const plans: Plans[] = [
     },
     {
         name: "Negocios",
-        price: "$50.000 COP/mes",
+        price: "$54.000 COP/mes",
         features: [
             "Proyectos Ilimitados",
             "Usuarios Ilimitados",

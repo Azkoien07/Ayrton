@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StripeConfig {
 
-    // @Value("${stripe.secret}")
+    @Value("${stripe.secret.key}")
     private String stripeSecret;
 
     @PostConstruct

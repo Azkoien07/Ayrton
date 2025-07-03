@@ -1,20 +1,20 @@
 'use client';
 
 import { Search, FileText, AlertCircle, MessageSquare, ArrowLeft, Menu, X, Plus } from 'lucide-react';
-import PqrCard from '@/app/Components/Pqrs/PqrCard';
-import StatsCard from '@/app/Components/Pqrs/StatsCard';
-import PqrModal from '@/app/Components/Pqrs/PqrModal';
+import PqrCard from '@components/Pqrs/PqrCard';
+import StatsCard from '@components/Pqrs/StatsCard';
+import PqrModal from '@components/Pqrs/PqrModal';
 import { useUser } from '@context/userContext';
-import Sidebar from '@/app/Components/UI/Sidebar';
+import Sidebar from '@components/UI/Sidebar';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from "@/app/Redux/store";
+import type { AppDispatch, RootState } from "@store/store";
 import {
     fetchPqrs,
     addPqr,
     updatePqr,
     deletePqr,
-} from '@/app/Redux/Slices/pqrSlice';
+} from '@slice/pqrSlice';
 import { Pqr } from '@/app/Types/Pqr';
 import { useRouter } from 'next/navigation';
 import { PqrInput, PqrUpdateInput } from '@/generated/graphql';
