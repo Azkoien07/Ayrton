@@ -1,6 +1,10 @@
 import React from 'react';
 import { User, Mail, Phone } from 'lucide-react';
-
+import { PqrInput } from '@/generated/graphql'
+export interface PqrFormData extends PqrInput {
+    state: boolean;
+    answer: string;
+}
 interface ContactInfoFormProps {
     name: string;
     email: string;
@@ -8,7 +12,7 @@ interface ContactInfoFormProps {
     typePqr: string;
     title: string;
     description: string;
-    onInputChange: (field: string, value: string) => void;
+    onInputChange: (field: keyof PqrFormData, value: string | boolean) => void;
     errors: {
         userName?: string;
         userEmail?: string;

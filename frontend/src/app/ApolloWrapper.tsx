@@ -10,7 +10,7 @@ import { Toaster } from 'sonner';
 import { client } from '@lib/apollo-client';
 import { loadUserFromStorage } from '@slice/authSlice';
 
-const stripePromise = loadStripe("pk_test_...");
+const stripePromise = loadStripe("pk_test_51R8VDEP9jgUST7o04vyTrWUgJM4hWheO8acBRiiakoJor7T2CxdG7rqbvAlD4qgYlkMNUvreplmmyluRzF7n0dSY00QKEkfPg6");
 
 function InitAuthLoader({ children }: { children: ReactNode }) {
     const dispatch = useDispatch();
